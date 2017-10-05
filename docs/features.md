@@ -1,0 +1,152 @@
+# Feature Brainstorm
+
+Possible ideas for AutoAgenda
+
+## Views
+
+- Tasks
+	- By importance
+	- By due date
+	- By type
+	- By repetition (daily/weekly/etc)
+- Agenda
+	- With event/tasks/reminder
+	- Without events/tasks/reminder
+- Calender
+	- Week
+	- Month
+	- With event/tasks/reminder
+	- Without events/tasks/reminder
+- Settings 
+	- On sidebar, not main
+
+## Features 
+
+- Add tasks
+	- Name
+	- Due by
+	- Repeat/Constant
+	- Location specific
+	- Amount og time needed
+	- Type
+	- Description
+	- Priority
+	- Stick/pinned/specific time of occurrence
+	- Minimum time blocks
+	- Multiple parts
+- Task history
+	- Record information about the user completing the task
+	- Help improve suggestions later on/ auto fill based off name
+	- See log of sorts
+	- How long a task takes
+		- Where
+		- Only record when user accepts
+- Add reminder
+	- Name
+	- Description, or just name
+	- Type
+	- Time
+	- Location
+- Add events
+	- Everything from Google Calender
+	- Type
+- Set designated period
+	- For certain types (tags) of work
+	- To have no work periods
+- Sorting factors
+	- Time available
+	- Common location
+		- Travel time
+		- Kind of important 
+	- Priority level 
+		- User set priority
+	- Due date
+	- Factor in breaks
+		- User set how often and how long
+	- Run lower tacks so they don't starve 
+	- Breaking tasks into parts
+- Config 
+	- Advanced/Beginner toggle
+	- See picture of location/previous events
+	- Sync to calender
+		- Event
+			- By type
+		- Reminder
+			- By type
+		- Tasks
+			- By type
+	- Minimum time blocks
+		- Global
+		- By tag
+	- Snooze option
+		- No task scheduling 
+		- Global config
+		- By tag
+	- Notification 
+		- Sound/Vibrate
+		- Layout
+			- Accept/Reject
+			- Reminder
+			- Done/Skip
+		- By type
+		- Persistent
+			- Done
+			- Reschedule option 
+		- At start
+		- At end
+		- Travel time heads up
+	- Personalization
+		- Remember passed tasks
+		- Auto fill fields
+		- Suggest new times as needed
+		- How far in advance to schedule 
+	- Coloring 
+		- By tag
+		- By due date/time till due
+		- Primary/Secondary coloring
+		- Default open screen
+		- Reset view/maintain
+	- Record history toggle 
+	- Turn of scheduling
+- Plugins/Extras
+	- Trello sync
+	- Tie in with Google assistant/other voice assistants
+	- Slack reminder/busy
+	- All the calender syncing 
+	- Block other notification sounds/vibrate/Do not Disturb
+	- Suggest useful apps for tasks
+	- Sync with desktop/web client 
+	- Backup with dropbox/drive
+	- Share with others
+		- Add others to events/tasks/reminders
+		- Accept/decline
+		- Let other peoples agendas schedule around events/tasks for meetings and such
+	- Encrypt data/or default?
+	- Let other people ask to add shared events
+- Open source vs propriety services versions
+- Location on/off
+- Other
+	- About me
+		- Version
+		- FAQ
+		- Get help
+		- Say thanks
+			- Review
+		- Website
+	- License
+	- Support
+		- Patreon/PayPal/Google Play
+
+### MVP
+
+First set of feature to get working
+
+- Calender function
+- Task
+	- Name
+	- Due date
+	- Amount of time
+- Scheduling 
+	- Schedule around calender events
+	- For expected time or till due date/if enabled
+- Notification
