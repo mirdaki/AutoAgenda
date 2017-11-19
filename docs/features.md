@@ -65,6 +65,8 @@ Possible ideas for AutoAgenda
 		- User set how often and how long
 	- Run lower tacks so they don't starve 
 	- Breaking tasks into parts
+		- Dependencies (part A before B, B before F, etc)
+	- Weather
 - Config 
 	- Advanced/Beginner toggle
 	- See picture of location/previous events
