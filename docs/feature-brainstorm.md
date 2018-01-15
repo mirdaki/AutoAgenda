@@ -12,28 +12,29 @@ Possible ideas for AutoAgenda
 - Agenda
 	- With event/tasks/reminder
 	- Without events/tasks/reminder
-- Calender
+- Calendar
 	- Week
 	- Month
 	- With event/tasks/reminder
 	- Without events/tasks/reminder
-- Settings 
+- Settings
 	- On sidebar, not main
 
-## Features 
+## Features
 
 - Add tasks
 	- Name
 	- Due by
 	- Repeat/Constant
 	- Location specific
-	- Amount og time needed
+	- Amount of time needed
 	- Type
 	- Description
 	- Priority
 	- Stick/pinned/specific time of occurrence
 	- Minimum time blocks
 	- Multiple parts
+	- Specific time
 - Task history
 	- Record information about the user completing the task
 	- Help improve suggestions later on/ auto fill based off name
@@ -48,7 +49,7 @@ Possible ideas for AutoAgenda
 	- Time
 	- Location
 - Add events
-	- Everything from Google Calender
+	- Everything from Google Calendar
 	- Type
 - Set designated period
 	- For certain types (tags) of work
@@ -57,18 +58,18 @@ Possible ideas for AutoAgenda
 	- Time available
 	- Common location
 		- Travel time
-		- Kind of important 
-	- Priority level 
+		- Kind of important
+	- Priority level
 		- User set priority
 	- Due date
 	- Factor in breaks
 		- User set how often and how long
-	- Run lower tacks so they don't starve 
+	- Run lower tasks so they don't starve
 	- Breaking tasks into parts
-- Config 
+- Config
 	- Advanced/Beginner toggle
 	- See picture of location/previous events
-	- Sync to calender
+	- Sync to calendar
 		- Event
 			- By type
 		- Reminder
@@ -79,19 +80,19 @@ Possible ideas for AutoAgenda
 		- Global
 		- By tag
 	- Snooze option
-		- No task scheduling 
+		- No task scheduling
 		- Global config
 		- By tag
-	- Notification 
+	- Notification
 		- Sound/Vibrate
 		- Layout
 			- Accept/Reject
 			- Reminder
 			- Done/Skip
-		- By type
+        - By type
 		- Persistent
 			- Done
-			- Reschedule option 
+			- Reschedule option
 		- At start
 		- At end
 		- Travel time heads up
@@ -99,31 +100,31 @@ Possible ideas for AutoAgenda
 		- Remember passed tasks
 		- Auto fill fields
 		- Suggest new times as needed
-		- How far in advance to schedule 
-	- Coloring 
+		- How far in advance to schedule
+	- Coloring
 		- By tag
 		- By due date/time till due
 		- Primary/Secondary coloring
 		- Default open screen
 		- Reset view/maintain
-	- Record history toggle 
+	- Record history toggle
 	- Turn of scheduling
 - Plugins/Extras
 	- Trello sync
 	- Tie in with Google assistant/other voice assistants
 	- Slack reminder/busy
-	- All the calender syncing 
+	- All the calendar syncing
 	- Block other notification sounds/vibrate/Do not Disturb
 	- Suggest useful apps for tasks
-	- Sync with desktop/web client 
+	- Sync with desktop/web client
 	- Backup with dropbox/drive
 	- Share with others
 		- Add others to events/tasks/reminders
 		- Accept/decline
-		- Let other peoples agendas schedule around events/tasks for meetings and such
+		- Let other people's agendas schedule around events/tasks for meetings and such
 	- Encrypt data/or default?
 	- Let other people ask to add shared events
-- Open source vs propriety services versions
+- Open source vs proprietary services versions
 - Location on/off
 - Other
 	- About me
@@ -137,16 +138,7 @@ Possible ideas for AutoAgenda
 	- Support
 		- Patreon/PayPal/Google Play
 
-### MVP
+### Scheduling Algorithm
 
-First set of feature to get working
-
-- Calender function
-- Task
-	- Name
-	- Due date
-	- Amount of time
-- Scheduling 
-	- Schedule around calender events
-	- For expected time or till due date/if enabled
-- Notification
+- An RR scheduler with different levels of queues and some sort of due date override might be a good starting point
+- Or could try combining a Combining a Fixed priority preemptive with an RR scheduler
