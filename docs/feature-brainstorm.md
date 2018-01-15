@@ -66,7 +66,9 @@ Possible ideas for AutoAgenda
 		- User set how often and how long
 	- Run lower tasks so they don't starve
 	- Breaking tasks into parts
-- Config
+		- Dependencies (part A before B, B before F, etc)
+	- Weather
+- Config 
 	- Advanced/Beginner toggle
 	- See picture of location/previous events
 	- Sync to calendar
@@ -142,3 +144,4 @@ Possible ideas for AutoAgenda
 
 - An RR scheduler with different levels of queues and some sort of due date override might be a good starting point
 - Or could try combining a Combining a Fixed priority preemptive with an RR scheduler
+
