@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by matthew on 1/26/18.
  */
 
-public abstract class TimeFence
+public class TimeFence
 {
 	private int id;
 	private Date startTime;

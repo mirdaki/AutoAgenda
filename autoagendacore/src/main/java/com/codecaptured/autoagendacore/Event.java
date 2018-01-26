@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by matthew on 1/26/18.
  */
 
-public abstract class Event
+public class Event
 {
 	private int id;
 	private String title;

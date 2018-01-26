@@ -6,7 +6,7 @@ package com.codecaptured.autoagendacore;
 
 // TODO: Maybe have a current schedule and a list of older tasks and events for suggestions
 
-public abstract class Schedule
+public class Schedule
 {
 	private Task[] tasks;
 	private Event[] events;

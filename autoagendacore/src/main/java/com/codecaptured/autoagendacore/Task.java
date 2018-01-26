@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by matthew on 1/22/18.
  */
 
-public abstract class Task
+public class Task
 {
 	private int id;
 	private String title;
