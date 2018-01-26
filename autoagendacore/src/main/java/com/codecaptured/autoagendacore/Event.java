@@ -3,30 +3,30 @@ package com.codecaptured.autoagendacore;
 import java.util.Date;
 
 /**
- * Created by matthew on 1/22/18.
+ * Created by matthew on 1/26/18.
  */
 
-public abstract class Task
+public abstract class Event
 {
 	private int id;
 	private String title;
 	private String description;
-	private Date dueDate;
-	private double timeRequired;
+	private Date startTime;
+	private Date endTime;
 	private int priorityLevel;
 	private String[] tag;
 	private int[] notificationTimes;
 	// Location
 	// Repeat information
 
-	public Task(int id, String title, String description, Date dueDate, double timeRequired,
-	            int priorityLevel, String[] tag, int[] notificationTimes)
+	public Event(int id, String title, String description, Date startTime, Date endTime,
+	             int priorityLevel, String[] tag, int[] notificationTimes)
 	{
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.dueDate = dueDate;
-		this.timeRequired = timeRequired;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.priorityLevel = priorityLevel;
 		this.tag = tag;
 		this.notificationTimes = notificationTimes;
@@ -62,24 +62,24 @@ public abstract class Task
 		this.description = description;
 	}
 
-	public java.util.Date getDueDate()
+	public java.util.Date getStartTime()
 	{
-		return dueDate;
+		return startTime;
 	}
 
-	public void setDueDate(java.util.Date dueDate)
+	public void setStartTime(java.util.Date startTime)
 	{
-		this.dueDate = dueDate;
+		this.startTime = startTime;
 	}
 
-	public double getTimeRequired()
+	public java.util.Date getEndTime()
 	{
-		return timeRequired;
+		return endTime;
 	}
 
-	public void setTimeRequired(double timeRequired)
+	public void setEndTime(java.util.Date endTime)
 	{
-		this.timeRequired = timeRequired;
+		this.endTime = endTime;
 	}
 
 	public int getPriorityLevel()
@@ -87,7 +87,7 @@ public abstract class Task
 		return priorityLevel;
 	}
 
-	public void setpPriorityLevel(int priorityLevel)
+	public void setPriorityLevel(int priorityLevel)
 	{
 		this.priorityLevel = priorityLevel;
 	}
@@ -111,5 +111,4 @@ public abstract class Task
 	{
 		this.notificationTimes = notificationTimes;
 	}
-
 }
