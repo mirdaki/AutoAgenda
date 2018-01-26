@@ -14,7 +14,7 @@ public abstract class TimeFence
 	private String[] tag;
 	// Repeat information
 
-	public TimeFence(int id, java.util.Date startTime, java.util.Date endTime, String[] tag)
+	public TimeFence(int id, Date startTime, Date endTime, String[] tag)
 	{
 		this.id = id;
 		this.startTime = startTime;
@@ -37,17 +37,17 @@ public abstract class TimeFence
 		return startTime;
 	}
 
-	public void setStartTime(java.util.Date startTime)
+	public void setStartTime(Date startTime)
 	{
 		this.startTime = startTime;
 	}
 
-	public java.util.Date getEndTime()
+	public Date getEndTime()
 	{
 		return endTime;
 	}
 
-	public void setEndTime(java.util.Date endTime)
+	public void setEndTime(Date endTime)
 	{
 		this.endTime = endTime;
 	}
