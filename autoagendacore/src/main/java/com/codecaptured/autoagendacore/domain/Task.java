@@ -1,4 +1,4 @@
-package com.codecaptured.autoagendacore;
+package com.codecaptured.autoagendacore.domain;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class Task
 	// Location
 	// Repeat information
 
-	public Task(int id, String title, String description, Date dueDate, double timeRequired,
+	protected Task(int id, String title, String description, Date dueDate, double timeRequired,
 	            int priorityLevel, String[] tag, int[] notificationTimes)
 	{
 		this.id = id;
@@ -32,82 +32,82 @@ public class Task
 		this.notificationTimes = notificationTimes;
 	}
 
-	public int getId()
+	protected int getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	protected void setId(int id)
 	{
 		this.id = id;
 	}
 
-	public String getTitle()
+	protected String getTitle()
 	{
 		return title;
 	}
 
-	public void setTitle(String title)
+	protected void setTitle(String title)
 	{
 		this.title = title;
 	}
 
-	public String getDescription()
+	protected String getDescription()
 	{
 		return description;
 	}
 
-	public void setDescription(String description)
+	protected void setDescription(String description)
 	{
 		this.description = description;
 	}
 
-	public Date getDueDate()
+	protected Date getDueDate()
 	{
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate)
+	protected void setDueDate(Date dueDate)
 	{
 		this.dueDate = dueDate;
 	}
 
-	public double getTimeRequired()
+	protected double getTimeRequired()
 	{
 		return timeRequired;
 	}
 
-	public void setTimeRequired(double timeRequired)
+	protected void setTimeRequired(double timeRequired)
 	{
 		this.timeRequired = timeRequired;
 	}
 
-	public int getPriorityLevel()
+	protected int getPriorityLevel()
 	{
 		return priorityLevel;
 	}
 
-	public void setpPriorityLevel(int priorityLevel)
+	protected void setpPriorityLevel(int priorityLevel)
 	{
 		this.priorityLevel = priorityLevel;
 	}
 
-	public String[] getTag()
+	protected String[] getTag()
 	{
 		return tag;
 	}
 
-	public void setTag(String[] tag)
+	protected void setTag(String[] tag)
 	{
 		this.tag = tag;
 	}
 
-	public int[] getNotificationTimes()
+	protected int[] getNotificationTimes()
 	{
 		return notificationTimes;
 	}
 
-	public void setNotificationTimes(int[] notificationTimes)
+	protected void setNotificationTimes(int[] notificationTimes)
 	{
 		this.notificationTimes = notificationTimes;
 	}

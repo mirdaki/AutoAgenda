@@ -1,4 +1,4 @@
-package com.codecaptured.autoagendacore;
+package com.codecaptured.autoagendacore.domain;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ public class TimeFence
 	private String[] tag;
 	// Repeat information
 
-	public TimeFence(int id, Date startTime, Date endTime, String[] tag)
+	protected TimeFence(int id, Date startTime, Date endTime, String[] tag)
 	{
 		this.id = id;
 		this.startTime = startTime;
@@ -22,42 +22,42 @@ public class TimeFence
 		this.tag = tag;
 	}
 
-	public int getId()
+	protected int getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	protected void setId(int id)
 	{
 		this.id = id;
 	}
 
-	public java.util.Date getStartTime()
+	protected java.util.Date getStartTime()
 	{
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime)
+	protected void setStartTime(Date startTime)
 	{
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime()
+	protected Date getEndTime()
 	{
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime)
+	protected void setEndTime(Date endTime)
 	{
 		this.endTime = endTime;
 	}
 
-	public String[] getTag()
+	protected String[] getTag()
 	{
 		return tag;
 	}
 
-	public void setTag(String[] tag)
+	protected void setTag(String[] tag)
 	{
 		this.tag = tag;
 	}
