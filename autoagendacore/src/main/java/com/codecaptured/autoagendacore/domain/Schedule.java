@@ -1,4 +1,4 @@
-package com.codecaptured.autoagendacore;
+package com.codecaptured.autoagendacore.domain;
 
 /**
  * Created by matthew on 1/26/18.
@@ -12,39 +12,39 @@ public class Schedule
 	private Event[] events;
 	private TimeFence[] timeFences;
 
-	public Schedule(Task[] tasks, Event[] events, TimeFence[] timeFences)
+	protected Schedule(Task[] tasks, Event[] events, TimeFence[] timeFences)
 	{
 		this.tasks = tasks;
 		this.events = events;
 		this.timeFences = timeFences;
 	}
 
-	public Task[] getTasks()
+	protected Task[] getTasks()
 	{
 		return tasks;
 	}
 
-	public void setTasks(Task[] tasks)
+	protected void setTasks(Task[] tasks)
 	{
 		this.tasks = tasks;
 	}
 
-	public Event[] getEvents()
+	protected Event[] getEvents()
 	{
 		return events;
 	}
 
-	public void setEvents(Event[] events)
+	protected void setEvents(Event[] events)
 	{
 		this.events = events;
 	}
 
-	public TimeFence[] getTimeFences()
+	protected TimeFence[] getTimeFences()
 	{
 		return timeFences;
 	}
 
-	public void setTimeFences(TimeFence[] timeFences)
+	protected void setTimeFences(TimeFence[] timeFences)
 	{
 		this.timeFences = timeFences;
 	}
