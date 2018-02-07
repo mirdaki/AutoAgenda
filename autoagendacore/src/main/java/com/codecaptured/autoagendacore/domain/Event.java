@@ -1,9 +1,7 @@
 package com.codecaptured.autoagendacore.domain;
 
-import java.util.Date;
-
 /**
- * Created by matthew on 1/26/18.
+ * Events occur at very specific times and are not necessarily scheduled with other tasks
  */
 
 public class Event
@@ -11,25 +9,30 @@ public class Event
 	private int id;
 	private String title;
 	private String description;
-	private Date startTime;
-	private Date endTime;
+	private TimeBlock eventTime;
 	private int priorityLevel;
-	private String[] tag;
-	private int[] notificationTimes;
-	// Location
-	// Repeat information
+	private String[] tags;
+//	private int[] notificationTimes;
+//	Location
+//	Repeat information
 
-	protected Event(int id, String title, String description, Date startTime, Date endTime,
-	             int priorityLevel, String[] tag, int[] notificationTimes)
+	/**
+	 * Create an event that occurs at a specific time and and are not necessarily scheduled
+	 * @param id Unique ID
+	 * @param title Name of the event
+	 * @param description Additional information on the event
+	 * @param eventTime Start time and length of the event in minutes
+	 * @param tags Tags or categories associated with the event. Used to organize the event
+	 */
+	protected Event(int id, String title, String description, TimeBlock eventTime, String[] tags)
 	{
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.eventTime = eventTime;
 		this.priorityLevel = priorityLevel;
-		this.tag = tag;
-		this.notificationTimes = notificationTimes;
+		this.tags = tags;
+//		this.notificationTimes = notificationTimes;
 	}
 
 	protected int getId()
@@ -62,24 +65,14 @@ public class Event
 		this.description = description;
 	}
 
-	protected Date getStartTime()
+	protected TimeBlock getEventTime()
 	{
-		return startTime;
+		return eventTime;
 	}
 
-	protected void setStartTime(Date startTime)
+	protected void setEventTime(TimeBlock eventTime)
 	{
-		this.startTime = startTime;
-	}
-
-	protected Date getEndTime()
-	{
-		return endTime;
-	}
-
-	protected void setEndTime(Date endTime)
-	{
-		this.endTime = endTime;
+		this.eventTime = eventTime;
 	}
 
 	protected int getPriorityLevel()
@@ -92,23 +85,23 @@ public class Event
 		this.priorityLevel = priorityLevel;
 	}
 
-	protected String[] getTag()
+	protected String[] getTags()
 	{
-		return tag;
+		return tags;
 	}
 
-	protected void setTag(String[] tag)
+	protected void setTags(String[] tag)
 	{
-		this.tag = tag;
+		this.tags = tags;
 	}
 
-	protected int[] getNotificationTimes()
-	{
-		return notificationTimes;
-	}
-
-	protected void setNotificationTimes(int[] notificationTimes)
-	{
-		this.notificationTimes = notificationTimes;
-	}
+//	protected int[] getNotificationTimes()
+//	{
+//		return notificationTimes;
+//	}
+//
+//	protected void setNotificationTimes(int[] notificationTimes)
+//	{
+//		this.notificationTimes = notificationTimes;
+//	}
 }
