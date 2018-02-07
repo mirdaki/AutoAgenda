@@ -1,24 +1,26 @@
 package com.codecaptured.autoagendacore.domain;
 
-import java.util.Date;
-
 /**
- * Created by matthew on 1/26/18.
+ * TimeFence describe times that are dedicated for specific types of tasks
  */
 
 public class TimeFence
 {
 	private int id;
-	private Date startTime;
-	private Date endTime;
+	private TimeBlock timeBlock;
 	private String[] tag;
-	// Repeat information
+//	Repeat information
 
-	protected TimeFence(int id, Date startTime, Date endTime, String[] tag)
+	/**
+	 * Creates a time fence that describe times that are dedicated for specific types of tasks
+	 * @param id Unique ID
+	 * @param timeBlock Start and length of time fence
+	 * @param tag Tags or categories associated with the time fence. Used to organize the time fence
+	 */
+	protected TimeFence(int id, TimeBlock timeBlock, String[] tag)
 	{
 		this.id = id;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.timeBlock = timeBlock;
 		this.tag = tag;
 	}
 
@@ -32,24 +34,14 @@ public class TimeFence
 		this.id = id;
 	}
 
-	protected java.util.Date getStartTime()
+	protected TimeBlock getTimeBlock()
 	{
-		return startTime;
+		return timeBlock;
 	}
 
-	protected void setStartTime(Date startTime)
+	protected void setTimeBlock(TimeBlock timeBlock)
 	{
-		this.startTime = startTime;
-	}
-
-	protected Date getEndTime()
-	{
-		return endTime;
-	}
-
-	protected void setEndTime(Date endTime)
-	{
-		this.endTime = endTime;
+		this.timeBlock = timeBlock;
 	}
 
 	protected String[] getTag()
