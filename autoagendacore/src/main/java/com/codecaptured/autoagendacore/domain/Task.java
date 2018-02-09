@@ -1,6 +1,9 @@
 package com.codecaptured.autoagendacore.domain;
 
+// TODO: Maybe use a different date format
 import java.util.Date;
+import java.util.UUID;
+
 
 /**
  * Task are things that take some amount of time and may have a a due date
@@ -8,7 +11,7 @@ import java.util.Date;
 
 public class Task
 {
-	private int id;
+	private UUID id;
 	private String title;
 	private String description;
 	private Date dueDate;
@@ -30,8 +33,8 @@ public class Task
 	 * @param priorityLevel A priority level between 0 and 10, where 0 is the lowest priority
 	 * @param tags Tags or categories associated with the task. Used to organize the task
 	 */
-	protected Task(int id, String title, String description, Date dueDate, int timeRequiredInMinutes,
-	               int priorityLevel, String[] tags)
+	protected Task(UUID id, String title, String description, Date dueDate, int timeRequiredInMinutes,
+	            int priorityLevel, String[] tags)
 	{
 		this.id = id;
 		this.title = title;
@@ -43,12 +46,12 @@ public class Task
 //		this.notificationTimes = notificationTimes;
 	}
 
-	public int getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	protected void setId(int id)
+	protected void setId(UUID id)
 	{
 		this.id = id;
 	}
