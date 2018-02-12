@@ -1,51 +1,119 @@
-package com.codecaptured.autoagendacore.domain;
+package com.codecaptured.autoagendacore.entities;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
- * Created by matthew on 1/26/18.
+ * Storage for all tasks and events being used in the app
  */
 
 // TODO: Maybe have a current schedule and a list of older tasks and events for suggestions
 
 public class Schedule
 {
-	private Task[] tasks;
-	private Event[] events;
-	private TimeFence[] timeFences;
+	private HashMap<UUID, Task> currentTasks;
+	private HashMap<UUID, Task> oldTasks;
+	private HashMap<UUID, Event> currentEvents;
+	private HashMap<UUID, Event> oldEvents;
+	private HashMap<UUID, TimeFence> currentTimeFences;
+	private HashMap<UUID, TimeFence> oldTimeFences;
 
-	protected Schedule(Task[] tasks, Event[] events, TimeFence[] timeFences)
+	/**
+	 * Storage for all tasks and events being used in the app for scheduled times and organizations
+	 * @param currentTasks Tasks that have yet to be completed
+	 * @param oldTasks Tasks that have been completed
+	 * @param currentEvents Events that have yet to be completed
+	 * @param oldEvents Events that have been completed
+	 * @param currentTimeFences Time fences still in use
+	 * @param oldTimeFences Previously used time fences
+	 */
+	public Schedule(HashMap<UUID, Task> currentTasks, HashMap<UUID, Task> oldTasks,
+	                HashMap<UUID, Event> currentEvents, HashMap<UUID, Event> oldEvents,
+	                HashMap<UUID, TimeFence> currentTimeFences, HashMap<UUID,
+									TimeFence> oldTimeFences)
 	{
-		this.tasks = tasks;
-		this.events = events;
-		this.timeFences = timeFences;
+		this.currentTasks = currentTasks;
+		this.oldTasks = oldTasks;
+		this.currentEvents = currentEvents;
+		this.oldEvents = oldEvents;
+		this.currentTimeFences = currentTimeFences;
+		this.oldTimeFences = oldTimeFences;
 	}
 
-	protected Task[] getTasks()
+	public HashMap<UUID, Task> getCurrentTasks()
 	{
-		return tasks;
+		return currentTasks;
 	}
 
-	protected void setTasks(Task[] tasks)
+	public void setCurrentTasks(HashMap<UUID, Task> currentTasks)
 	{
-		this.tasks = tasks;
+		this.currentTasks = currentTasks;
 	}
 
-	protected Event[] getEvents()
+	public HashMap<UUID, Task> getOldTasks()
 	{
-		return events;
+		return oldTasks;
 	}
 
-	protected void setEvents(Event[] events)
+	public void setOldTasks(HashMap<UUID, Task> oldTasks)
 	{
-		this.events = events;
+		this.oldTasks = oldTasks;
 	}
 
-	protected TimeFence[] getTimeFences()
+	public HashMap<UUID, Event> getCurrentEvents()
 	{
-		return timeFences;
+		return currentEvents;
 	}
 
-	protected void setTimeFences(TimeFence[] timeFences)
+	public void setCurrentEvents(HashMap<UUID, Event> currentEvents)
 	{
-		this.timeFences = timeFences;
+		this.currentEvents = currentEvents;
 	}
+
+	public HashMap<UUID, Event> getOldEvents()
+	{
+		return oldEvents;
+	}
+
+	public void setOldEvents(HashMap<UUID, Event> oldEvents)
+	{
+		this.oldEvents = oldEvents;
+	}
+
+	public HashMap<UUID, TimeFence> getCurrentTimeFences()
+	{
+		return currentTimeFences;
+	}
+
+	public void setCurrentTimeFences(HashMap<UUID, TimeFence> currentTimeFences)
+	{
+		this.currentTimeFences = currentTimeFences;
+	}
+
+	public HashMap<UUID, TimeFence> getOldTimeFences()
+	{
+		return oldTimeFences;
+	}
+
+	public void setOldTimeFences(HashMap<UUID, TimeFence> oldTimeFences)
+	{
+		this.oldTimeFences = oldTimeFences;
+	}
+
+	// TODO: Implement the below functions
+	public String[] getTags()
+	{
+		return new String[] {""};
+	}
+
+	public HashMap<UUID, Task> getTagTasks(String tag)
+	{
+		return currentTasks;
+	}
+
+	public HashMap<UUID, Event> getTagEvents(String tag)
+	{
+		return currentEvents;
+	}
+
 }
