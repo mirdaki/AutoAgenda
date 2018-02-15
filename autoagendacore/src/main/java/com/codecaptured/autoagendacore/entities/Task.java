@@ -76,7 +76,7 @@ public class Task
 		this.description = description;
 	}
 
-	public Boolean isComplted()
+	public Boolean isCompleted()
 	{
 		return this.completed;
 	}
@@ -111,7 +111,7 @@ public class Task
 		return priorityLevel;
 	}
 
-	public void setpPriorityLevel(int priorityLevel)
+	public void setPriorityLevel(int priorityLevel)
 	{
 		this.priorityLevel = priorityLevel;
 	}
