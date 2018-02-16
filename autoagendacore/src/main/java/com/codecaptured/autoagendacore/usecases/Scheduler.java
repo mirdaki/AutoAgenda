@@ -1,4 +1,9 @@
-package com.codecaptured.autoagendacore.domain;
+package com.codecaptured.autoagendacore.usecases;
+
+import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.Event;
+import com.codecaptured.autoagendacore.entities.TimeFence;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 
 import java.util.UUID;
 
@@ -8,7 +13,7 @@ import java.util.UUID;
 
 public class Scheduler
 {
-	public static void addTask(Task newTesk)
+	public static void addTask(Task newTask)
 	{
 
 	}
@@ -18,22 +23,22 @@ public class Scheduler
 
 	}
 
-	public static void addEvent()
+	public static void addEvent(Event event)
 	{
 
 	}
 
-	public static void removeEvent()
+	public static void removeEvent(UUID id)
 	{
 
 	}
 
-	public static void addTimeFence()
+	public static void addTimeFence(TimeFence timeFence)
 	{
 
 	}
 
-	public static void removeTimeFence()
+	public static void removeTimeFence(UUID id)
 	{
 
 	}
