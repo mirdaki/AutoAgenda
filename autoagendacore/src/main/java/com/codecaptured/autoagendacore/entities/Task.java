@@ -1,25 +1,24 @@
-package com.codecaptured.autoagendacore.domain;
+package com.codecaptured.autoagendacore.entities;
 
 // TODO: Maybe use a different date format
 import java.util.Date;
 import java.util.UUID;
 
-
 /**
  * Task are things that take some amount of time and may have a a due date
  */
-
 public class Task
 {
 	private UUID id;
 	private String title;
 	private String description;
+	private Boolean completed;
 	private Date dueDate;
 	private int timeRequiredInMinutes;
 	private int priorityLevel;
 	private String[] tags;
 	private TimeBlock[] taskTimes;
-//	private int[] notificationTimes;
+//	Notification Times;
 //	Location
 //	Repeat information
 
@@ -28,22 +27,23 @@ public class Task
 	 * @param id Unique ID
 	 * @param title Name for the task
 	 * @param description Description providing more information about the task
+	 * @param completed Specifies if the task has been completed or not
 	 * @param dueDate Date when the task is due. Set to the default date if their is no due date
 	 * @param timeRequiredInMinutes The amount of time the task might take up in minutes
 	 * @param priorityLevel A priority level between 0 and 10, where 0 is the lowest priority
 	 * @param tags Tags or categories associated with the task. Used to organize the task
 	 */
-	protected Task(UUID id, String title, String description, Date dueDate, int timeRequiredInMinutes,
-	            int priorityLevel, String[] tags)
+	public Task(UUID id, String title, String description, Boolean completed, Date dueDate,
+	            int timeRequiredInMinutes, int priorityLevel, String[] tags)
 	{
 		this.id = id;
 		this.title = title;
 		this.description = description;
+		this.completed = completed;
 		this.dueDate = dueDate;
 		this.timeRequiredInMinutes = timeRequiredInMinutes;
 		this.priorityLevel = priorityLevel;
 		this.tags = tags;
-//		this.notificationTimes = notificationTimes;
 	}
 
 	public UUID getId()
@@ -51,7 +51,7 @@ public class Task
 		return id;
 	}
 
-	protected void setId(UUID id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
@@ -61,7 +61,7 @@ public class Task
 		return title;
 	}
 
-	protected void setTitle(String title)
+	public void setTitle(String title)
 	{
 		this.title = title;
 	}
@@ -71,9 +71,19 @@ public class Task
 		return description;
 	}
 
-	protected void setDescription(String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
+	}
+
+	public Boolean isCompleted()
+	{
+		return this.completed;
+	}
+
+	public void setCompleted(Boolean completed)
+	{
+		this.completed = completed;
 	}
 
 	public Date getDueDate()
@@ -81,7 +91,7 @@ public class Task
 		return dueDate;
 	}
 
-	protected void setDueDate(Date dueDate)
+	public void setDueDate(Date dueDate)
 	{
 		this.dueDate = dueDate;
 	}
@@ -91,7 +101,7 @@ public class Task
 		return timeRequiredInMinutes;
 	}
 
-	protected void setTimeRequiredInMinutes(int timeRequired)
+	public void setTimeRequiredInMinutes(int timeRequired)
 	{
 		this.timeRequiredInMinutes = timeRequired;
 	}
@@ -101,7 +111,7 @@ public class Task
 		return priorityLevel;
 	}
 
-	protected void setpPriorityLevel(int priorityLevel)
+	public void setPriorityLevel(int priorityLevel)
 	{
 		this.priorityLevel = priorityLevel;
 	}
@@ -111,7 +121,7 @@ public class Task
 		return tags;
 	}
 
-	protected void setTags(String[] tags)
+	public void setTags(String[] tags)
 	{
 		this.tags = tags;
 	}
@@ -121,19 +131,9 @@ public class Task
 		return taskTimes;
 	}
 
-	protected void setTaskTimes(TimeBlock[] taskTimes)
+	public void setTaskTimes(TimeBlock[] taskTimes)
 	{
 		this.taskTimes = taskTimes;
 	}
-
-//	public int[] getNotificationTimes()
-//	{
-//		return notificationTimes;
-//	}
-//
-//	protected void setNotificationTimes(int[] notificationTimes)
-//	{
-//		this.notificationTimes = notificationTimes;
-//	}
 
 }

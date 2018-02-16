@@ -1,18 +1,19 @@
-package com.codecaptured.autoagendacore.domain;
+package com.codecaptured.autoagendacore.entities;
+
+import java.util.UUID;
 
 /**
  * Events occur at very specific times and are not necessarily scheduled with other tasks
  */
-
 public class Event
 {
-	private int id;
+	private UUID id;
 	private String title;
 	private String description;
 	private TimeBlock eventTime;
 	private int priorityLevel;
 	private String[] tags;
-//	private int[] notificationTimes;
+//	Notification Times;
 //	Location
 //	Repeat information
 
@@ -22,9 +23,11 @@ public class Event
 	 * @param title Name of the event
 	 * @param description Additional information on the event
 	 * @param eventTime Start time and length of the event in minutes
+	 * @param priorityLevel Priority on a scale of 0 to 10, 5 being average
 	 * @param tags Tags or categories associated with the event. Used to organize the event
 	 */
-	protected Event(int id, String title, String description, TimeBlock eventTime, String[] tags)
+	public Event(UUID id, String title, String description, TimeBlock eventTime, int priorityLevel,
+	             String[] tags)
 	{
 		this.id = id;
 		this.title = title;
@@ -32,76 +35,66 @@ public class Event
 		this.eventTime = eventTime;
 		this.priorityLevel = priorityLevel;
 		this.tags = tags;
-//		this.notificationTimes = notificationTimes;
 	}
 
-	protected int getId()
+	public UUID getId()
 	{
 		return id;
 	}
 
-	protected void setId(int id)
+	public void setId(UUID id)
 	{
 		this.id = id;
 	}
 
-	protected String getTitle()
+	public String getTitle()
 	{
 		return title;
 	}
 
-	protected void setTitle(String title)
+	public void setTitle(String title)
 	{
 		this.title = title;
 	}
 
-	protected String getDescription()
+	public String getDescription()
 	{
 		return description;
 	}
 
-	protected void setDescription(String description)
+	public void setDescription(String description)
 	{
 		this.description = description;
 	}
 
-	protected TimeBlock getEventTime()
+	public TimeBlock getEventTime()
 	{
 		return eventTime;
 	}
 
-	protected void setEventTime(TimeBlock eventTime)
+	public void setEventTime(TimeBlock eventTime)
 	{
 		this.eventTime = eventTime;
 	}
 
-	protected int getPriorityLevel()
+	public int getPriorityLevel()
 	{
 		return priorityLevel;
 	}
 
-	protected void setPriorityLevel(int priorityLevel)
+	public void setPriorityLevel(int priorityLevel)
 	{
 		this.priorityLevel = priorityLevel;
 	}
 
-	protected String[] getTags()
+	public String[] getTags()
 	{
 		return tags;
 	}
 
-	protected void setTags(String[] tag)
+	public void setTags(String[] tag)
 	{
 		this.tags = tags;
 	}
 
-//	protected int[] getNotificationTimes()
-//	{
-//		return notificationTimes;
-//	}
-//
-//	protected void setNotificationTimes(int[] notificationTimes)
-//	{
-//		this.notificationTimes = notificationTimes;
-//	}
 }

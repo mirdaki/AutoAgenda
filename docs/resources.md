@@ -7,6 +7,7 @@ To help with developing the application.
 	- [Project Structure](https://developer.android.com/studio/projects/index.html)
 - Clean Architecture
 	- [Overview](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html)
+	- [Java Example](https://github.com/mattia-battiston/clean-architecture-example)
 	- [Android Specific](https://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/) 
 	- [Android Example](https://github.com/googlesamples/android-architecture/tree/todo-mvp/)
 - Design
