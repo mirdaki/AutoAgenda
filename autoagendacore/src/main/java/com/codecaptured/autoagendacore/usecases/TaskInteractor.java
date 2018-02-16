@@ -1,5 +1,6 @@
 package com.codecaptured.autoagendacore.usecases;
 
+import com.codecaptured.autoagendacore.entities.Schedule;
 import com.codecaptured.autoagendacore.entities.Task;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
@@ -27,7 +28,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task);
+		Scheduler.addTask(task, Schedule.getCurrentTasks());
 	}
 
 	public static void modifyTask(UserTask originalTask, UserTask newTask)
@@ -36,7 +37,7 @@ public class TaskInteractor
 		newTask.setId(originalTask.getId());
 
 		// Remove the old task
-		Scheduler.removeEvent(originalTask.getId());
+		Scheduler.removeTask(originalTask.getId());
 
 		// Make the task
 		Task task = new Task(newTask.getId(), newTask.getTitle(), newTask.getDescription(),
@@ -44,7 +45,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task);
+		Scheduler.addTask(task, Schedule.getCurrentTasks());
 	}
 
 	public static void removeTask(UserTask oldTask)

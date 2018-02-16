@@ -92,7 +92,7 @@ public class Event
 		return tags;
 	}
 
-	public void setTags(String[] tag)
+	public void setTags(String[] tags)
 	{
 		this.tags = tags;
 	}
