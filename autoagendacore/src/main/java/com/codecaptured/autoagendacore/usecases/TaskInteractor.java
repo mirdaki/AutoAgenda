@@ -1,60 +1,91 @@
 package com.codecaptured.autoagendacore.usecases;
 
+import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
+
 import java.util.UUID;
 import java.util.Date;
-import com.codecaptured.autoagendacore.domain.Task;
-import com.codecaptured.autoagendacore.domain.Scheduler;
 
 /**
- * Created by matthew on 2/2/18.
+ * This is used when interacting (creating, modifying, removing) tasks. Also controls the interface
+ * needed for talking to this class
  */
-
 public class TaskInteractor
 {
-	public static final String DEFAULT_TITLE = "";
-	public static final String DEFAULT_DESCRIPTION = "";
-	public static final Date DEFAULT_DUE_DATE = new Date(0);
-	public static final int DEFAULT_TIME_REQUIRED_IN_MINUTES = 0;
-	public static final int DEFAULT_PRIORITY_LEVEL = 5;
-	public static final String[] DEFAULT_TAGS = {""};
-
-	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not.
-	public static Task addTask(String title, String description, Date dueDate,
-	                           int timeRequiredInMinutes, int priorityLevel, String[] tags)
+	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not
+	public static void addTask(UserTask newTask)
 	{
 		// Create a new ID
 		UUID id = UUID.randomUUID();
 
+		// Add ID to UserTask
+		newTask.setId(id);
+
 		// Make the task
-		Task newTask = new UserTask(id, title, description, dueDate, timeRequiredInMinutes,
-						priorityLevel, tags);
+		Task task = new Task(newTask.getId(), newTask.getTitle(), newTask.getDescription(),
+						newTask.getCompleted(), newTask.getDueDate(), newTask.getTimeRequiredInMinutes(),
+						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(newTask);
-
-		return newTask;
+		Scheduler.addTask(task);
 	}
 
-	public static Task modifyTask(UUID id, String title, String description, Date dueDate,
-	                              int timeRequiredInMinutes, int priorityLevel, String[] tags)
+	public static void modifyTask(UserTask originalTask, UserTask newTask)
 	{
-		// Make a new task with old ID
-		Task newTask = new UserTask(id, title, description, dueDate, timeRequiredInMinutes,
-						priorityLevel, tags);
+		// Make the IDs the same
+		newTask.setId(originalTask.getId());
 
-		// Delete old task
-		Scheduler.removeTask(id);
+		// Remove the old task
+		Scheduler.removeEvent(originalTask.getId());
 
-		// Add new task
-		Scheduler.addTask(newTask);
+		// Make the task
+		Task task = new Task(newTask.getId(), newTask.getTitle(), newTask.getDescription(),
+						newTask.getCompleted(), newTask.getDueDate(), newTask.getTimeRequiredInMinutes(),
+						newTask.getPriorityLevel(), newTask.getTags());
 
-		return newTask;
+		// Add to scheduler to decide where to put it in the schedule
+		Scheduler.addTask(task);
 	}
 
-	public static void removeTask(UUID id)
+	public static void removeTask(UserTask oldTask)
 	{
 		// Delete old task
-		Scheduler.removeTask(id);
+		Scheduler.removeTask(oldTask.getId());
+	}
+
+	public interface UserTask
+	{
+		// Default values
+		String DEFAULT_TITLE = "";
+		String DEFAULT_DESCRIPTION = "";
+		Boolean DEFAULT_COMPLETED = false;
+		Date DEFAULT_DUE_DATE = new Date(0);
+		int DEFAULT_TIME_REQUIRED_IN_MINUTES = 0;
+		int DEFAULT_PRIORITY_LEVEL = 5;
+		String[] DEFAULT_TAGS = {""};
+
+		// Getters and setters
+		// Values set by user
+		String getTitle();
+		void setTitle(String title);
+		String getDescription();
+		void setDescription(String description);
+		Boolean getCompleted();
+		void setCompleted(Boolean completed);
+		Date getDueDate();
+		void setDueDate(Date dueDate);
+		int getTimeRequiredInMinutes();
+		void setTimeRequiredInMinutes(int timeRequiredInMinutes);
+		int getPriorityLevel();
+		void setPriorityLevel(int priorityLevel);
+		String[] getTags();
+		void setTags(String[] tags);
+
+		// Set by software
+		UUID getId();
+		void setId(UUID id);
+		TimeBlock[] getTimeBlocks();
+		void setTimeBlocks(TimeBlock[] timeBlocks);
 	}
 
 
