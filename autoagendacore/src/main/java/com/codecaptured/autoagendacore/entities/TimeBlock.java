@@ -20,7 +20,7 @@ public class TimeBlock
 	 * @param timeInMinutes Amount of time the block takes up
 	 */
 
-	protected TimeBlock(Date startTime, int timeInMinutes)
+	public TimeBlock(Date startTime, int timeInMinutes)
 	{
 		this.startTime = startTime;
 		this.numberOfMinutes = timeInMinutes;
@@ -31,7 +31,7 @@ public class TimeBlock
 		return startTime;
 	}
 
-	protected void setStartTime(Date startTime)
+	public void setStartTime(Date startTime)
 	{
 		this.startTime = startTime;
 	}
@@ -41,7 +41,7 @@ public class TimeBlock
 		return numberOfMinutes;
 	}
 
-	protected void setNumberOfMinutes(int timeInMinutes)
+	public void setNumberOfMinutes(int timeInMinutes)
 	{
 		this.numberOfMinutes = timeInMinutes;
 	}
