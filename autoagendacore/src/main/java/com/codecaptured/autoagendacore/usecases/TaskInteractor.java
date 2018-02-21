@@ -14,6 +14,11 @@ import java.util.Date;
 public class TaskInteractor
 {
 	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not
+
+	/**
+	 * Add a new task to be scheduled
+	 * @param newTask The new task
+	 */
 	public static void addTask(UserTask newTask)
 	{
 		// Create a new ID
@@ -31,6 +36,11 @@ public class TaskInteractor
 		Scheduler.addTask(task, Schedule.getCurrentTasks());
 	}
 
+	/**
+	 * Change an existing scheduled event and reschedule it if using the default date/time
+	 * @param originalTask The original task to be changed
+	 * @param newTask The new changed task
+	 */
 	public static void modifyTask(UserTask originalTask, UserTask newTask)
 	{
 		// Make the IDs the same
@@ -48,12 +58,19 @@ public class TaskInteractor
 		Scheduler.addTask(task, Schedule.getCurrentTasks());
 	}
 
+	/**
+	 * Remove a task from the schedule
+	 * @param oldTask The task to be removed
+	 */
 	public static void removeTask(UserTask oldTask)
 	{
 		// Delete old task
 		Scheduler.removeTask(oldTask.getId());
 	}
 
+	/**
+	 * The task data object used to talk with the use cases. Includes default values for tasks
+	 */
 	public interface UserTask
 	{
 		// Default values
@@ -88,7 +105,5 @@ public class TaskInteractor
 		TimeBlock[] getTimeBlocks();
 		void setTimeBlocks(TimeBlock[] timeBlocks);
 	}
-
-
 
 }

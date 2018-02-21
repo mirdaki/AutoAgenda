@@ -13,6 +13,11 @@ import java.util.Date;
 public class TimeFenceInteractor
 {
 	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not.
+
+	/**
+	 * Add a new event to the schedule
+	 * @param newTimeFence The new time fence
+	 */
 	public static void addTimeFence(UserTimeFence newTimeFence)
 	{
 		// Create a new ID
@@ -29,6 +34,11 @@ public class TimeFenceInteractor
 		Scheduler.addTimeFence(timeFence);
 	}
 
+	/**
+	 * Change an existing time fence to new values
+	 * @param originalTimeFence The original time fence to be changed
+	 * @param newTimeFence The new chnaged time fence
+	 */
 	public static void modifyTimeFence(UserTimeFence originalTimeFence, UserTimeFence newTimeFence)
 	{
 		// Make the IDs the same
@@ -45,12 +55,20 @@ public class TimeFenceInteractor
 		Scheduler.addTimeFence(timeFence);
 	}
 
+	/**
+	 * Remove time fence from schedule
+	 * @param oldTimeFence The time fence to be removed
+	 */
 	public static void removeTimeFence(UserTimeFence oldTimeFence)
 	{
 		// Delete old timeFence
 		Scheduler.removeTimeFence(oldTimeFence.getId());
 	}
 
+	/**
+	 * The time fence data object used to talk with the use cases. Includes default values for time
+	 * fences
+	 */
 	public interface UserTimeFence
 	{
 		// Default values
@@ -71,7 +89,5 @@ public class TimeFenceInteractor
 		UUID getId();
 		void setId(UUID id);
 	}
-
-
 
 }

@@ -13,6 +13,11 @@ import java.util.Date;
 public class EventInteractor
 {
 	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not.
+
+	/**
+	 * Add a new event to the schedule. Will be scheduled if using the default date/time
+	 * @param newEvent The new event
+	 */
 	public static void addEvent(UserEvent newEvent)
 	{
 		// Create a new ID
@@ -29,6 +34,11 @@ public class EventInteractor
 		Scheduler.addEvent(event);
 	}
 
+	/**
+	 * Change an existing scheduled event and reschedule it if using the default date/time
+	 * @param originalEvent The original event to be changed
+	 * @param newEvent The new changed event
+	 */
 	public static void modifyEvent(UserEvent originalEvent, UserEvent newEvent)
 	{
 		// Make the IDs the same
@@ -45,12 +55,19 @@ public class EventInteractor
 		Scheduler.addEvent(event);
 	}
 
+	/**
+	 * Remove an event from the schedule
+	 * @param oldEvent The event to be removed
+	 */
 	public static void removeEvent(UserEvent oldEvent)
 	{
 		// Delete old event
 		Scheduler.removeEvent(oldEvent.getId());
 	}
 
+	/**
+	 * The event data object used to talk with the use cases. Includes default values for events
+	 */
 	public interface UserEvent
 	{
 		// Default values
@@ -77,7 +94,5 @@ public class EventInteractor
 		UUID getId();
 		void setId(UUID id);
 	}
-
-
 
 }
