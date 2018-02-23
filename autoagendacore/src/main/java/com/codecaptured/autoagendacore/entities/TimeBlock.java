@@ -2,9 +2,11 @@ package com.codecaptured.autoagendacore.entities;
 
 import java.util.Date;
 
+
 /**
  * Time blocks are times dedicated to working on a specific task
  */
+
 public class TimeBlock
 {
 	final static int SECONDS_TO_MILLI = 1000;
@@ -12,7 +14,6 @@ public class TimeBlock
 
 	private Date startTime;
 	private int numberOfMinutes;
-	private Date endDate;
 
 	/**
 	 * Create a time blocks that starts and lasts for specified times
@@ -57,6 +58,8 @@ public class TimeBlock
 
 	public Date getEndingTime()
 	{
+		Date endDate = new Date();
+
 		long strTime = startTime.getTime();
 
 		long duration = numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
@@ -70,9 +73,14 @@ public class TimeBlock
 
 	public long getEpochEndTime()
 	{
-		long epochEndTime = endDate.getTime();
+		long strTime = startTime.getTime();
+
+		long duration = numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
+
+		long epochEndTime = strTime + duration;
 
 		return epochEndTime;
 	}
 
 }
+
