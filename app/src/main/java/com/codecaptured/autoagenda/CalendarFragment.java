@@ -18,7 +18,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment
+public class CalendarFragment extends Fragment implements com.prolificinteractive.materialcalendarview.OnDateSelectedListener, com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,12 +31,9 @@ public class CalendarFragment extends Fragment
 
 	View RootView;
 
-	public static final String RESULT = "result";
-	public static final String EVENT = "event";
-	private static final int ADD_NOTE = 44;
-	//private List<EventDay> mEventDays = new java.util.ArrayList<>();
 
-	private android.widget.CalendarView mCalendarView;
+	private static final java.text.DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
+	private com.prolificinteractive.materialcalendarview.MaterialCalendarView mCalendarView;
 	private android.widget.TextView tempTextView;
 
 	private OnFragmentInteractionListener mListener;
@@ -83,20 +80,33 @@ public class CalendarFragment extends Fragment
 
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_calendar, container, false);
 		tempTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.calTextView);
-		mCalendarView = (android.widget.CalendarView) RootView.findViewById(R.id.calendarView);
-		mCalendarView.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
-			@Override
-			public void onSelectedDayChange(android.widget.CalendarView CalendarView, int year, int month, int dayOfMonth) {
-				String date = year + "/" + (month+1) + "/"+ dayOfMonth ;
-				tempTextView.setText(date);
-			}
-		});
+		mCalendarView = (com.prolificinteractive.materialcalendarview.MaterialCalendarView) RootView.findViewById(R.id.calendarView);
+		mCalendarView.setOnDateChangedListener(this);
 
 
 
 
 		// Inflate the layout for this fragment
 		return RootView;
+	}
+
+	@Override
+	public void onDateSelected(@android.support.annotation.NonNull com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, @android.support.annotation.Nullable com.prolificinteractive.materialcalendarview.CalendarDay date, boolean selected) {
+		tempTextView.setText(getSelectedDatesString());
+	}
+
+	@Override
+	public void onMonthChanged(com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, com.prolificinteractive.materialcalendarview.CalendarDay date) {
+		//noinspection ConstantConditions
+		//getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
+	}
+
+	private String getSelectedDatesString() {
+		com.prolificinteractive.materialcalendarview.CalendarDay date = mCalendarView.getSelectedDate();
+		if (date == null) {
+			return "No Selection";
+		}
+		return FORMATTER.format(date.getDate());
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
