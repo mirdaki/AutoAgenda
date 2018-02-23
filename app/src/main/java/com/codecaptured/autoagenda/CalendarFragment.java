@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -26,6 +28,16 @@ public class CalendarFragment extends Fragment
 	// TODO: Rename and change types of parameters
 	private String mParam1;
 	private String mParam2;
+
+	View RootView;
+
+	public static final String RESULT = "result";
+	public static final String EVENT = "event";
+	private static final int ADD_NOTE = 44;
+	//private List<EventDay> mEventDays = new java.util.ArrayList<>();
+
+	private android.widget.CalendarView mCalendarView;
+	private android.widget.TextView tempTextView;
 
 	private OnFragmentInteractionListener mListener;
 
@@ -68,8 +80,23 @@ public class CalendarFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState)
 	{
+
+		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_calendar, container, false);
+		tempTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.calTextView);
+		mCalendarView = (android.widget.CalendarView) RootView.findViewById(R.id.calendarView);
+		mCalendarView.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
+			@Override
+			public void onSelectedDayChange(android.widget.CalendarView CalendarView, int year, int month, int dayOfMonth) {
+				String date = year + "/" + (month+1) + "/"+ dayOfMonth ;
+				tempTextView.setText(date);
+			}
+		});
+
+
+
+
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_calendar, container, false);
+		return RootView;
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
