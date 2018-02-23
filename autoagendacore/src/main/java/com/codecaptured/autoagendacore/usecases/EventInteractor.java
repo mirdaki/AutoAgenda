@@ -27,8 +27,7 @@ public class EventInteractor
 		newEvent.setId(id);
 
 		// Make the event
-		Event event = new Event(newEvent.getId(), newEvent.getTitle(), newEvent.getDescription(),
-						newEvent.getEventTime(), newEvent.getPriorityLevel(), newEvent.getTags());
+		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addEvent(event);
@@ -48,8 +47,7 @@ public class EventInteractor
 		Scheduler.removeEvent(originalEvent.getId());
 
 		// Make the event
-		Event event = new Event(newEvent.getId(), newEvent.getTitle(), newEvent.getDescription(),
-						newEvent.getEventTime(), newEvent.getPriorityLevel(), newEvent.getTags());
+		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addEvent(event);
@@ -63,6 +61,36 @@ public class EventInteractor
 	{
 		// Delete old event
 		Scheduler.removeEvent(oldEvent.getId());
+	}
+
+	/**
+	 * Convert a user event to an event
+	 * @param userEvent User event to be based off of
+	 * @return event with same data as userEvent
+	 */
+	protected static Event userEventToEvent(UserEvent userEvent)
+	{
+		// Make the event
+		return new Event(userEvent.getId(), userEvent.getTitle(), userEvent.getDescription(),
+						userEvent.getEventTime(), userEvent.getPriorityLevel(), userEvent.getTags());
+	}
+
+	/**
+	 * Convert an event to a user event
+	 * @param event Event to be based off of
+	 * @param userEvent Must be passed in (interfaces can't be instantiated)
+	 * @return userEvent with same data as event
+	 */
+	protected static UserEvent eventToUserEvent(Event event, UserEvent userEvent)
+	{
+		// Set the passed user event to have all the attributes of the event
+		userEvent.setId(event.getId());
+		userEvent.setTitle(event.getTitle());
+		userEvent.setDescription(event.getDescription());
+		userEvent.setEventTime(event.getEventTime());
+		userEvent.setPriorityLevel(event.getPriorityLevel());
+		userEvent.setTags(event.getTags());
+		return userEvent;
 	}
 
 	/**

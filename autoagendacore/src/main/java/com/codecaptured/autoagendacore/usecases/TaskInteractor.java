@@ -69,6 +69,39 @@ public class TaskInteractor
 	}
 
 	/**
+	 * Convert a user task to a task
+	 * @param userTask User task to be based off of
+	 * @return task with same data as userTask
+	 */
+	protected static Task userTaskToTask(UserTask userTask)
+	{
+		// Make the event
+		return new Task(userTask.getId(), userTask.getTitle(), userTask.getDescription(),
+						userTask.getCompleted(), userTask.getDueDate(), userTask.getTimeRequiredInMinutes(),
+						userTask.getPriorityLevel(), userTask.getTags());
+	}
+
+	/**
+	 * Convert a task to a user event
+	 * @param task Task to be based off of
+	 * @param userTask Must be passed in (interfaces can't be instantiated)
+	 * @return userTask with same data as task
+	 */
+	protected static UserTask taskToUserTask(Task task, UserTask userTask)
+	{
+		// Set the passed user event to have all the attributes of the event
+		userTask.setId(task.getId());
+		userTask.setTitle(task.getTitle());
+		userTask.setDescription(task.getDescription());
+		userTask.setCompleted(task.isCompleted());
+		userTask.setDueDate(task.getDueDate());
+		userTask.setTimeRequiredInMinutes(task.getTimeRequiredInMinutes());
+		userTask.setPriorityLevel(task.getPriorityLevel());
+		userTask.setTags(task.getTags());
+		return userTask;
+	}
+
+	/**
 	 * The task data object used to talk with the use cases. Includes default values for tasks
 	 */
 	public interface UserTask

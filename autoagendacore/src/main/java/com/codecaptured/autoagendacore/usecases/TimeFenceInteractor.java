@@ -3,6 +3,7 @@ package com.codecaptured.autoagendacore.usecases;
 import com.codecaptured.autoagendacore.entities.TimeFence;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
+import java.sql.Time;
 import java.util.UUID;
 import java.util.Date;
 
@@ -63,6 +64,34 @@ public class TimeFenceInteractor
 	{
 		// Delete old timeFence
 		Scheduler.removeTimeFence(oldTimeFence.getId());
+	}
+
+	/**
+	 * Convert a user time fence to a time fence
+	 * @param userTimeFence User time fence to be based off of
+	 * @return time fence with same data as userTimeFence
+	 */
+	protected static TimeFence userTimeFenceToTimeFence(UserTimeFence userTimeFence)
+	{
+		// Make the event
+		return new TimeFence(userTimeFence.getId(), userTimeFence.getTitle(),
+						userTimeFence.getTimeBlock(), userTimeFence.getTags());
+	}
+
+	/**
+	 * Convert a time fence to a user time fence
+	 * @param timeFence Time fence to be based off of
+	 * @param userTimeFence Must be passed in (interfaces can't be instantiated)
+	 * @return time fence with same data as timeFence
+	 */
+	protected static UserTimeFence timeFenceToUserTimeFence(TimeFence timeFence, UserTimeFence userTimeFence)
+	{
+		// Set the passed user event to have all the attributes of the event
+		userTimeFence.setId(timeFence.getId());
+		userTimeFence.setTitle(timeFence.getTitle());
+		userTimeFence.setTimeBlock(timeFence.getTimeBlock());
+		userTimeFence.setTags(timeFence.getTags());
+		return userTimeFence;
 	}
 
 	/**
