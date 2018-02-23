@@ -3,6 +3,7 @@ package com.codecaptured.autoagendacore.usecases;
 import com.codecaptured.autoagendacore.entities.Task;
 import com.codecaptured.autoagendacore.entities.Event;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.entities.TimeFence;
 
 import java.util.*;
 
@@ -224,12 +225,12 @@ public class Scheduler
 
 	}
 
-	public static void addTimeFence()
+	public static void addTimeFence(TimeFence timeFence)
 	{
 
 	}
 
-	public static void removeTimeFence()
+	public static void removeTimeFence(UUID id)
 	{
 
 	}
