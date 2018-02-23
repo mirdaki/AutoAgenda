@@ -6,6 +6,7 @@ import com.codecaptured.autoagendacore.entities.TimeBlock;
 
 import java.util.*;
 
+
 /**
  * Created by matthew on 2/7/18.
  */
@@ -71,9 +72,14 @@ public class Scheduler
 
 		// loop thru all existing tasks
 
-		for(int i = 0; i < taskMap.size(); i++)
+
+		// TODO: PAST TASKS LOGIC BUG NEED FIX
+
+
+		for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
 		{
-			myTask = taskMap.get(i);
+
+			myTask = entry.getValue();
 
 			TimeBlock[] taskTimes = myTask.getTaskTimes();
 
@@ -81,6 +87,7 @@ public class Scheduler
 			for(int j = 0; j < taskTimes.length; j++)
 			{
 				Date taskStartTime = taskTimes[j].getStartTime();
+
 				Date taskEndTime = taskTimes[j].getEndingTime();
 
 				// only care about existing tasks occurring BEFORE the new task due date
@@ -138,7 +145,19 @@ public class Scheduler
 
 			} // for(int j = 0; j < taskTimes.length; j++)
 
-		} // for(int i = 0; i < taskMap.length; i++)
+		} // for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
+
+
+
+		for(int z = 0; z < holelist.size(); z++)
+		{
+			TimeBlock holeTimeBlk = holelist.get(z);
+			System.out.println("Hole index: " + z);
+			System.out.println("Hole start time: " + holeTimeBlk.getStartTime());
+			System.out.println("Hole duration time: " + holeTimeBlk.getNumberOfMinutes());
+		}
+
+
 
 		// At this point we have gone thru all existing tasks and have
 		// created a linked list of Time schedule openings or "holes"
@@ -181,7 +200,7 @@ public class Scheduler
 
 				long holeStartTime = holeTB.getEpochStartTime();
 
-				long newTaskStartTime = ( holeStartTime + (holeDuration/2)) - (taskDuration/2);
+				long newTaskStartTime = ( holeStartTime + (holeDuration/2) * MIN_TO_SECONDS * SECONDS_TO_MILLI) - (taskDuration/2) * MIN_TO_SECONDS * SECONDS_TO_MILLI;
 
 				return (newTaskStartTime);
 			}
@@ -195,12 +214,12 @@ public class Scheduler
 
 	}
 
-	public static void addEvent(Event event)
+	public static void addEvent()
 	{
 
 	}
 
-	public static void removeEvent(UUID id)
+	public static void removeEvent()
 	{
 
 	}
