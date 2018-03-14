@@ -102,6 +102,27 @@ public class TaskInteractor
 	}
 
 	/**
+	 * Convert multiple tasks to user tasks
+	 * @param tasks Tasks to be based off of
+	 * @param userTasks Must be passed in (interfaces can't be instantiated)
+	 * @return user tasks with the same data as tasks
+	 */
+	protected static UserTask[] tasksToUserTasks(Task[] tasks, UserTask[] userTasks)
+	{
+		// Value to be returned
+		UserTask[] convertedTasks = new UserTask[tasks.length];
+
+		// Convert each task to a user task
+		for (int i = 0; i < tasks.length; i++)
+		{
+			convertedTasks[i] = taskToUserTask(tasks[i], userTasks[0]);
+		}
+
+		// Return new user tasks
+		return convertedTasks;
+	}
+
+	/**
 	 * The task data object used to talk with the use cases. Includes default values for tasks
 	 */
 	public interface UserTask

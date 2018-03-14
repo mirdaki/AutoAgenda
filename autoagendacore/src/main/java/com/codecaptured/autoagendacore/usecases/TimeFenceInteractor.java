@@ -84,7 +84,8 @@ public class TimeFenceInteractor
 	 * @param userTimeFence Must be passed in (interfaces can't be instantiated)
 	 * @return time fence with same data as timeFence
 	 */
-	protected static UserTimeFence timeFenceToUserTimeFence(TimeFence timeFence, UserTimeFence userTimeFence)
+	protected static UserTimeFence timeFenceToUserTimeFence(TimeFence timeFence,
+	                                                        UserTimeFence userTimeFence)
 	{
 		// Set the passed user event to have all the attributes of the event
 		userTimeFence.setId(timeFence.getId());
@@ -92,6 +93,28 @@ public class TimeFenceInteractor
 		userTimeFence.setTimeBlock(timeFence.getTimeBlock());
 		userTimeFence.setTags(timeFence.getTags());
 		return userTimeFence;
+	}
+
+	/**
+	 * Convert multiple tasks to user time fence
+	 * @param timeFences TimeFence to be based off of
+	 * @param userTimeFences Must be passed in (interfaces can't be instantiated)
+	 * @return user time fence with the same data as time fence
+	 */
+	protected static UserTimeFence[] timeFencesToUserTimeFences(TimeFence[] timeFences,
+	                                                            UserTimeFence[] userTimeFences)
+	{
+		// Value to be returned
+		UserTimeFence[] convertedTimeFences = new UserTimeFence[timeFences.length];
+
+		// Convert each time fence to a user time fence
+		for (int i = 0; i < timeFences.length; i++)
+		{
+			convertedTimeFences[i] = timeFenceToUserTimeFence(timeFences[i], userTimeFences[0]);
+		}
+
+		// Return new user time fences
+		return convertedTimeFences;
 	}
 
 	/**

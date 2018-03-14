@@ -79,7 +79,7 @@ public class EventInteractor
 	 * Convert an event to a user event
 	 * @param event Event to be based off of
 	 * @param userEvent Must be passed in (interfaces can't be instantiated)
-	 * @return userEvent with same data as event
+	 * @return tempUserEvent with the same data as event
 	 */
 	protected static UserEvent eventToUserEvent(Event event, UserEvent userEvent)
 	{
@@ -91,6 +91,27 @@ public class EventInteractor
 		userEvent.setPriorityLevel(event.getPriorityLevel());
 		userEvent.setTags(event.getTags());
 		return userEvent;
+	}
+
+	/**
+	 * Convert multiple events to user events
+	 * @param events Events to be based off of
+	 * @param userEvents Must be passed in (interfaces can't be instantiated)
+	 * @return user events with the same data as events
+	 */
+	protected static UserEvent[] eventsToUserEvents(Event[] events, UserEvent[] userEvents)
+	{
+		// Value to be returned
+		UserEvent[] convertedEvents = new UserEvent[events.length];
+
+		// Convert each event to a user event
+		for (int i = 0; i < events.length; i++)
+		{
+			convertedEvents[i] = eventToUserEvent(events[i], userEvents[0]);
+		}
+
+		// Return new user events
+		return convertedEvents;
 	}
 
 	/**
