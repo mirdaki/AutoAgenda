@@ -10,7 +10,7 @@ public class TimeFence
 	private UUID id;
 	private String title;
 	private TimeBlock timeBlock;
-	private String[] tag;
+	private String[] tags;
 //	Repeat information
 
 	/**
@@ -18,14 +18,14 @@ public class TimeFence
 	 * @param id Unique ID
 	 * @param title The name of the time fence
 	 * @param timeBlock Start and length of time fence
-	 * @param tag Tags or categories associated with the time fence. Used to organize the time fence
+	 * @param tags Tags or categories associated with the time fence. Used to organize the time fence
 	 */
-	public TimeFence(UUID id, String title, TimeBlock timeBlock, String[] tag)
+	public TimeFence(UUID id, String title, TimeBlock timeBlock, String[] tags)
 	{
 		this.id = id;
 		this.title = title;
 		this.timeBlock = timeBlock;
-		this.tag = tag;
+		this.tags = tags;
 	}
 
 	public UUID getId()
@@ -58,14 +58,14 @@ public class TimeFence
 		this.timeBlock = timeBlock;
 	}
 
-	public String[] getTag()
+	public String[] getTags()
 	{
-		return tag;
+		return tags;
 	}
 
-	public void setTag(String[] tag)
+	public void setTags(String[] tags)
 	{
-		this.tag = tag;
+		this.tags = tags;
 	}
 }
 

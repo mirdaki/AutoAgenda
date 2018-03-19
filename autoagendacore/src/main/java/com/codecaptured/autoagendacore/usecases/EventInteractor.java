@@ -13,6 +13,11 @@ import java.util.Date;
 public class EventInteractor
 {
 	// TODO: Should also return some sort of message to indicate if it was scheduled properly or not.
+
+	/**
+	 * Add a new event to the schedule. Will be scheduled if using the default date/time
+	 * @param newEvent The new event
+	 */
 	public static void addEvent(UserEvent newEvent)
 	{
 		// Create a new ID
@@ -22,13 +27,17 @@ public class EventInteractor
 		newEvent.setId(id);
 
 		// Make the event
-		Event event = new Event(newEvent.getId(), newEvent.getTitle(), newEvent.getDescription(),
-						newEvent.getEventTime(), newEvent.getPriorityLevel(), newEvent.getTags());
+		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addEvent(event);
 	}
 
+	/**
+	 * Change an existing scheduled event and reschedule it if using the default date/time
+	 * @param originalEvent The original event to be changed
+	 * @param newEvent The new changed event
+	 */
 	public static void modifyEvent(UserEvent originalEvent, UserEvent newEvent)
 	{
 		// Make the IDs the same
@@ -38,19 +47,76 @@ public class EventInteractor
 		Scheduler.removeEvent(originalEvent.getId());
 
 		// Make the event
-		Event event = new Event(newEvent.getId(), newEvent.getTitle(), newEvent.getDescription(),
-						newEvent.getEventTime(), newEvent.getPriorityLevel(), newEvent.getTags());
+		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addEvent(event);
 	}
 
+	/**
+	 * Remove an event from the schedule
+	 * @param oldEvent The event to be removed
+	 */
 	public static void removeEvent(UserEvent oldEvent)
 	{
 		// Delete old event
 		Scheduler.removeEvent(oldEvent.getId());
 	}
 
+	/**
+	 * Convert a user event to an event
+	 * @param userEvent User event to be based off of
+	 * @return event with same data as userEvent
+	 */
+	protected static Event userEventToEvent(UserEvent userEvent)
+	{
+		// Make the event
+		return new Event(userEvent.getId(), userEvent.getTitle(), userEvent.getDescription(),
+						userEvent.getEventTime(), userEvent.getPriorityLevel(), userEvent.getTags());
+	}
+
+	/**
+	 * Convert an event to a user event
+	 * @param event Event to be based off of
+	 * @param userEvent Must be passed in (interfaces can't be instantiated)
+	 * @return tempUserEvent with the same data as event
+	 */
+	protected static UserEvent eventToUserEvent(Event event, UserEvent userEvent)
+	{
+		// Set the passed user event to have all the attributes of the event
+		userEvent.setId(event.getId());
+		userEvent.setTitle(event.getTitle());
+		userEvent.setDescription(event.getDescription());
+		userEvent.setEventTime(event.getEventTime());
+		userEvent.setPriorityLevel(event.getPriorityLevel());
+		userEvent.setTags(event.getTags());
+		return userEvent;
+	}
+
+	/**
+	 * Convert multiple events to user events
+	 * @param events Events to be based off of
+	 * @param userEvents Must be passed in (interfaces can't be instantiated)
+	 * @return user events with the same data as events
+	 */
+	protected static UserEvent[] eventsToUserEvents(Event[] events, UserEvent[] userEvents)
+	{
+		// Value to be returned
+		UserEvent[] convertedEvents = new UserEvent[events.length];
+
+		// Convert each event to a user event
+		for (int i = 0; i < events.length; i++)
+		{
+			convertedEvents[i] = eventToUserEvent(events[i], userEvents[0]);
+		}
+
+		// Return new user events
+		return convertedEvents;
+	}
+
+	/**
+	 * The event data object used to talk with the use cases. Includes default values for events
+	 */
 	public interface UserEvent
 	{
 		// Default values
@@ -77,7 +143,5 @@ public class EventInteractor
 		UUID getId();
 		void setId(UUID id);
 	}
-
-
 
 }
