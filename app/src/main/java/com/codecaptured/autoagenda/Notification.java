@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 
 
+
 /**
  * Created by Ana on 20/3/18.
  */
@@ -18,7 +19,7 @@ public class Notification extends AppCompatActivity
 {
 	private NotificationManager notifManager;
 
-	public void createNotification(MainActivity main){
+	public void createNotification(MainActivity main, long time){
 
 				final int NOTIFY_ID = 1002;
 
@@ -58,7 +59,7 @@ public class Notification extends AppCompatActivity
 									.setDefaults(android.app.Notification.DEFAULT_ALL)
 									.setAutoCancel(true)
 									.setContentIntent(pendingIntent)
-
+									.setWhen(time)
 									.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 				} else {
 
@@ -75,7 +76,8 @@ public class Notification extends AppCompatActivity
 									.setAutoCancel(true)
 									.setContentIntent(pendingIntent)
 									.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
-									.setPriority(android.app.Notification.PRIORITY_HIGH);
+									.setPriority(android.app.Notification.PRIORITY_HIGH)
+									.setWhen(time);
 				}
 
 				android.app.Notification notification = builder.build();
