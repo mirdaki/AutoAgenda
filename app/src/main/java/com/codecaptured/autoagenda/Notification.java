@@ -18,7 +18,7 @@ public class Notification extends AppCompatActivity
 {
 
 	private NotificationManager notifManager;
-
+	
 	public void createNotification(MainActivity main){
 
 				final int NOTIFY_ID = 1002;
