@@ -34,6 +34,9 @@ public class TaskInteractor
 
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addTask(task, Schedule.getCurrentTasks());
+
+		// Updated user task
+		newTask.setTimeBlocks(task.getTaskTimes());
 	}
 
 	/**
