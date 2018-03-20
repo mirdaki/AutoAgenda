@@ -21,6 +21,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		/** View Pager object */
 		android.support.v4.view.ViewPager mPager;
 
+		/** The new task button */
+		android.support.design.widget.FloatingActionButton fab;
+
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -31,14 +34,13 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-	                setContentView(com.codecaptured.autoagenda.R.layout.fragment_task);
+	                mPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+	                mPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+	                mPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -56,45 +58,40 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 	      mPager.setAdapter(mAdapter);
 
 //        mTextMessage = (TextView) findViewById(R.id.message);
-//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(com.codecaptured.autoagenda.R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 		    // Watch for button clicks to pages.
-		    android.widget.Button button = (android.widget.Button)findViewById(R.id.goto_first);
-		    button.setOnClickListener(new android.view.View.OnClickListener() {
-			    @Override
-			    public void onClick(android.view.View v) {
-				    mPager.setCurrentItem(0);
-			    }
-		    });
-	    button = (android.widget.Button)findViewById(com.codecaptured.autoagenda.R.id.goto_second);
-	    button.setOnClickListener(new android.view.View.OnClickListener() {
-		    @Override
-		    public void onClick(android.view.View v) {
-			    mPager.setCurrentItem(1);
-		    }
-	    });
-		    button = (android.widget.Button)findViewById(com.codecaptured.autoagenda.R.id.goto_third);
-		    button.setOnClickListener(new android.view.View.OnClickListener() {
-			    @Override
-			    public void onClick(android.view.View v) {
-				    mPager.setCurrentItem(2);
-			    }
-		    });
-
-//	    // Locate the button in activity_main.xml
-//	    android.widget.Button button = (android.widget.Button) findViewById(com.codecaptured.autoagenda.R.id.tempButton);
-//
-//	    // Capture button clicks
+//		    android.widget.Button button = (android.widget.Button)findViewById(R.id.goto_first);
+//		    button.setOnClickListener(new android.view.View.OnClickListener() {
+//			    @Override
+//			    public void onClick(android.view.View v) {
+//				    mPager.setCurrentItem(0);
+//			    }
+//		    });
+//	    button = (android.widget.Button)findViewById(com.codecaptured.autoagenda.R.id.goto_second);
 //	    button.setOnClickListener(new android.view.View.OnClickListener() {
-//		    public void onClick(android.view.View arg0) {
-//
-//			    // Start NewActivity.class
-//			    android.content.Intent myIntent = new android.content.Intent(MainActivity.this,
-//							    com.codecaptured.autoagenda.taskActivity.class);
-//			    startActivity(myIntent);
+//		    @Override
+//		    public void onClick(android.view.View v) {
+//			    mPager.setCurrentItem(1);
 //		    }
 //	    });
+//		    button = (android.widget.Button)findViewById(com.codecaptured.autoagenda.R.id.goto_third);
+//		    button.setOnClickListener(new android.view.View.OnClickListener() {
+//			    @Override
+//			    public void onClick(android.view.View v) {
+//				    mPager.setCurrentItem(2);
+//			    }
+//		    });
+
+		    // Floating action button
+	    fab = findViewById(R.id.fab);
+	    fab.setOnClickListener(new android.view.View.OnClickListener() {
+		    @Override
+		    public void onClick(android.view.View view) {
+			    onButtonShowPopupWindowClick(view);
+		    }
+	    });
     }
 
 	public static class HomePageAdapter extends android.support.v4.app.FragmentPagerAdapter
@@ -113,7 +110,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		public android.support.v4.app.Fragment getItem(int position) {
 			switch (position) {
 				case 0: // Fragment # 0 - This will show taskFragment
-					return com.codecaptured.autoagenda.taskFragment.newInstance("0", "Page # 1");
+					return com.codecaptured.autoagenda.AgendaFragment.newInstance("0", "Page # 1");
 				case 1: // Fragment # 1 - This will show
 					return com.codecaptured.autoagenda.AgendaFragment.newInstance("1", "Page # 2");
 				case 2: // Fragment # 2 - This will show
@@ -185,6 +182,38 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 	@Override
 	public void onFragmentInteraction(android.net.Uri uri){
 		//you can leave it empty
+	}
+
+	public void onButtonShowPopupWindowClick(android.view.View view) {
+
+//		// get a reference to the already created main layout
+//		android.widget.RelativeLayout mainLayout = (android.widget.RelativeLayout)
+//						findViewById(com.codecaptured.autoagenda.R.id.mainRelativeLayout);
+//
+//		// inflate the layout of the popup window
+//		android.view.LayoutInflater inflater = (android.view.LayoutInflater)
+//						getSystemService(LAYOUT_INFLATER_SERVICE);
+//		android.view.View popupView = inflater.inflate(com.codecaptured.autoagenda.R.layout.activity_task, null);
+//
+//		// create the popup window
+//		int width = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+//		int height = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+//		boolean focusable = true; // lets taps outside the popup also dismiss it
+//		final android.widget.PopupWindow popupWindow = new android.widget.PopupWindow(popupView, width, height, focusable);
+//
+//		// show the popup window
+//		popupWindow.showAtLocation(mainLayout, android.view.Gravity.CENTER, 0, 0);
+//
+//		// dismiss the popup window when touched
+//		popupView.setOnTouchListener(new android.view.View.OnTouchListener() {
+//			@Override
+//			public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
+//				popupWindow.dismiss();
+//				return true;
+//			}
+//		});
+
+		startActivity(new android.content.Intent(MainActivity.this, taskActivity.class));
 	}
 
 }

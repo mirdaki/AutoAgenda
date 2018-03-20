@@ -1,4 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/mainRelativeLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout
               android:orientation="vertical" android:padding="4dip"
               android:gravity="center_horizontal"
               android:layout_width="match_parent" android:layout_height="match_parent">
@@ -9,30 +15,49 @@
         android:layout_height="0px"
         android:layout_weight="1">
 
-        <!--<android.support.v4.view.PagerTabStrip-->
-            <!--android:id="@+id/pager_header"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="top"-->
-            <!--android:paddingBottom="4dp"-->
-            <!--android:paddingTop="4dp" />-->
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" />
     </android.support.v4.view.ViewPager>
 
-    <LinearLayout android:orientation="horizontal"
-                  android:gravity="center" android:measureWithLargestChild="true"
-                  android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:layout_weight="0">
-        <Button android:id="@+id/goto_first"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Task">
-        </Button>
-        <Button android:id="@+id/goto_second"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Agenda">
-        </Button>
-        <Button android:id="@+id/goto_third"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Calendar">
-        </Button>
-    </LinearLayout>
+    <!--<LinearLayout android:orientation="horizontal"-->
+                  <!--android:gravity="center" android:measureWithLargestChild="true"-->
+                  <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                  <!--android:layout_weight="0">-->
+        <!--<Button android:id="@+id/goto_first"-->
+                <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                <!--android:text="Task">-->
+        <!--</Button>-->
+        <!--<Button android:id="@+id/goto_second"-->
+                <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                <!--android:text="Agenda">-->
+        <!--</Button>-->
+        <!--<Button android:id="@+id/goto_third"-->
+                <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                <!--android:text="Calendar">-->
+        <!--</Button>-->
+    <!--</LinearLayout>-->
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_weight="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"/>
 </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="32dp"/>
+
+
+</RelativeLayout>

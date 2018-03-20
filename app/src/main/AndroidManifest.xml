@@ -18,8 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".taskActivity">
-        </activity>
+
+        <activity android:name=".taskActivity"
+            android:theme="@style/AppTheme.popupTheme"
+            ></activity>
+
     </application>
 
 </manifest>
