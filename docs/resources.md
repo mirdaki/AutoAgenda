@@ -11,6 +11,7 @@ To help with developing the application.
 	- [Android Specific](https://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/) 
 	- [Android Example](https://github.com/googlesamples/android-architecture/tree/todo-mvp/)
 	- [Reactive Clean Architecture](https://mag.n26.com/reactive-clean-architecture-with-android-architecture-components-685a6682e0ca)
+	- [Clean Architecture and MVP](https://dev.to/wahibhaq/a-brief-summary-of-thoughts-on-clean-architecture-and-mvp-48h9)
 - Design
 	- [Material Design Guidelines](https://material.io/guidelines/)
 	- [Android Specific Guide](https://developer.android.com/training/material/index.html)
