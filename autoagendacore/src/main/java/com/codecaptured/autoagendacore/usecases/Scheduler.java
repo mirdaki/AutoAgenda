@@ -465,12 +465,12 @@ public class Scheduler
 
 	}
 
-	public static void addEvent()
+	public static void addEvent(Event event)
 	{
 
 	}
 
-	public static void removeEvent()
+	public static void removeEvent(UUID id)
 	{
 
 	}
