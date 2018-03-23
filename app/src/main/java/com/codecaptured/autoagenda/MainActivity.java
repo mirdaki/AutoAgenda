@@ -10,7 +10,6 @@ import android.widget.TextView;
 public class MainActivity extends android.support.v4.app.FragmentActivity implements com.codecaptured.autoagenda.taskFragment.OnFragmentInteractionListener,
 				com.codecaptured.autoagenda.AgendaFragment.OnFragmentInteractionListener,
 				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener
-{
 
 		/** Number of pages in the view pager */
 		static final int NUM_ITEMS = 3;
@@ -46,11 +45,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
             return false;
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // Set up view pager
 	      mAdapter = new HomePageAdapter(getSupportFragmentManager());
@@ -215,5 +209,4 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
 		startActivity(new android.content.Intent(MainActivity.this, taskActivity.class));
 	}
-
 }

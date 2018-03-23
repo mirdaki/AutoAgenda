@@ -27,6 +27,26 @@ public class TimeBlock
 		this.numberOfMinutes = timeInMinutes;
 	}
 
+	// copy constructor
+	public TimeBlock( TimeBlock tb)
+	{
+		this.startTime = tb.getStartTime();
+		this.numberOfMinutes = tb.getNumberOfMinutes();
+	}
+
+	// this method will allow assignment of a TimeBlock to another
+	public void clone(TimeBlock rhs)
+	{
+		this.startTime = rhs.getStartTime();
+		this.numberOfMinutes = rhs.getNumberOfMinutes();
+	}
+
+	public void printout()
+	{
+		System.out.println("TimeBlock ST=" + startTime);
+		System.out.println("TimeBlock NM=" + numberOfMinutes);
+	}
+
 	public Date getStartTime()
 	{
 		return startTime;
@@ -62,7 +82,7 @@ public class TimeBlock
 
 		long strTime = startTime.getTime();
 
-		long duration = numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
+		long duration = (long)numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
 
 		long endTime = strTime + duration;
 
@@ -75,7 +95,7 @@ public class TimeBlock
 	{
 		long strTime = startTime.getTime();
 
-		long duration = numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
+		long duration = (long)numberOfMinutes * MIN_TO_SECONDS * SECONDS_TO_MILLI;
 
 		long epochEndTime = strTime + duration;
 
