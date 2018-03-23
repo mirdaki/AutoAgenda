@@ -4,7 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/autoagenda.iml" filepath="$PROJECT_DIR$/autoagenda.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/autoagendacore/autoagendacore.iml" filepath="$PROJECT_DIR$/autoagendacore/autoagendacore.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/core/autoagendacore.iml" filepath="$PROJECT_DIR$/core/autoagendacore.iml" />
+>>>>>>> dev
     </modules>
   </component>
 </project>
