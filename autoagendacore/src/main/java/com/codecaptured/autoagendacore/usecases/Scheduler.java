@@ -174,6 +174,12 @@ public class Scheduler
 
 			TimeBlock[] taskTimes = myTask.getTaskTimes();
 
+			// if task does not have a start time, then ignore task
+			if ( taskTimes == null )
+			{
+				continue;
+			}
+
 			// loop thru the task start times
 			for(int j = 0; j < taskTimes.length; j++)
 			{
