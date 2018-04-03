@@ -26,9 +26,15 @@ public class UserTask implements TaskInteractor.UserTask
 	TimeBlock[] timeBlocks;
 
 	// Constructor
-	UserTask()
+	public UserTask(String title, String description, boolean completed, Date dueDate, int timeRequiredInMinutes, int priorityLevel, String[] tags)
 	{
-
+		this.title = title;
+		this.description = description;
+		this.completed = completed;
+		this.dueDate = dueDate;
+		this.timeRequiredInMinutes = timeRequiredInMinutes;
+		this.priorityLevel = priorityLevel;
+		this.tags = tags;
 	}
 
 	// Getters and setters

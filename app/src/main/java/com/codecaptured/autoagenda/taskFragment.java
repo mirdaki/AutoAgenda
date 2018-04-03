@@ -15,6 +15,11 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.codecaptured.autoagendacore.usecases.TaskInteractor;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -195,6 +200,16 @@ public class taskFragment extends DialogFragment
 			}
 		});
 
+		addButton = (Button) RootView.findViewById(R.id.addUpdateButton);
+		addButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				addButtonClicked(view);
+			}
+		});
+
 		return RootView;
 	}
 
@@ -258,7 +273,24 @@ public class taskFragment extends DialogFragment
 	}
 
 	public void addButtonClicked(View view){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date tempDate = new Date();
+		try
+		{
+			tempDate = sdf.parse("21/12/2018");
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
 
+		String[] tempTags  = {"work"};
+
+		UserTask tempTask = new UserTask("Temp", "Hello", false, tempDate, 120, 3, tempTags);
+
+		TaskInteractor.addTask(tempTask);
+
+		System.out.println(tempTask);
 	}
 
 	public void cancelButtonClicked(View view){

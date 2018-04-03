@@ -32,6 +32,12 @@ public class TaskInteractor
 						newTask.getCompleted(), newTask.getDueDate(), newTask.getTimeRequiredInMinutes(),
 						newTask.getPriorityLevel(), newTask.getTags());
 
+		// Fix error if Schedule has not be instantiated
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 
