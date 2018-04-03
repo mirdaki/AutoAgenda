@@ -33,7 +33,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks());
+		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 
 		// Updated user task
 		newTask.setTimeBlocks(task.getTaskTimes());
@@ -50,7 +50,7 @@ public class TaskInteractor
 		newTask.setId(originalTask.getId());
 
 		// Remove the old task
-		Scheduler.removeTask(originalTask.getId());
+		Scheduler.removeTask(originalTask.getId(), Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 
 		// Make the task
 		Task task = new Task(newTask.getId(), newTask.getTitle(), newTask.getDescription(),
@@ -58,7 +58,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks());
+		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class TaskInteractor
 	public static void removeTask(UserTask oldTask)
 	{
 		// Delete old task
-		Scheduler.removeTask(oldTask.getId());
+		Scheduler.removeTask(oldTask.getId(), Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 	}
 
 	/**

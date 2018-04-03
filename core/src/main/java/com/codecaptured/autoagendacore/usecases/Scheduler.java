@@ -1,12 +1,16 @@
-//package com.codecaptured.autoagendacore.usecases;
+package com.codecaptured.autoagendacore.usecases;
 
-//import com.codecaptured.autoagendacore.entities.Task;
-//import com.codecaptured.autoagendacore.entities.Event;
-//import com.codecaptured.autoagendacore.entities.TimeBlock;
-//import com.codecaptured.autoagendacore.entities.TimeFence;
+import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
+
+import com.codecaptured.autoagendacore.entities.RecurrenceType;
+import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.Event;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.entities.TimeFence;
 
 import java.util.*;
-
 
 
 public class Scheduler
@@ -95,10 +99,7 @@ public class Scheduler
 
 		// Add the TimeBlock to the hole list
 		holelist.addFirst(firsthole);
-		
-		
-		
-		
+
 		
 		for(int z = 0; z < holelist.size(); z++)
 		{
@@ -289,7 +290,7 @@ public class Scheduler
 	
 	// FindOpenings: figure out "openings" or holes in current schedule
 
-	private static LinkedList<TimeBlock> findOpenings( int priorityLevel, Date newTaskDueDate, HashMap<UUID, Task> taskMap,HashMap<UUID, Event> eventMap )
+	private static LinkedList<TimeBlock> findOpenings(int priorityLevel, Date newTaskDueDate, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap )
 	{
 		// Start the "hole list" with a single node/hole with a time
 		// span from current time to the due date.
@@ -682,7 +683,7 @@ public class Scheduler
 
 		// set the starting date/time of event based on recurrence start date
 		if( startDate == null)
-		{	// no recurrence start date provided – assume now
+		{	// no recurrence start date provided ï¿½ assume now
 				eventCalndr.setTime(curTime);
 				backupOneDay = true;
 		}
@@ -722,7 +723,7 @@ public class Scheduler
 
 		TimeBlock eventTB = new TimeBlock(eventDate, eventDurationMin);
 
-		// Now we have a “pseudo” event that we will iteratively 
+		// Now we have a ï¿½pseudoï¿½ event that we will iteratively 
 		// walk thru day after day up till we pass the due date of the
 		// task we are trying to schedule
 		// As we walk thru each day we will check the recurrence type
@@ -905,12 +906,12 @@ public class Scheduler
 		
 	}
 
-	public static void addEvent()
+	public static void addEvent(Event newEvent)
 	{
 
 	}
 
-	public static void removeEvent()
+	public static void removeEvent(UUID id)
 	{
 
 	}
