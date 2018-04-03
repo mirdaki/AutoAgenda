@@ -4,6 +4,7 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -14,7 +15,8 @@ import com.codecaptured.autoagenda.database.room.entities.Task;
  * Created by matthew on 3/28/18.
  */
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase
 {
 	// Only allow a singe instance of room
@@ -26,7 +28,6 @@ public abstract class AppDatabase extends RoomDatabase
 	public abstract TaskDao taskDao();
 
 	// Flag to see if database
-
 	private static AppDatabase appDatabase;
 
 	/**
