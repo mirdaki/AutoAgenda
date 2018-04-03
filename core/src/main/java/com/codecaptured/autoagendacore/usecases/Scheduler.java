@@ -1,9 +1,9 @@
-package com.codecaptured.autoagendacore.usecases;
+//package com.codecaptured.autoagendacore.usecases;
 
-import com.codecaptured.autoagendacore.entities.Task;
-import com.codecaptured.autoagendacore.entities.Event;
-import com.codecaptured.autoagendacore.entities.TimeBlock;
-import com.codecaptured.autoagendacore.entities.TimeFence;
+//import com.codecaptured.autoagendacore.entities.Task;
+//import com.codecaptured.autoagendacore.entities.Event;
+//import com.codecaptured.autoagendacore.entities.TimeBlock;
+//import com.codecaptured.autoagendacore.entities.TimeFence;
 
 import java.util.*;
 
@@ -83,12 +83,15 @@ public class Scheduler
 		// create Date instance with current time
 		Date curTime = new Date();
 		
-		Date newTaskDueDate = newTask.getDueDate();
-
+		//Date newTaskDueDate = newTask.getDueDate();
+		
 		// Create TimeBlock for the first Hole
-		long numMinutesDuration = (long) (newTaskDueDate.getTime() - curTime.getTime())/MIN_TO_MILLI;
+		//long numMinutesDuration = (long) (newTaskDueDate.getTime() - curTime.getTime())/MIN_TO_MILLI;
 				
-		TimeBlock firsthole = new TimeBlock(curTime, (int)numMinutesDuration);
+		// Create hole for 35 days long roughly 
+		int debugDuration = 50000;
+		
+		TimeBlock firsthole = new TimeBlock(curTime, debugDuration);
 
 		// Add the TimeBlock to the hole list
 		holelist.addFirst(firsthole);
