@@ -3,4 +3,33 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array
+        name="repeatSpinnerArray">
+        <item>Hourly</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+
+    </string-array>
+
+    <string-array
+        name="prioritySpinnerArray">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
+
+    <string-array
+        name="reminderSpinnerArray">
+        <item>15 minutes before</item>
+        <item>1 hour before</item>
+        <item>1 day before</item>
+        <item>1 week before</item>
+        <item>1 month before</item>
+    </string-array>
 </resources>
