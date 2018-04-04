@@ -32,13 +32,82 @@ public class Scheduler
 		After the linked list is created, then try to place a new task by
 		going thru the list and finding the biggest hole.
 	    */
+		
+		
+		// Boundary Check immediately! 
+		
+		// 1970
+		Date errorDate = new Date(0);
+				
+	 	TimeBlock[] errorTB = new TimeBlock[1];	    
+	    
+	 	errorTB[0] = new TimeBlock(errorDate,0);
 
+		if( newTask == null)
+		{
+		    return(errorTB);
+		}
+
+		Date dueDate = newTask.getDueDate();
+		if( dueDate == null)
+		{
+		    return(errorTB);
+		}
+
+		Date curDate = new Date();
+		if( dueDate.before(curDate) || dueDate.equals(curDate) )
+		{
+		    return(errorTB);
+		}
+		
+		if( newTask.getTimeRequiredInMinutes() <= 0 )
+		{
+		    return(errorTB);
+		}
+		
+		
+		
+	   /*
+		Before a task can be added to the schedule, the schedule needs to
+		figure out "openings" or holes in current schedule.
+
+		Go thru existing tasks and create a linked list of schedule holes. 	
+		The nodes of the link list can be TimeBlock class.
+
+		After the linked list is created, then try to place a new task by
+		going thru the list and finding the biggest hole.
+	    */
+		
 		// First try to fit the new task into the schedule for all tasks and events.
-		// No preference for priority yet.
+		// No preference for priority yet.  
+		
+		//final int ALL_PRIORITIES = -1;
+		
+		//LinkedList<TimeBlock> holelist = findOpenings(ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
 
-		final int ALL_PRIORITIES = -1;
+		// ************************ DEBUGGING BELOW ****************************** 
+		// HARDCODED BIG HOLE for testing purposes.  
+		
+		// Start the "hole list" with a single node/hole with a time
+		// span from current time to the due date.
 
-		LinkedList<TimeBlock> holelist = findOpenings(ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
+		LinkedList<TimeBlock> holelist = new LinkedList<TimeBlock>();
+
+		// create Date instance with current time
+		Date curTime = new Date();
+		
+		//Date newTaskDueDate = newTask.getDueDate();
+		
+		// Create TimeBlock for the first Hole
+		//long numMinutesDuration = (long) (newTaskDueDate.getTime() - curTime.getTime())/MIN_TO_MILLI;
+				
+		// Create hole for 35 days long roughly 
+		int debugDuration = 50000;
+		
+		TimeBlock firsthole = new TimeBlock(curTime, debugDuration);
+
+		// Add the TimeBlock to the hole list
+		holelist.addFirst(firsthole);
 
 
 		for(int z = 0; z < holelist.size(); z++)
