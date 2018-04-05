@@ -44,9 +44,16 @@ public class TaskInteractor
 		// Add to scheduler to decide where to put it in the schedule
 		tb = Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
 
-		System.out.println("Task start date: " + tb[0].getStartTime());
+		if (tb != null)
+		{
+			System.out.println("Task start date: " + tb[0].getStartTime());
 
-		System.out.println("Mins Required: " + tb[0].getNumberOfMinutes());
+			System.out.println("Mins Required: " + tb[0].getNumberOfMinutes());
+		}
+		else
+		{
+			System.out.println("Timeblock is null.");
+		}
 
 
 		// Updated user task

@@ -25,10 +25,10 @@ public class Scheduler
 		
 		// Boundary Check immediately! 
 		
-		// 1970
-		Date errorDate = new Date(0);
+
+		Date errorDate = new Date(0);  // 1970
 				
-	 	TimeBlock[] errorTB = new TimeBlock[1];	    
+	 	TimeBlock[] errorTB = new TimeBlock[1];
 	    
 	 	errorTB[0] = new TimeBlock(errorDate,0);
 
