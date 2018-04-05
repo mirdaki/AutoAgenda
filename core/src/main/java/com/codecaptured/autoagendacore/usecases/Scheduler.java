@@ -22,17 +22,6 @@ public class Scheduler
 
 	public static TimeBlock[] addTask(Task newTask, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap)
 	{
-	   /*
-		Before a task can be added to the schedule, the schedule needs to
-		figure out "openings" or holes in current schedule.
-
-		Go thru existing tasks and create a linked list of schedule holes.
-		The nodes of the link list can be TimeBlock class.
-
-		After the linked list is created, then try to place a new task by
-		going thru the list and finding the biggest hole.
-	    */
-		
 		
 		// Boundary Check immediately! 
 		
@@ -65,7 +54,7 @@ public class Scheduler
 		    return(errorTB);
 		}
 		
-		
+
 		
 	   /*
 		Before a task can be added to the schedule, the schedule needs to
@@ -77,13 +66,17 @@ public class Scheduler
 		After the linked list is created, then try to place a new task by
 		going thru the list and finding the biggest hole.
 	    */
-		
+
+
+
 		// First try to fit the new task into the schedule for all tasks and events.
 		// No preference for priority yet.  
 		
-		//final int ALL_PRIORITIES = -1;
+		final int ALL_PRIORITIES = -1;
 		
-		//LinkedList<TimeBlock> holelist = findOpenings(ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
+		LinkedList<TimeBlock> holelist = findOpenings(ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
+
+		/**
 
 		// ************************ DEBUGGING BELOW ****************************** 
 		// HARDCODED BIG HOLE for testing purposes.  
@@ -108,6 +101,8 @@ public class Scheduler
 
 		// Add the TimeBlock to the hole list
 		holelist.addFirst(firsthole);
+
+		**/
 
 
 		for(int z = 0; z < holelist.size(); z++)
