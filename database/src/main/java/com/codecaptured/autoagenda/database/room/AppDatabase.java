@@ -10,6 +10,12 @@ import android.support.annotation.NonNull;
 
 import com.codecaptured.autoagenda.database.room.dao.TaskDao;
 import com.codecaptured.autoagenda.database.room.entities.Task;
+import com.codecaptured.autoagenda.database.room.entities.TimeBlock;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by matthew on 3/28/18.
@@ -69,9 +75,26 @@ public abstract class AppDatabase extends RoomDatabase
 								AppDatabase database = AppDatabase.getInstance(appContext);
 
 								// TODO: Create default data
-								Task task = new Task();
+								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+								Date tempDueDate = new Date();
+								Date tempStartDate = new Date();
+								try
+								{
+									tempDueDate = sdf.parse("21/12/2018");
+									tempStartDate = sdf.parse("10/12/2018");
+								}
+								catch (ParseException e)
+								{
+									e.printStackTrace();
+								}
 
-								insertData(database, task);
+								String[] tempTags  = {"work"};
+
+								Task tempTask = new Task("Temp", "Hello", false,
+												tempDueDate, 120, 3, tempTags,
+												UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+
+								insertData(database, tempTask);
 								// notify that the database was created and it's ready to be used
 							}
 						}).build();

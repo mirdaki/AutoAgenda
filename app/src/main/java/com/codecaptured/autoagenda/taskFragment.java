@@ -3,14 +3,23 @@ package com.codecaptured.autoagenda;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.codecaptured.autoagendacore.usecases.TaskInteractor;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +29,7 @@ import android.widget.TimePicker;
  * Use the {@link taskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class taskFragment extends Fragment
+public class taskFragment extends DialogFragment
 {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +38,9 @@ public class taskFragment extends Fragment
 
 	/** The rootview from Main */
 	View RootView;
+
+	/** Log tag. */
+	private static final String LOG_TAG = taskFragment.class.getSimpleName();
 
 	/** The code to open date picker dialog */
 	private static final int DATEINIT_DIALOG = 999;
@@ -49,6 +61,22 @@ public class taskFragment extends Fragment
 
 	/** Calendar instance */
 	java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+	/** Repeat spinner */
+	Spinner repeatSpinner;
+
+	/** Priority spinner */
+	Spinner prioritySpinner;
+
+	/** Reminder spinner */
+	Spinner reminderSpinner;
+
+	/** Cancel Button */
+	Button cancelButton;
+
+	/** ADd Button */
+	Button addButton;
+
 
 	/** Date picker dialog */
 	android.app.DatePickerDialog.OnDateSetListener date;
@@ -95,20 +123,20 @@ public class taskFragment extends Fragment
 	{
 		// Inflate the layout for this fragment
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_task, container, false);
-//		testTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.textView);
-//		testTextView.setText(mParam2);
+		//		testTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.textView);
+		//		testTextView.setText(mParam2);
 		dateEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.dateEditText);
 		timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
 
 		dateEditText.setOnClickListener(new android.view.View.OnClickListener() {
 
-			                            @Override
-			                            public void onClick(View v)
-			                            {
-				                            new android.app.DatePickerDialog(getContext(), date, calendar
-								                            .get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH),
-								                            calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
-			                            }
+			@Override
+			public void onClick(View v)
+			{
+				new android.app.DatePickerDialog(getContext(), date, calendar
+								.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH),
+								calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
+			}
 		});
 
 		date = new android.app.DatePickerDialog.OnDateSetListener() {
@@ -145,6 +173,43 @@ public class taskFragment extends Fragment
 
 			}
 		});
+
+		// Setup repeat spinner
+		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
+		ArrayAdapter<CharSequence> repeatAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.repeatSpinnerArray, android.R.layout.simple_spinner_item);
+		repeatSpinner.setAdapter(repeatAdapter);
+
+		// Setup priority spinner
+		prioritySpinner = (Spinner) RootView.findViewById(R.id.prioritySpinner);
+		ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.prioritySpinnerArray, android.R.layout.simple_spinner_item);
+		prioritySpinner.setAdapter(priorityAdapter);
+
+		// Setup reminder spinner
+		reminderSpinner = (Spinner) RootView.findViewById(R.id.reminderSpinner);
+		ArrayAdapter<CharSequence> reminderAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.reminderSpinnerArray, android.R.layout.simple_spinner_item);
+		reminderSpinner.setAdapter(reminderAdapter);
+
+		// Setup cancel button
+		cancelButton = (Button) RootView.findViewById(R.id.cancelButton);
+		cancelButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				cancelButtonClicked(view);
+			}
+		});
+
+		addButton = (Button) RootView.findViewById(R.id.addUpdateButton);
+		addButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				addButtonClicked(view);
+			}
+		});
+
 		return RootView;
 	}
 
@@ -206,4 +271,30 @@ public class taskFragment extends Fragment
 
 		dateEditText.setText(sdf.format(calendar.getTime()));
 	}
+
+	public void addButtonClicked(View view){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date tempDate = new Date();
+		try
+		{
+			tempDate = sdf.parse("21/12/2018");
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+
+		String[] tempTags  = {"work"};
+
+		UserTask tempTask = new UserTask("Temp", "Hello", false, tempDate, 120, 3, tempTags);
+
+		TaskInteractor.addTask(tempTask);
+
+		System.out.println(tempTask);
+	}
+
+	public void cancelButtonClicked(View view){
+		dismiss();
+	}
 }
+

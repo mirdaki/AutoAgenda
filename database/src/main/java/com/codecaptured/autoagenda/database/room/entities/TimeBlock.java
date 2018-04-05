@@ -13,8 +13,9 @@ public class TimeBlock
 	public Date startTime;
 	public int numberOfMinutes;
 
-	TimeBlock()
+	public TimeBlock(Date startTime, int numberOfMinutes)
 	{
-
+		this.startTime = startTime;
+		this.numberOfMinutes = numberOfMinutes;
 	}
 }

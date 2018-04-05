@@ -5,9 +5,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.codecaptured.autoagendacore.usecases.TaskInteractor;
-import com.codecaptured.autoagendacore.entities.TimeBlock;
-
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,8 +33,19 @@ public class Task
 	public TimeBlock timeBlocks;
 
 	// Constructor
-	public Task()
+	public Task(String title, String description, boolean completed, Date dueDate,
+	            int timeRequiredInMinutes, int priorityLevel, String[] tags,
+	            @NonNull UUID id, TimeBlock timeBlocks)
 	{
+		this.title = title;
+		this.description = description;
+		this.completed = completed;
+		this.dueDate = dueDate;
+		this.timeRequiredInMinutes = timeRequiredInMinutes;
+		this.priorityLevel = priorityLevel;
+		this.tags = tags;
+		this.id = id;
+		this.timeBlocks = timeBlocks;
 	}
 }
 
