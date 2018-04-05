@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.text.ParseException;

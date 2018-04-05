@@ -38,8 +38,16 @@ public class TaskInteractor
 			new Schedule();
 		}
 
+		// Timeblock for debug
+		TimeBlock[] tb = {};
+
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		tb = Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+
+		System.out.println("Task start date: " + tb[0].getStartTime());
+
+		System.out.println("Mins Required: " + tb[0].getNumberOfMinutes());
+
 
 		// Updated user task
 		newTask.setTimeBlocks(task.getTaskTimes());

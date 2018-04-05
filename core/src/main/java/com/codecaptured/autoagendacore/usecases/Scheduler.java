@@ -54,8 +54,6 @@ public class Scheduler
 		    return(errorTB);
 		}
 		
-
-		
 	   /*
 		Before a task can be added to the schedule, the schedule needs to
 		figure out "openings" or holes in current schedule.
@@ -136,6 +134,8 @@ public class Scheduler
 			// TODO: Add task to taskMap
 
 			addToTaskMap(newTask, newSched, taskMap);
+
+			System.out.println("Success.");
 
 			return (newSched);
 		}
@@ -236,6 +236,8 @@ public class Scheduler
 
 			}
 		}
+
+		System.out.println("Failure.");
 
 		return(null); // could not schedule task
 
