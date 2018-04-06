@@ -133,7 +133,7 @@ public class EventInteractor
 		String getDescription();
 		void setDescription(String description);
 		TimeBlock getEventTime();
-		void setEventTime(TimeBlock timeBlocks);
+		void setEventTime(TimeBlock eventTime);
 		int getPriorityLevel();
 		void setPriorityLevel(int priorityLevel);
 		String[] getTags();
