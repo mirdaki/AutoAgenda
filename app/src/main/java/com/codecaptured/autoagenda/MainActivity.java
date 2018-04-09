@@ -8,13 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class MainActivity extends android.support.v4.app.FragmentActivity implements com.codecaptured.autoagenda.taskFragment.OnFragmentInteractionListener,
-				com.codecaptured.autoagenda.AgendaFragment.OnFragmentInteractionListener,
-				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener
+				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener,
+				ListFragment.OnFragmentInteractionListener
 {
 
 	/** Number of pages in the view pager */
-	static final int NUM_ITEMS = 3;
+	static final int NUM_ITEMS = 2;
 
 	/** Adapter for view pager */
 	HomePageAdapter mAdapter;
@@ -59,8 +61,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		mPager.setAdapter(mAdapter);
 
 		//        mTextMessage = (TextView) findViewById(R.id.message);
-		BottomNavigationView navigation = (BottomNavigationView) findViewById(com.codecaptured.autoagenda.R.id.navigation);
-		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//		BottomNavigationView navigation = (BottomNavigationView) findViewById(com.codecaptured.autoagenda.R.id.navigation);
+//		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 		// Watch for button clicks to pages.
 		//		    android.widget.Button button = (android.widget.Button)findViewById(R.id.goto_first);
@@ -111,10 +113,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		public android.support.v4.app.Fragment getItem(int position) {
 			switch (position) {
 				case 0: // Fragment # 0 - This will show taskFragment
-					return com.codecaptured.autoagenda.AgendaFragment.newInstance("0", "Page # 1");
-				case 1: // Fragment # 1 - This will show
-					return com.codecaptured.autoagenda.AgendaFragment.newInstance("1", "Page # 2");
-				case 2: // Fragment # 2 - This will show
+					return com.codecaptured.autoagenda.ListFragment.newInstance("0", "Page # 1");
+//				case 1: // Fragment # 1 - This will show
+//					return com.codecaptured.autoagenda.AgendaFragment.newInstance("1", "Page # 2");
+				case 1: // Fragment # 2 - This will show
 					return com.codecaptured.autoagenda.CalendarFragment.newInstance("2", "Page # 3");
 				default:
 					return null;
@@ -128,7 +130,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 			if(position == 0)
 				return "Tasks";
 			else if (position == 1)
-				return  "Agenda";
+				return  "Calendar";
 			else
 				return "Calendar";
 		}
