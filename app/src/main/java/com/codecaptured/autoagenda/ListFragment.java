@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,11 +41,15 @@ public class ListFragment extends Fragment
 
 	View RootView;
 
+	Spinner sortSpinner;
+
 	/** Recycler View components */
 	RecyclerView mRecyclerView;
 	ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
+	List<UserTask> finalTaskList;
 
+	int check = 0;
 
 
 	public ListFragment()
@@ -87,6 +94,9 @@ public class ListFragment extends Fragment
 		// Inflate the layout for this fragment
 		RootView = inflater.inflate(R.layout.fragment_list, container, false);
 
+		// Task list
+		finalTaskList = new ArrayList<UserTask>();
+
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
 		mRecyclerView.setHasFixedSize(true);
@@ -94,6 +104,27 @@ public class ListFragment extends Fragment
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mAdapter = new ListFragmentAdapter(createList(30));
 		mRecyclerView.setAdapter(mAdapter);
+
+		// Setup priority spinner
+		sortSpinner = (Spinner) RootView.findViewById(R.id.sortSpinner);
+		ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.sortSpinnerArray, android.R.layout.simple_spinner_item);
+		sortSpinner.setAdapter(sortAdapter);
+
+		sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+		{
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+			{
+				if(++check > 1)
+				{
+					String selectedItem = parent.getItemAtPosition(position).toString();
+					reloadRecyclerView();
+				}
+			} // to close the onItemSelected
+			public void onNothingSelected(AdapterView<?> parent)
+			{
+
+			}
+		});
 
 		return RootView;
 	}
@@ -146,14 +177,20 @@ public class ListFragment extends Fragment
 
 	private List<UserTask> createList(int size) {
 
-		List<UserTask> result = new ArrayList<UserTask>();
+
 		String[] temp = {"School"};
 		for (int i=1; i <= size; i++) {
 			UserTask userTask = new UserTask("title " + i, "description " + i, true, Calendar.getInstance().getTime(), 5, 2, temp );
-			result.add(userTask);
+			finalTaskList.add(userTask);
 
 		}
 
-		return result;
+		return finalTaskList;
+	}
+
+	public void reloadRecyclerView(){
+		finalTaskList.remove(3);
+		mAdapter.notifyItemRemoved(3);
+
 	}
 }

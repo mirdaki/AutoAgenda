@@ -274,63 +274,63 @@ public class taskFragment extends DialogFragment
 	}
 
 	public void addButtonClicked(View view){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		Date tempDate1 = new Date();
-		Date tempDate2 = new Date();
-		Date tempDate3 = new Date();
-		Date tempDate4 = new Date();
-		Date tempDate5 = new Date();
-		Date tempDate6 = new Date();
-		Date tempDate7 = new Date();
-		Date tempDate8 = new Date();
-		Date tempDate9 = new Date();
-		Date tempDate10 = new Date();
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+//		Date tempDate1 = new Date();
+//		Date tempDate2 = new Date();
+//		Date tempDate3 = new Date();
+//		Date tempDate4 = new Date();
+//		Date tempDate5 = new Date();
+//		Date tempDate6 = new Date();
+//		Date tempDate7 = new Date();
+//		Date tempDate8 = new Date();
+//		Date tempDate9 = new Date();
+//		Date tempDate10 = new Date();
+//
+//		try
+//		{
+//			tempDate1 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate2 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate3 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate4 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate5 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate6 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate7 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate8 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate9 = sdf.parse("13/4/2018 12:00:00");
+//			tempDate10 = sdf.parse("13/4/2018 12:00:00");
+//		}
+//		catch (ParseException e)
+//		{
+//			e.printStackTrace();
+//		}
+//
+//		String[] tempTags  = {"work"};
+//
+//		UserTask tempTask1 = new UserTask("Temp1", "Hello", false, tempDate1, 120, 3, tempTags);
+//		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 3, tempTags);
+//		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 3, tempTags);
+//		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 3, tempTags);
+//		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
+//		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 3, tempTags);
+//		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
+//		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 3, tempTags);
+//		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 3, tempTags);
+//		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags);
+//
+//		TaskInteractor.addTask(tempTask1);
+//		TaskInteractor.addTask(tempTask2);
+//		TaskInteractor.addTask(tempTask3);
+//		TaskInteractor.addTask(tempTask4);
+//		TaskInteractor.addTask(tempTask5);
+//		TaskInteractor.addTask(tempTask6);
+//		TaskInteractor.addTask(tempTask7);
+//		TaskInteractor.addTask(tempTask8);
+//		TaskInteractor.addTask(tempTask9);
+//		TaskInteractor.addTask(tempTask10);
+//
+//		System.out.println("Tasks have been added");
 
-		try
-		{
-			tempDate1 = sdf.parse("13/4/2018 12:00:00");
-			tempDate2 = sdf.parse("13/4/2018 12:00:00");
-			tempDate3 = sdf.parse("13/4/2018 12:00:00");
-			tempDate4 = sdf.parse("13/4/2018 12:00:00");
-			tempDate5 = sdf.parse("13/4/2018 12:00:00");
-			tempDate6 = sdf.parse("13/4/2018 12:00:00");
-			tempDate7 = sdf.parse("13/4/2018 12:00:00");
-			tempDate8 = sdf.parse("13/4/2018 12:00:00");
-			tempDate9 = sdf.parse("13/4/2018 12:00:00");
-			tempDate10 = sdf.parse("13/4/2018 12:00:00");
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
-
-		String[] tempTags  = {"work"};
-
-		UserTask tempTask1 = new UserTask("Temp1", "Hello", false, tempDate1, 120, 3, tempTags);
-		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 3, tempTags);
-		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 3, tempTags);
-		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 3, tempTags);
-		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
-		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 3, tempTags);
-		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
-		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 3, tempTags);
-		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 3, tempTags);
-		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags);
-
-		TaskInteractor.addTask(tempTask1);
-		TaskInteractor.addTask(tempTask2);
-		TaskInteractor.addTask(tempTask3);
-		TaskInteractor.addTask(tempTask4);
-		TaskInteractor.addTask(tempTask5);
-		TaskInteractor.addTask(tempTask6);
-		TaskInteractor.addTask(tempTask7);
-		TaskInteractor.addTask(tempTask8);
-		TaskInteractor.addTask(tempTask9);
-		TaskInteractor.addTask(tempTask10);
-
-		System.out.println("Tasks have been added");
-
-		// TODO: Create a notification (just use the Task ID for nwo)
+		// TODO: Create a notification (just use the Task ID for now)
 	}
 
 	public void cancelButtonClicked(View view){
