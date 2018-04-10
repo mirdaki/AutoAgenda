@@ -1,6 +1,5 @@
 package com.codecaptured.autoagendacore.entities;
 
-// TODO: Maybe use a different date format
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,6 +17,8 @@ public class Task
 	private int priorityLevel;
 	private String[] tags;
 	private TimeBlock[] taskTimes;
+	private boolean scheduled;
+	private boolean displaced;
 //	Notification Times;
 //	Location
 //	Repeat information
@@ -44,6 +45,8 @@ public class Task
 		this.timeRequiredInMinutes = timeRequiredInMinutes;
 		this.priorityLevel = priorityLevel;
 		this.tags = tags;
+		this.scheduled = false;
+		this.displaced = false;
 	}
 
 	public UUID getId()
@@ -136,4 +139,33 @@ public class Task
 		this.taskTimes = taskTimes;
 	}
 
+	public boolean isScheduled()
+	{
+		return scheduled;
+	}
+	
+	public void isScheduled(boolean scheduled)
+	{
+		this.scheduled = scheduled;
+	}
+	
+	public boolean isDisplaced()
+	{
+		return displaced;
+	}
+	
+	public void isDisplaced(boolean displaced)
+	{
+		this.displaced = displaced;
+	}
+	
+	public void printTaskInfo()
+	{
+		System.out.println();
+		System.out.println("New Task: 	" + title);
+		System.out.println("Task due date: 	" + dueDate);
+		System.out.println("Task duration:	" + timeRequiredInMinutes);
+		System.out.println();
+	}
+	
 }

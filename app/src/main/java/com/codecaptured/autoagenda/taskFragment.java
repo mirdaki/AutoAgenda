@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.text.ParseException;
@@ -317,18 +318,45 @@ public class taskFragment extends DialogFragment
 		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 3, tempTags);
 		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags);
 
-		TaskInteractor.addTask(tempTask1);
-		TaskInteractor.addTask(tempTask2);
-		TaskInteractor.addTask(tempTask3);
-		TaskInteractor.addTask(tempTask4);
-		TaskInteractor.addTask(tempTask5);
-		TaskInteractor.addTask(tempTask6);
-		TaskInteractor.addTask(tempTask7);
-		TaskInteractor.addTask(tempTask8);
-		TaskInteractor.addTask(tempTask9);
-		TaskInteractor.addTask(tempTask10);
+		boolean status1;
+		//boolean status2;
+		//boolean status3;
+		//boolean status4;
+		//boolean status5;
+		//boolean status6;
+		//boolean status7;
+		//boolean status8;
+		//boolean status9;
+		//boolean status10;
 
-		System.out.println("Tasks have been added");
+		EventInteractor.addSleepingEvent();
+
+		System.out.println(" ");
+
+		status1 = TaskInteractor.addTask(tempTask1);
+		//status2 = TaskInteractor.addTask(tempTask2);
+		//status3 = TaskInteractor.addTask(tempTask3);
+		//status4 = TaskInteractor.addTask(tempTask4);
+		//status5 = TaskInteractor.addTask(tempTask5);
+		//status6 = TaskInteractor.addTask(tempTask6);
+		//status7 = TaskInteractor.addTask(tempTask7);
+		//status8 = TaskInteractor.addTask(tempTask8);
+		//status9 = TaskInteractor.addTask(tempTask9);
+		//status10 = TaskInteractor.addTask(tempTask10);
+
+
+		if ( status1 == true)
+		{
+			System.out.println("Task has been added");
+		}
+		else
+		{
+			System.out.println("Task could not be added");
+		}
+
+
+		//System.out.println("Tasks have been added");
+
 
 		// TODO: Create a notification (just use the Task ID for nwo)
 	}
