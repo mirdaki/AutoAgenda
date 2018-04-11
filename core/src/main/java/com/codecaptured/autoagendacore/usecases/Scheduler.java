@@ -71,7 +71,7 @@ public class Scheduler
 		
 		final int ALL_PRIORITIES = -1;
 		
-		LinkedList<TimeBlock> holelist = findOpenings(ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
+		LinkedList<TimeBlock> holelist = findOpenings(newTask, ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
 
 		
 
@@ -135,7 +135,7 @@ public class Scheduler
 				// cannot fit task by splitting
 
 				// try priority scheduling by displacing lower priority tasks
-		    	 LinkedList<TimeBlock> holelist2 = findOpenings(newTask.getPriorityLevel(), 
+		    	 LinkedList<TimeBlock> holelist2 = findOpenings(newTask, newTask.getPriorityLevel(),
 		    			 										newTask.getDueDate(), taskMap, eventMap);
 
 		 		
@@ -293,7 +293,7 @@ public class Scheduler
 
 	// FindOpenings: figure out "openings" or holes in current schedule
 
-	private static LinkedList<TimeBlock> findOpenings( int priorityLevel, Date newTaskDueDate, HashMap<UUID, Task> taskMap,HashMap<UUID, Event> eventMap )
+	private static LinkedList<TimeBlock> findOpenings(Task newTask, int priorityLevel, Date newTaskDueDate, HashMap<UUID, Task> taskMap,HashMap<UUID, Event> eventMap )
 	{
 		// Start the "hole list" with a single node/hole with a time
 		// span from current time to the due date.
@@ -378,6 +378,61 @@ public class Scheduler
 			{
 				processRecurringEvent( myEvent, newTaskDueDate, holelist);
 			}
+		}
+
+		for ( Map.Entry<UUID, TimeFence> entry : Schedule.getCurrentTimeFences().entrySet() )
+		{
+			TimeFence myFence = entry.getValue();
+
+			TimeBlock fenceTime = myFence.getTimeBlock();
+
+			if( fenceTime == null)
+			{
+				continue;
+			}
+
+			String[] fenceTags = myFence.getTags();
+
+			String[] taskTags = newTask.getTags();
+
+			boolean foundMatch = false;
+
+			for(int i=0; i < taskTags.length; i++ )
+			{
+				for(int j = 0; j < fenceTags.length; j++ )
+				{
+					if( taskTags[i].equals(fenceTags[j]) )
+					{
+						// found tag match – do not deploy this fence
+						foundMatch = true;
+						break;
+					}
+				}
+
+				if(foundMatch == true)
+				{
+					break;
+				}
+			}
+
+			if(foundMatch == true )
+			{
+				// found tag match – do not deploy this fence
+				continue;
+			}
+			// deploy fence
+
+			Date startTime = fenceTime.getStartTime();
+
+			Date endTime = fenceTime.getEndingTime();
+
+			// only care about fences occurring BEFORE the new task due date
+
+			if( startTime.before(newTaskDueDate))
+			{
+				modifyHoleList( startTime, endTime, holelist );
+			}
+
 		}
 
 
@@ -1456,17 +1511,17 @@ public class Scheduler
 
 	public static void addTimeFence(TimeFence timeFence)
 	{
-		// TODO
+		Schedule.getCurrentTimeFences().put(timeFence.getId(),timeFence);
 	}
 
 	public static void removeTimeFence(UUID id)
 	{
-		// TODO
+		Schedule.getCurrentTimeFences().remove(id);
 	}
 
 	public static void reschedule()
 	{
-		// TODO
+		// TODO 
 	}
 
 
