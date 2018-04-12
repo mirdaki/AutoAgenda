@@ -1299,7 +1299,7 @@ public class Scheduler
 	 * Adds an event to the schedule
 	 * @param newEvent the event to be added to the schedule
 	 */
-	private static void addToEventMap(Event newEvent)
+	public static void addToEventMap(Event newEvent)
 	{	
 			
 		UUID id = newEvent.getId();
