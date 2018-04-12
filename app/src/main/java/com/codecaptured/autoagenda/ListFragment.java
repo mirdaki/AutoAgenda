@@ -14,8 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.codecaptured.autoagendacore.entities.Task;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,15 +48,17 @@ public class ListFragment extends Fragment
 
 	View RootView;
 
-	Spinner sortSpinner;
+	/** Spinner components */
+	Spinner sortSpinner, tagSpinner;
+	ArrayList<String> tagList = new ArrayList<String>();
 
 	/** Recycler View components */
 	RecyclerView mRecyclerView;
-	ListFragmentAdapter mAdapter;
+	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
-	List<UserTask> finalTaskList;
+	public static List<UserTask> finalTaskList, fullTaskList;
 
-	int check = 0;
+	int check = 0, check2 = 0;
 
 
 	public ListFragment()
@@ -96,16 +105,17 @@ public class ListFragment extends Fragment
 
 		// Task list
 		finalTaskList = new ArrayList<UserTask>();
+		fullTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(RootView.getContext());
 		mRecyclerView.setLayoutManager(mLayoutManager);
-		mAdapter = new ListFragmentAdapter(createList(30));
+		mAdapter = new ListFragmentAdapter(finalTaskList);
 		mRecyclerView.setAdapter(mAdapter);
 
-		// Setup priority spinner
+		// Setup sort spinner
 		sortSpinner = (Spinner) RootView.findViewById(R.id.sortSpinner);
 		ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.sortSpinnerArray, android.R.layout.simple_spinner_item);
 		sortSpinner.setAdapter(sortAdapter);
@@ -116,8 +126,8 @@ public class ListFragment extends Fragment
 			{
 				if(++check > 1)
 				{
-					String selectedItem = parent.getItemAtPosition(position).toString();
-					reloadRecyclerView();
+					if(position == 0)
+						sortListByDate();
 				}
 			} // to close the onItemSelected
 			public void onNothingSelected(AdapterView<?> parent)
@@ -125,6 +135,31 @@ public class ListFragment extends Fragment
 
 			}
 		});
+
+		// Setup tag spinner
+		tagList.add("All tags");
+		tagList.add("Gym");
+		tagList.add("School");
+		tagList.add("Work");
+		tagSpinner = (Spinner) RootView.findViewById(R.id.tagSpinner);
+		ArrayAdapter<String> tagAdapter =
+						new ArrayAdapter<String>(RootView.getContext(), R.layout.support_simple_spinner_dropdown_item, tagList);
+		tagSpinner.setAdapter(tagAdapter);
+		tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+		{
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+			{
+				if(++check2 > 1)
+				{
+					sortListByTag(tagSpinner.getSelectedItem().toString());
+				}
+			} // to close the onItemSelected
+			public void onNothingSelected(AdapterView<?> parent)
+			{
+
+			}
+		});
+
 
 		return RootView;
 	}
@@ -178,7 +213,8 @@ public class ListFragment extends Fragment
 	private List<UserTask> createList(int size) {
 
 
-		String[] temp = {"School"};
+		ArrayList<String> temp = new ArrayList<String>();
+		temp.add("School");
 		for (int i=1; i <= size; i++) {
 			UserTask userTask = new UserTask("title " + i, "description " + i, true, Calendar.getInstance().getTime(), 5, 2, temp );
 			finalTaskList.add(userTask);
@@ -188,9 +224,36 @@ public class ListFragment extends Fragment
 		return finalTaskList;
 	}
 
-	public void reloadRecyclerView(){
-		finalTaskList.remove(3);
-		mAdapter.notifyItemRemoved(3);
+	public void sortListByDate(){
+		Collections.sort(finalTaskList, new Comparator<UserTask>() {
+			public int compare(UserTask o1, UserTask o2) {
+				if (o1.getDueDate() == null || o2.getDueDate() == null)
+					return 0;
+				return o1.getDueDate().compareTo(o2.getDueDate());
+			}
+		});
+		reloadRecyclerView();
+	}
 
+	public void sortListByTag(String tagString){
+
+		finalTaskList = fullTaskList;
+
+
+		if(tagString.equals("All tags"))
+		{
+			return;
+		}
+
+		for(int i = 0; i < finalTaskList.size(); i++){
+			if(!finalTaskList.get(i).tags.contains(tagString.toLowerCase()));
+			finalTaskList.remove(i);
+		}
+
+		reloadRecyclerView();
+	}
+
+	public void reloadRecyclerView(){
+		mAdapter.notifyDataSetChanged();
 	}
 }

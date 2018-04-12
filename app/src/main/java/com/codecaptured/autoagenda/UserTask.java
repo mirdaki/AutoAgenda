@@ -3,6 +3,7 @@ package com.codecaptured.autoagenda;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,14 +20,14 @@ public class UserTask implements TaskInteractor.UserTask
 	Date dueDate;
 	int timeRequiredInMinutes;
 	int priorityLevel;
-	String[] tags;
+	ArrayList<String> tags;
 
 	// Values set by software
 	UUID id;
 	TimeBlock[] timeBlocks;
 
 	// Constructor
-	public UserTask(String title, String description, boolean completed, Date dueDate, int timeRequiredInMinutes, int priorityLevel, String[] tags)
+	public UserTask(String title, String description, boolean completed, Date dueDate, int timeRequiredInMinutes, int priorityLevel, ArrayList<String> tags)
 	{
 		this.title = title;
 		this.description = description;
@@ -87,11 +88,11 @@ public class UserTask implements TaskInteractor.UserTask
 	{
 		this.priorityLevel = priorityLevel;
 	}
-	public String[] getTags()
+	public ArrayList<String> getTags()
 	{
 		return tags;
 	}
-	public void setTags(String[] tags)
+	public void setTags(ArrayList<String> tags)
 	{
 		this.tags = tags;
 	}

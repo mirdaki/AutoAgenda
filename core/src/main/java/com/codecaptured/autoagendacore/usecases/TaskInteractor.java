@@ -4,6 +4,7 @@ import com.codecaptured.autoagendacore.entities.Schedule;
 import com.codecaptured.autoagendacore.entities.Task;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Date;
 
@@ -158,7 +159,7 @@ public class TaskInteractor
 		Date DEFAULT_DUE_DATE = new Date(0);
 		int DEFAULT_TIME_REQUIRED_IN_MINUTES = 0;
 		int DEFAULT_PRIORITY_LEVEL = 5;
-		String[] DEFAULT_TAGS = {""};
+		ArrayList<String> DEFAULT_TAGS = new ArrayList<String>();
 
 		// Getters and setters
 		// Values set by user
@@ -174,8 +175,8 @@ public class TaskInteractor
 		void setTimeRequiredInMinutes(int timeRequiredInMinutes);
 		int getPriorityLevel();
 		void setPriorityLevel(int priorityLevel);
-		String[] getTags();
-		void setTags(String[] tags);
+		ArrayList<String> getTags();
+		void setTags(ArrayList<String> tags);
 
 		// Set by software
 		UUID getId();

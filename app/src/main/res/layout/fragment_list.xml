@@ -14,6 +14,15 @@
 
    </android.support.v7.widget.AppCompatSpinner>
 
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/tagSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sortSpinner"
+        android:layout_alignParentLeft="true">
+
+    </android.support.v7.widget.AppCompatSpinner>
+
 
 
     <android.support.v7.widget.RecyclerView

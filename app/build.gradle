@@ -32,5 +32,7 @@ dependencies {
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:cardview-v7:26.1.0'
+    compile 'com.github.tibolte:agendacalendarview:1.0.4'
+
     implementation project(':core')
 }

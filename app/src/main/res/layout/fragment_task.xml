@@ -25,24 +25,32 @@
         android:layout_below="@id/create_message"
         android:maxLines="1"
         android:maxLength="30"
-        android:hint="Task" />
+        android:hint="Task Name" />
 
     <EditText
         android:id="@+id/dateEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date"
+        android:hint="Time &amp; Date"
         android:inputType="none"
         android:focusable="false"
         android:layout_below="@id/taskEditText"/>
 
+    <!--<EditText-->
+        <!--android:id="@+id/timeEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Time"-->
+        <!--android:inputType="none"-->
+        <!--android:focusable="false"-->
+        <!--android:layout_below="@id/dateEditText"/>-->
+
     <EditText
-        android:id="@+id/timeEditText"
+        android:id="@+id/timeRequiredEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Time"
-        android:inputType="none"
-        android:focusable="false"
+        android:hint="Estimated Length (minutes)"
+        android:inputType="number"
         android:layout_below="@id/dateEditText"/>
 
     <TextView
@@ -50,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Repeat"
-        android:layout_below="@id/timeEditText"
+        android:layout_below="@id/timeRequiredEditText"
         android:paddingBottom="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -104,7 +112,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="50dp"
