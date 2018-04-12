@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.codecaptured.autoagendacore.usecases.EventInteractor;
@@ -395,10 +396,14 @@ public class taskFragment extends DialogFragment
 		if (status1 == true)
 		{
 			System.out.println("Task has been added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
+			toast1.show();
 		}
 		else
 		{
 			System.out.println("Task could not be added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task cannot be added", Toast.LENGTH_SHORT);
+			toast1.show();
 		}
 
 
