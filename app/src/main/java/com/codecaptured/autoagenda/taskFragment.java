@@ -336,11 +336,8 @@ public class taskFragment extends DialogFragment
 			e.printStackTrace();
 		}
 
-		ArrayList<String> tempTags  = new ArrayList<>();
-		tempTags.add("work");
-		ArrayList<String> tempTags2  = new ArrayList<>();
-		tempTags2.add("school");
-		tempTags2.add("gym");
+		String[] tempTags  = {"work"};
+		String[] tempTags2  = {"school", "gym"};
 
 
 		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags);

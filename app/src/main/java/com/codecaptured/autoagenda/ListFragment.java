@@ -213,8 +213,7 @@ public class ListFragment extends Fragment
 	private List<UserTask> createList(int size) {
 
 
-		ArrayList<String> temp = new ArrayList<String>();
-		temp.add("School");
+		String[] temp = {"School"};
 		for (int i=1; i <= size; i++) {
 			UserTask userTask = new UserTask("title " + i, "description " + i, true, Calendar.getInstance().getTime(), 5, 2, temp );
 			finalTaskList.add(userTask);
@@ -245,10 +244,10 @@ public class ListFragment extends Fragment
 			return;
 		}
 
-		for(int i = 0; i < finalTaskList.size(); i++){
-			if(!finalTaskList.get(i).tags.contains(tagString.toLowerCase()));
-			finalTaskList.remove(i);
-		}
+//		for(int i = 0; i < finalTaskList.size(); i++){
+//			if(!finalTaskList.get(i).tags.contains(tagString.toLowerCase()));
+//			finalTaskList.remove(i);
+//		}
 
 		reloadRecyclerView();
 	}
