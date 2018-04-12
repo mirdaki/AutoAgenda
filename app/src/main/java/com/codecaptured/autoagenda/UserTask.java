@@ -20,14 +20,14 @@ public class UserTask implements TaskInteractor.UserTask
 	Date dueDate;
 	int timeRequiredInMinutes;
 	int priorityLevel;
-	ArrayList<String> tags;
+	String[] tags;
 
 	// Values set by software
 	UUID id;
 	TimeBlock[] timeBlocks;
 
 	// Constructor
-	public UserTask(String title, String description, boolean completed, Date dueDate, int timeRequiredInMinutes, int priorityLevel, ArrayList<String> tags)
+	public UserTask(String title, String description, boolean completed, Date dueDate, int timeRequiredInMinutes, int priorityLevel, String[] tags)
 	{
 		this.title = title;
 		this.description = description;
@@ -88,11 +88,11 @@ public class UserTask implements TaskInteractor.UserTask
 	{
 		this.priorityLevel = priorityLevel;
 	}
-	public ArrayList<String> getTags()
+	public String[] getTags()
 	{
 		return tags;
 	}
-	public void setTags(ArrayList<String> tags)
+	public void setTags(String[] tags)
 	{
 		this.tags = tags;
 	}
