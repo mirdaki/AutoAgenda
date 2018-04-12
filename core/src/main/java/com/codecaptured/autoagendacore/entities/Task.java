@@ -1,7 +1,6 @@
 package com.codecaptured.autoagendacore.entities;
 
 // TODO: Maybe use a different date format
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,11 +16,11 @@ public class Task
 	private Date dueDate;
 	private int timeRequiredInMinutes;
 	private int priorityLevel;
-	private ArrayList<String> tags;
+	private String[] tags;
 	private TimeBlock[] taskTimes;
-//	Notification Times;
-//	Location
-//	Repeat information
+	//	Notification Times;
+	//	Location
+	//	Repeat information
 
 	/**
 	 * Create a task, some thing that take some amount of time and may have a a due date
@@ -35,7 +34,7 @@ public class Task
 	 * @param tags Tags or categories associated with the task. Used to organize the task
 	 */
 	public Task(UUID id, String title, String description, Boolean completed, Date dueDate,
-	            int timeRequiredInMinutes, int priorityLevel, ArrayList<String> tags)
+	            int timeRequiredInMinutes, int priorityLevel, String[] tags)
 	{
 		this.id = id;
 		this.title = title;
@@ -117,12 +116,12 @@ public class Task
 		this.priorityLevel = priorityLevel;
 	}
 
-	public ArrayList<String> getTags()
+	public String[] getTags()
 	{
 		return tags;
 	}
 
-	public void setTags(ArrayList<String> tags)
+	public void setTags(String[] tags)
 	{
 		this.tags = tags;
 	}
