@@ -4,6 +4,7 @@ import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -92,9 +93,17 @@ public class UserTask implements TaskInteractor.UserTask
 	{
 		return tags;
 	}
+	public ArrayList<String> getTag()
+	{
+		return new ArrayList<>(Arrays.asList(tags));
+	}
 	public void setTags(String[] tags)
 	{
 		this.tags = tags;
+	}
+	public void setTag(ArrayList<String> tag)
+	{
+		this.tags = tag.toArray(new String[tag.size()]);
 	}
 
 	// Set by software

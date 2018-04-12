@@ -340,28 +340,30 @@ public class taskFragment extends DialogFragment
 		String[] tempTags2  = {"school", "gym"};
 
 
-		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags);
-		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
-		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
-		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
-		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
-		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 1, tempTags);
-		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
-		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 2, tempTags2);
-		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 1, tempTags2);
-		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags2);
+  		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+//		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
+//		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
+//		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
+//		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
+//		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 1, tempTags);
+//		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
+//		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 2, tempTags2);
+//		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 1, tempTags2);
+//		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags2);
+//
+//		ListFragment.finalTaskList.add(tempTask1);
+//		ListFragment.finalTaskList.add(tempTask2);
+//		ListFragment.finalTaskList.add(tempTask3);
+//		ListFragment.finalTaskList.add(tempTask4);
+//		ListFragment.finalTaskList.add(tempTask5);
+//		ListFragment.finalTaskList.add(tempTask6);
+//		ListFragment.finalTaskList.add(tempTask7);
+//		ListFragment.finalTaskList.add(tempTask8);
+//		ListFragment.finalTaskList.add(tempTask9);
+//		ListFragment.finalTaskList.add(tempTask10);
 
+		TaskInteractor.addTask(tempTask1);
 		ListFragment.finalTaskList.add(tempTask1);
-		ListFragment.finalTaskList.add(tempTask2);
-		ListFragment.finalTaskList.add(tempTask3);
-		ListFragment.finalTaskList.add(tempTask4);
-		ListFragment.finalTaskList.add(tempTask5);
-		ListFragment.finalTaskList.add(tempTask6);
-		ListFragment.finalTaskList.add(tempTask7);
-		ListFragment.finalTaskList.add(tempTask8);
-		ListFragment.finalTaskList.add(tempTask9);
-		ListFragment.finalTaskList.add(tempTask10);
-
 		ListFragment.mAdapter.notifyDataSetChanged();
 
 
