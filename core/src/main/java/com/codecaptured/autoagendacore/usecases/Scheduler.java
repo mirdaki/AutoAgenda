@@ -9,7 +9,6 @@ import com.codecaptured.autoagendacore.entities.TimeFence;
 
 import java.util.*;
 
-import javax.swing.plaf.synth.SynthCheckBoxUI;
 
 public class Scheduler
 {
