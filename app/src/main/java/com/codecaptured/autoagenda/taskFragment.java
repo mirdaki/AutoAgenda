@@ -209,20 +209,20 @@ public class taskFragment extends DialogFragment
 //			}
 //		});
 
-		// Setup repeat spinner
-		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
-		ArrayAdapter<CharSequence> repeatAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.repeatSpinnerArray, android.R.layout.simple_spinner_item);
-		repeatSpinner.setAdapter(repeatAdapter);
+//		// Setup repeat spinner
+//		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
+//		ArrayAdapter<CharSequence> repeatAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.repeatSpinnerArray, android.R.layout.simple_spinner_item);
+//		repeatSpinner.setAdapter(repeatAdapter);
 
 		// Setup priority spinner
 		prioritySpinner = (Spinner) RootView.findViewById(R.id.prioritySpinner);
 		ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.prioritySpinnerArray, android.R.layout.simple_spinner_item);
 		prioritySpinner.setAdapter(priorityAdapter);
 
-		// Setup reminder spinner
-		reminderSpinner = (Spinner) RootView.findViewById(R.id.reminderSpinner);
-		ArrayAdapter<CharSequence> reminderAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.reminderSpinnerArray, android.R.layout.simple_spinner_item);
-		reminderSpinner.setAdapter(reminderAdapter);
+//		// Setup reminder spinner
+//		reminderSpinner = (Spinner) RootView.findViewById(R.id.reminderSpinner);
+//		ArrayAdapter<CharSequence> reminderAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.reminderSpinnerArray, android.R.layout.simple_spinner_item);
+//		reminderSpinner.setAdapter(reminderAdapter);
 
 		// Setup cancel button
 		cancelButton = (Button) RootView.findViewById(R.id.cancelButton);
