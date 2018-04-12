@@ -32,4 +32,12 @@
         <item>1 week before</item>
         <item>1 month before</item>
     </string-array>
+
+    <string-array
+        name="sortSpinnerArray">
+        <item>Soonest</item>
+        <item>Priority</item>
+        <item>Shortest</item>
+    </string-array>
+
 </resources>

@@ -19,6 +19,7 @@ public class Task
 	private TimeBlock[] taskTimes;
 	private boolean scheduled;
 	private boolean displaced;
+
 //	Notification Times;
 //	Location
 //	Repeat information

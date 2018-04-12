@@ -21,7 +21,10 @@ import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,11 +58,22 @@ public class taskFragment extends DialogFragment
 
 	public static android.widget.TextView testTextView;
 
+	/** The edittext used to select the task name */
+	private android.widget.EditText taskEditText;
+
+	/** The edittext used to select the description name */
+	private android.widget.EditText descriptionEditText;
+
 	/** The edittext used to select the task date */
 	private android.widget.EditText dateEditText;
+	Date selectedDate;
+	String selectedTime;
 
 	/** The edittext used to select the task time */
 	private android.widget.EditText timeEditText;
+
+	/** The edittext used to select the task required time */
+	private android.widget.EditText timeRequiredEditText;
 
 	/** Calendar instance */
 	java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -130,6 +144,10 @@ public class taskFragment extends DialogFragment
 		dateEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.dateEditText);
 		timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
 
+		taskEditText = (android.widget.EditText) RootView.findViewById(R.id.taskEditText);
+		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
+		descriptionEditText = (android.widget.EditText) RootView.findViewById(R.id.descriptionEditText);
+
 		dateEditText.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -138,6 +156,19 @@ public class taskFragment extends DialogFragment
 				new android.app.DatePickerDialog(getContext(), date, calendar
 								.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH),
 								calendar.get(java.util.Calendar.DAY_OF_MONTH)).show();
+
+				java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
+				int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
+				int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
+				android.app.TimePickerDialog mTimePicker;
+				mTimePicker = new android.app.TimePickerDialog(getContext(), new android.app.TimePickerDialog.OnTimeSetListener() {
+					@Override
+					public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+						calendar.set(Calendar.HOUR, selectedHour);
+						calendar.set(Calendar.MINUTE, selectedMinute);
+					}
+				}, hour, minute, false);//Yes 24 hour time
+				mTimePicker.show();
 			}
 		});
 
@@ -151,30 +182,31 @@ public class taskFragment extends DialogFragment
 				calendar.set(java.util.Calendar.MONTH, monthOfYear);
 				calendar.set(java.util.Calendar.DAY_OF_MONTH, dayOfMonth);
 				updateDate();
+				selectedDate = calendar.getTime();
 			}
 
 		};
 
-		timeEditText.setOnClickListener(new android.view.View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
-				int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
-				int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
-				android.app.TimePickerDialog mTimePicker;
-				mTimePicker = new android.app.TimePickerDialog(getContext(), new android.app.TimePickerDialog.OnTimeSetListener() {
-					@Override
-					public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-						timeEditText.setText( selectedHour + ":" + selectedMinute);
-					}
-				}, hour, minute, true);//Yes 24 hour time
-				mTimePicker.setTitle("Select Time");
-				mTimePicker.show();
-
-			}
-		});
+//		timeEditText.setOnClickListener(new android.view.View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
+//				int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
+//				int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
+//				android.app.TimePickerDialog mTimePicker;
+//				mTimePicker = new android.app.TimePickerDialog(getContext(), new android.app.TimePickerDialog.OnTimeSetListener() {
+//					@Override
+//					public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//						timeEditText.setText( selectedHour + ":" + selectedMinute);
+//					}
+//				}, hour, minute, false);//Yes 24 hour time
+//				mTimePicker.setTitle("Select Time");
+//				mTimePicker.show();
+//
+//			}
+//		});
 
 		// Setup repeat spinner
 		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
@@ -268,7 +300,7 @@ public class taskFragment extends DialogFragment
 	}
 
 	private void updateDate() {
-		String myFormat = "MM/dd/yy"; //In which you need put here
+		String myFormat = "MM/dd/yy hh:mm";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
 		dateEditText.setText(sdf.format(calendar.getTime()));
@@ -289,16 +321,16 @@ public class taskFragment extends DialogFragment
 
 		try
 		{
-			tempDate1 = sdf.parse("13/4/2018 12:00:00");
-			tempDate2 = sdf.parse("13/4/2018 12:00:00");
-			tempDate3 = sdf.parse("13/4/2018 12:00:00");
-			tempDate4 = sdf.parse("13/4/2018 12:00:00");
-			tempDate5 = sdf.parse("13/4/2018 12:00:00");
-			tempDate6 = sdf.parse("13/4/2018 12:00:00");
-			tempDate7 = sdf.parse("13/4/2018 12:00:00");
-			tempDate8 = sdf.parse("13/4/2018 12:00:00");
-			tempDate9 = sdf.parse("13/4/2018 12:00:00");
-			tempDate10 = sdf.parse("13/4/2018 12:00:00");
+			tempDate1 = sdf.parse("13/9/2018 12:00:00");
+			tempDate2 = sdf.parse("13/8/2018 12:00:00");
+			tempDate3 = sdf.parse("13/7/2018 12:00:00");
+			tempDate4 = sdf.parse("13/6/2018 12:00:00");
+			tempDate5 = sdf.parse("13/5/2018 12:00:00");
+			tempDate6 = sdf.parse("13/10/2018 12:00:00");
+			tempDate7 = sdf.parse("13/11/2018 12:00:00");
+			tempDate8 = sdf.parse("13/12/2018 12:00:00");
+			tempDate9 = sdf.parse("11/12/2018 12:00:00");
+			tempDate10 = sdf.parse("22/7/2018 12:00:00");
 		}
 		catch (ParseException e)
 		{
@@ -306,17 +338,30 @@ public class taskFragment extends DialogFragment
 		}
 
 		String[] tempTags  = {"work"};
+		String[] tempTags2  = {"school", "gym"};
 
-		UserTask tempTask1 = new UserTask("Temp1", "Hello", false, tempDate1, 120, 3, tempTags);
-		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 3, tempTags);
-		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 3, tempTags);
-		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 3, tempTags);
-		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
-		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 3, tempTags);
-		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
-		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 3, tempTags);
-		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 3, tempTags);
-		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags);
+
+  		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+//		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
+//		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
+//		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
+//		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
+//		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 1, tempTags);
+//		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
+//		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 2, tempTags2);
+//		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 1, tempTags2);
+//		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags2);
+//
+//		ListFragment.finalTaskList.add(tempTask1);
+//		ListFragment.finalTaskList.add(tempTask2);
+//		ListFragment.finalTaskList.add(tempTask3);
+//		ListFragment.finalTaskList.add(tempTask4);
+//		ListFragment.finalTaskList.add(tempTask5);
+//		ListFragment.finalTaskList.add(tempTask6);
+//		ListFragment.finalTaskList.add(tempTask7);
+//		ListFragment.finalTaskList.add(tempTask8);
+//		ListFragment.finalTaskList.add(tempTask9);
+//		ListFragment.finalTaskList.add(tempTask10);
 
 		boolean status1;
 		//boolean status2;
@@ -334,6 +379,8 @@ public class taskFragment extends DialogFragment
 		System.out.println(" ");
 
 		status1 = TaskInteractor.addTask(tempTask1);
+		ListFragment.finalTaskList.add(tempTask1);
+		ListFragment.mAdapter.notifyDataSetChanged();
 		//status2 = TaskInteractor.addTask(tempTask2);
 		//status3 = TaskInteractor.addTask(tempTask3);
 		//status4 = TaskInteractor.addTask(tempTask4);
@@ -345,7 +392,7 @@ public class taskFragment extends DialogFragment
 		//status10 = TaskInteractor.addTask(tempTask10);
 
 
-		if ( status1 == true)
+		if (status1 == true)
 		{
 			System.out.println("Task has been added");
 		}
@@ -357,8 +404,8 @@ public class taskFragment extends DialogFragment
 
 		//System.out.println("Tasks have been added");
 
-
 		// TODO: Create a notification (just use the Task ID for nwo)
+		dismiss();
 	}
 
 	public void cancelButtonClicked(View view){

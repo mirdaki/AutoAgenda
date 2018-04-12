@@ -55,7 +55,7 @@ public class EventInteractor
 		// Hardcoded event info
 		// Sleep 7 Hours
 		int sleepingHours = 420;
-		Calendar eventTime = new GregorianCalendar(2018,3,9,23,30,00);
+		Calendar eventTime = new GregorianCalendar(2018,3,12,23,30,00);
 
 		// Sleep from 11:30 - 6:30 each day
 		Date startTimeEvent = eventTime.getTime();
@@ -68,7 +68,7 @@ public class EventInteractor
 		//boolean monday, boolean tuesday, boolean wednesday, boolean thursday,
 		//boolean friday, boolean saturday, boolean sunday, int dayOfMonth, int monthOfYear)
 
-		Calendar eventEndTime = new GregorianCalendar(2018,3,19,6,30,00);
+		Calendar eventEndTime = new GregorianCalendar(2018,4,1,6,30,00);
 		Date endTimeEvent = eventEndTime.getTime();
 
 		event.setRecurrenceInfo(RecurrenceType.DAILY, startTimeEvent, endTimeEvent, 23, 30, false,
@@ -181,7 +181,7 @@ public class EventInteractor
 		String getDescription();
 		void setDescription(String description);
 		TimeBlock getEventTime();
-		void setEventTime(TimeBlock timeBlocks);
+		void setEventTime(TimeBlock eventTime);
 		int getPriorityLevel();
 		void setPriorityLevel(int priorityLevel);
 		String[] getTags();
