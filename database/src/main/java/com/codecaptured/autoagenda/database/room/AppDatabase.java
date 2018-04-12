@@ -75,13 +75,32 @@ public abstract class AppDatabase extends RoomDatabase
 								AppDatabase database = AppDatabase.getInstance(appContext);
 
 								// TODO: Create default data
-								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-								Date tempDueDate = new Date();
+								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+								Date tempDate1 = new Date();
+								Date tempDate2 = new Date();
+								Date tempDate3 = new Date();
+								Date tempDate4 = new Date();
+								Date tempDate5 = new Date();
+								Date tempDate6 = new Date();
+								Date tempDate7 = new Date();
+								Date tempDate8 = new Date();
+								Date tempDate9 = new Date();
+								Date tempDate10 = new Date();
 								Date tempStartDate = new Date();
+
 								try
 								{
-									tempDueDate = sdf.parse("21/12/2018");
-									tempStartDate = sdf.parse("10/12/2018");
+									tempDate1 = sdf.parse("13/4/2018 12:00:00");
+									tempDate2 = sdf.parse("13/4/2018 12:00:00");
+									tempDate3 = sdf.parse("13/4/2018 12:00:00");
+									tempDate4 = sdf.parse("13/4/2018 12:00:00");
+									tempDate5 = sdf.parse("13/4/2018 12:00:00");
+									tempDate6 = sdf.parse("13/4/2018 12:00:00");
+									tempDate7 = sdf.parse("13/4/2018 12:00:00");
+									tempDate8 = sdf.parse("13/4/2018 12:00:00");
+									tempDate9 = sdf.parse("13/4/2018 12:00:00");
+									tempDate10 = sdf.parse("13/4/2018 12:00:00");
+									tempStartDate = sdf.parse("10/4/2018 12:00:00");
 								}
 								catch (ParseException e)
 								{
@@ -90,11 +109,18 @@ public abstract class AppDatabase extends RoomDatabase
 
 								String[] tempTags  = {"work"};
 
-								Task tempTask = new Task("Temp", "Hello", false,
-												tempDueDate, 120, 3, tempTags,
-												UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask1 = new Task("Temp1", "Hello", false, tempDate1, 120, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask2 = new Task("Temp2", "Hello", false, tempDate2, 15, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask3 = new Task("Temp3", "Hello", false, tempDate3, 20, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask4 = new Task("Temp4", "Hello", false, tempDate4, 60, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask5 = new Task("Temp5", "Hello", false, tempDate5, 100, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask6 = new Task("Temp6", "Hello", false, tempDate6, 15, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask7 = new Task("Temp7", "Hello", false, tempDate7, 120, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask8 = new Task("Temp8", "Hello", false, tempDate8, 20, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask9 = new Task("Temp9", "Hello", false, tempDate9, 60, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
+								Task tempTask10 = new Task("Temp10", "Hello", false, tempDate10, 120, 3, tempTags, UUID.randomUUID(), new TimeBlock(tempStartDate, 120));
 
-								insertData(database, tempTask);
+								insertData(database, tempTask1, tempTask2, tempTask3, tempTask4, tempTask5, tempTask6, tempTask7, tempTask8, tempTask9, tempTask10);
 								// notify that the database was created and it's ready to be used
 							}
 						}).build();

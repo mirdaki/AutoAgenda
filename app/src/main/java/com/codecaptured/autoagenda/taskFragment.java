@@ -273,24 +273,26 @@ public class taskFragment extends DialogFragment
 	}
 
 	public void addButtonClicked(View view){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date tempDate = new Date();
-		try
-		{
-			tempDate = sdf.parse("21/12/2018");
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//		Date tempDate = new Date();
+//		try
+//		{
+//			tempDate = sdf.parse("21/12/2018");
+//		}
+//		catch (ParseException e)
+//		{
+//			e.printStackTrace();
+//		}
+//
+//		String[] tempTags  = {"work"};
+//
+//		UserTask tempTask = new UserTask("Temp", "Hello", false, tempDate, 120, 3, tempTags);
+//
+//		TaskInteractor.addTask(tempTask);
+//
+//		System.out.println(tempTask);
 
-		String[] tempTags  = {"work"};
-
-		UserTask tempTask = new UserTask("Temp", "Hello", false, tempDate, 120, 3, tempTags);
-
-		TaskInteractor.addTask(tempTask);
-
-		System.out.println(tempTask);
+		com.codecaptured.autoagenda.database.room.AppDatabase.getInstance(getContext());
 	}
 
 	public void cancelButtonClicked(View view){
