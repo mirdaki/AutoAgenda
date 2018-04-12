@@ -9,7 +9,7 @@ import com.codecaptured.autoagendacore.entities.TimeFence;
 
 import java.util.*;
 
-
+import javax.swing.plaf.synth.SynthCheckBoxUI;
 
 public class Scheduler
 {
@@ -18,8 +18,11 @@ public class Scheduler
 	final static int  MIN_TO_SECONDS = 60;
 	final static int MIN_TO_MILLI = 60000;
 
-
-	public static TimeBlock[] addTask(Task newTask, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap)
+	/**
+	 * Adds a new task to the schedule
+	 * @param newTask the new task to be added to the schedule
+	 */
+	public static TimeBlock[] addTask(Task newTask)
 	{
 		
 		// Boundary Check immediately! 
@@ -70,10 +73,7 @@ public class Scheduler
 		// No preference for priority yet.  
 		
 		final int ALL_PRIORITIES = -1;
-		
-		LinkedList<TimeBlock> holelist = findOpenings(newTask, ALL_PRIORITIES, newTask.getDueDate(), taskMap, eventMap);
-
-		
+		LinkedList<TimeBlock> holelist = findOpenings(newTask, ALL_PRIORITIES, newTask.getDueDate());
 
 		/**
 	
@@ -109,7 +109,7 @@ public class Scheduler
 
 			newSched[0] = new TimeBlock(newTaskSchedule);
 
-			addToTaskMap(newTask, newSched, taskMap);
+			addToTaskMap(newTask, newSched);
 
 			//System.out.println("Success.");
 			//System.out.println();
@@ -126,7 +126,7 @@ public class Scheduler
 			if( splitTB != null )
 			{
 
-				addToTaskMap(newTask, splitTB, taskMap);
+				addToTaskMap(newTask, splitTB);
 
 				return (splitTB);
 			}
@@ -135,8 +135,8 @@ public class Scheduler
 				// cannot fit task by splitting
 
 				// try priority scheduling by displacing lower priority tasks
-		    	 LinkedList<TimeBlock> holelist2 = findOpenings(newTask, newTask.getPriorityLevel(),
-		    			 										newTask.getDueDate(), taskMap, eventMap);
+				LinkedList<TimeBlock> holelist2 = findOpenings(newTask, newTask.getPriorityLevel(),
+								newTask.getDueDate());
 
 		 		
 		 		// Now we can try to fit in the new task in schedule
@@ -150,7 +150,7 @@ public class Scheduler
 					Date newTaskEndTime = newPriTaskSchedule.getEndingTime();
 					   
 			    	// go thru task map and mark any "displaced" lower priority tasks
-			    	for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
+			    	for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
 			 		{
 
 			 			Task myTask = entry.getValue();
@@ -211,10 +211,10 @@ public class Scheduler
 	    	    
 	    	    	newSched[0] = new TimeBlock(newPriTaskSchedule);
 	    	    
-	    	    	addToTaskMap(newTask, newSched, taskMap);
+	    	    	addToTaskMap(newTask, newSched);
 	    	    
 					// now try reschedule displaced tasks
-					for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
+					for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
 			 		{
 						Task myTask = entry.getValue();
 
@@ -225,7 +225,7 @@ public class Scheduler
 						
 						  // since this is a displaced task
 						  // it will not be re-added to taskmap
-						  addTask(myTask, taskMap, eventMap);
+						  addTask(myTask);
 						}
 					}
 	    	 		return (newSched);
@@ -241,6 +241,11 @@ public class Scheduler
 
 	}
 
+	/**
+	 * Attempts to fit the new task in the list of holes
+	 * @param newTaskDuration duration of the task to be fitted
+	 * @param holelist the list of holes to fit the task into
+	 */
 	private static TimeBlock fitNewTask( int newTaskDuration, LinkedList<TimeBlock> holelist )
 	{
 		// find the biggest hole in the linked list of holes
@@ -291,9 +296,13 @@ public class Scheduler
 		return(null); // could not fit new task
 	}
 
-	// FindOpenings: figure out "openings" or holes in current schedule
 
-	private static LinkedList<TimeBlock> findOpenings(Task newTask, int priorityLevel, Date newTaskDueDate, HashMap<UUID, Task> taskMap,HashMap<UUID, Event> eventMap )
+	/**
+	 * Finds openings (holes) in the current schedule
+	 * @param newTask the new task
+	 * @param priorityLevel priority level of the new task
+	 */
+	private static LinkedList<TimeBlock> findOpenings(Task newTask, int priorityLevel, Date newTaskDueDate )
 	{
 		// Start the "hole list" with a single node/hole with a time
 		// span from current time to the due date.
@@ -330,11 +339,12 @@ public class Scheduler
 
 		// Go thru Event map entries
 
-		for ( Map.Entry<UUID, Event> entry : eventMap.entrySet() )
+		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
 		{
-
+			// Get event info
 			Event myEvent = entry.getValue();
 
+			// Get event start time + duration 
 			TimeBlock eventTime = myEvent.getEventTime();
 
 			
@@ -351,17 +361,18 @@ public class Scheduler
 				continue;
 			}
 
+			// NONE, DAILY, WEEKLY, MONTHLY, YEARLY
 			RecurrenceType recurrencetype = myEvent.getRecurrenceType();
 
-			// if not a recurring event then simple process as is
+			// if no recurrence ( NONE )  
 			if( recurrencetype  == RecurrenceType.NONE)
 			{
+				// Get start and end times 
 				Date eventStartTime = eventTime.getStartTime();
 				Date eventEndTime = eventTime.getEndingTime();
 
 				// only care about events occurring BEFORE the new task due date
 				// AND have not completed BEFORE the current time.
-
 				if( ( eventStartTime.before(newTaskDueDate)) && ( eventEndTime.after(curTime) ) )
 				{
 					// Traverse hole list
@@ -371,34 +382,46 @@ public class Scheduler
 
 				}
 			}
+			// if recurrence is DAILY, WEEKLY, MONTHLY, YEARLY  
 			else if ((recurrencetype  == RecurrenceType.DAILY ) ||
 							(recurrencetype  == RecurrenceType.WEEKLY ) ||
 							(recurrencetype  == RecurrenceType.MONTHLY ) ||
 							(recurrencetype  == RecurrenceType.YEARLY ) )
 			{
+				// Helper function to determine how to process the recurring event 
 				processRecurringEvent( myEvent, newTaskDueDate, holelist);
 			}
 		}
 
+		// Go through each of the timefences 
+		
 		for ( Map.Entry<UUID, TimeFence> entry : Schedule.getCurrentTimeFences().entrySet() )
 		{
+			// Get value of timefence 
 			TimeFence myFence = entry.getValue();
 
 			TimeBlock fenceTime = myFence.getTimeBlock();
 
+			// skip null timefences
 			if( fenceTime == null)
 			{
 				continue;
 			}
 
+			// Tags associated with the fence 
 			String[] fenceTags = myFence.getTags();
 
+			// Tags associated with the task 
+			// Example: School, Hobby, work 
 			String[] taskTags = newTask.getTags();
-
+			
+			
 			boolean foundMatch = false;
 
+			// Loop through String[] tags array 
 			for(int i=0; i < taskTags.length; i++ )
 			{
+				// for each task tag loop through all fences to determine if a match occurs 
 				for(int j = 0; j < fenceTags.length; j++ )
 				{
 					if( taskTags[i].equals(fenceTags[j]) )
@@ -420,10 +443,9 @@ public class Scheduler
 				// found tag match – do not deploy this fence
 				continue;
 			}
+			
 			// deploy fence
-
 			Date startTime = fenceTime.getStartTime();
-
 			Date endTime = fenceTime.getEndingTime();
 
 			// only care about fences occurring BEFORE the new task due date
@@ -442,7 +464,7 @@ public class Scheduler
 
 		// loop thru all existing tasks
 
-		for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
+		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
 		{
 
 			Task myTask = entry.getValue();
@@ -473,7 +495,7 @@ public class Scheduler
 
 			TimeBlock[] taskTimes = myTask.getTaskTimes();
 
-			//FIXED
+
 			// If task does not have start time, then ignore
 			if( taskTimes == null)
 			{
@@ -481,19 +503,18 @@ public class Scheduler
 			}
 
 			// loop thru the task start times
-			for(int i = 0; i < taskTimes.length;i++)
+			for(int i = 0; i < taskTimes.length; i++)
 			{
 				Date taskStartTime = taskTimes[i].getStartTime();
 
 				Date taskEndTime = taskTimes[i].getEndingTime();
 
 
-				// Case where start time is after the end time.  Should never actually happen.
+				// Case where start time is after the end time.  Should never happen, but ensures completeness
 				if(  taskEndTime.before(taskStartTime) || taskEndTime.equals(taskStartTime) )
 				{
 					continue;
 				}
-
 
 				// only care about existing tasks occurring BEFORE the new task due date
 				if( taskStartTime.before(newTaskDueDate))
@@ -512,12 +533,17 @@ public class Scheduler
 		return holelist;
 	}
 
+	/**
+	 * Modifies the hole list when tasks must be split, or new tasks/events displace older ones
+	 * @param endTime end time of the task/event
+	 * @param holelist the list of holes
+	 */
 	private static void modifyHoleList( Date startTime, Date endTime, LinkedList<TimeBlock> holelist)
 	{
-		// perform sanity check on entered task time
-		if(  endTime.before(startTime)  ||
-						endTime.equals(startTime)      )
+		// perform sanity check on entered task time, ensures completeness of code 
+		if(  endTime.before(startTime)  || endTime.equals(startTime)      )
 		{
+			// Get out of function 
 			return;
 		}
 
@@ -525,8 +551,7 @@ public class Scheduler
 		{
 			TimeBlock tb = holelist.get(num);
 
-			if( startTime.after(tb.getStartTime()) &&
-							endTime.before(tb.getEndingTime()) )
+			if( startTime.after(tb.getStartTime()) && endTime.before(tb.getEndingTime()) )
 			{
 				// break apart this hole
 
@@ -543,15 +568,14 @@ public class Scheduler
 				// Another new TimeBlock with a start time
 				// being the task end time and a duration
 				// which is the difference between original
-				// hole end time the task end time
+				// hole end time and the task end time
 
 				// update duration of hole that will proceed task
 				duration = holeEndTime - endTime.getTime();
 
 				numOfMins = duration/(MIN_TO_MILLI);
 
-				TimeBlock newHole =
-								new TimeBlock(endTime,(int)numOfMins);
+				TimeBlock newHole = new TimeBlock(endTime,(int)numOfMins);
 
 				// insert this new hole in link list AFTER the
 				// hole we broke apart
@@ -619,25 +643,33 @@ public class Scheduler
 		}
 	}
 
+	/**
+	 * Splitter will divide a task into smaller pieces and re-add it to the schedule
+	 * @param requiredTime duration of the original task
+	 * @param holelist the list of holes
+	 */
 	private static TimeBlock[] splitter( int requiredTime, LinkedList<TimeBlock> holelist )
 	{
 
 		// sort hole list base on hole size: largest to smallest
 		//-------------------------------------------------------
 		//First : convert LinkedList to Array
+		
 		TimeBlock[] holearray = new TimeBlock[holelist.size()];
 
 		for(int idx=0; idx < holelist.size(); idx++)
 		{
 			TimeBlock holeTimeBlk = holelist.get(idx);
-			// FIXED:
 			holearray[idx] = new TimeBlock(holeTimeBlk);
 			//holearray[idx].clone(holeTimeBlk);
 		}
+		
+		// ***********************************************************
+		
 		// second : bubble sort based on duration
-		// bubble sort helps to determine if the tasks are can fitted after being broken apart
+		// bubble sort helps to determine if the tasks can be fitted after being broken apart
 		// looking for the biggest holes
-
+		
 		boolean flag = true;
 
 		int j = 0;
@@ -661,9 +693,11 @@ public class Scheduler
 				}
 			}
 		}
+		
+		// ******************************************************
 
 
-		int divider  = 2; // start by dividing by 2
+		int divider = 2; // start by dividing by 2
 		long taskDuration = requiredTime;
 		long newdur = 0;
 		final long THRESHOLD = 30; // 30 minutes
@@ -675,32 +709,37 @@ public class Scheduler
 
 			if( divider > holearray.length )
 			{
-				// not enough holes for a divided task : get out !
+				// not enough holes for a divided task : get out!
 				break;
 			}
-			else
+			else // have enough holes go ahead and see if holes are big enough
 			{
-				// have enough holes go ahead and see if holes are big enough
 				// assume cannot fit until proven otherwise
 				cannotFit  = false;
 
+				// Loop through the split partitions of the task
+				// Example: Task divided into 3 parts
 				for( j=0;  j < divider;  j++ )
 				{
+					// Check if the partitioned task can fit into one of the holes 
 					if( newdur > holearray[j].getNumberOfMinutes() )
 					{
-						// hole not big enough for  this split timeblock
+						// hole not big enough for this split timeblock
 						cannotFit  = true;
 
-						break; // cannot schedule split timeblock : get out
+						break; // cannot schedule split timeblock : get out!
 					}
 				}
 
-				if( cannotFit == false )
+				// Split time block fits
+				if( cannotFit == false )   
 				{
-					// yeah: split time block fits
 
+					// Set the array of timeblocks to size of the divided task 
 					tbArray = new TimeBlock[divider];
 
+					// Loop through partitions of the task to create the task times 
+					// and place in the array 
 					for( j=0;  j < divider;  j++ )
 					{
 						TimeBlock holeTB = new TimeBlock(holearray[j]);
@@ -717,19 +756,24 @@ public class Scheduler
 
 						tbArray[j] = new TimeBlock(newTaskStartDate, (int)newdur);
 					}
-					// FIXED: return array
+					
 					return tbArray;
 				}
 			}
 
-			divider++; // further divide
+			divider++; 
 		}
 
-		// FIXED: return null
+		// Splitter could not successfully divide task 
 		return null;
 	}
 
-
+	/**
+	 * Processes a recurring event :  DAILY, WEEKLY, MONTHLY, YEARLY
+	 * @param myEvent the recurring event to process
+	 * @param endDate the ending date of the event 
+	 * @param holelist the list of holes used to determine where to place tasks and events in the schedule 
+	 */
 	private static	void processRecurringEvent( Event myEvent, Date endDate, LinkedList<TimeBlock> holelist)
 	{
 
@@ -881,8 +925,13 @@ public class Scheduler
 			eventTB.setNumberOfMinutes(eventDurationMin);
 		}
 	}
-
-	private static void addToTaskMap(Task newTask, TimeBlock[] startTimes, HashMap<UUID, Task> taskMap)
+	
+	/**
+	 * Adds a task to the Schedule 
+	 * @param newTask the task to be added to the schedule
+	 * @param startTimes information about start time of task and duration 
+	 */
+	private static void addToTaskMap(Task newTask, TimeBlock[] startTimes)
 	{
 
 		newTask.setTaskTimes(startTimes);
@@ -890,14 +939,17 @@ public class Scheduler
 		UUID id = newTask.getId();
 
 		// Put task in HashMap
-		taskMap.put(id, newTask);
+		Schedule.getCurrentTasks().put(id, newTask);
 
 	}
 
 
+	/**
+	 * Removes a task from the Schedule
+	 * @param id the unique id of the task to be removed
+	 */
 	public static void removeTask(UUID id)
 	{
-		//System.out.println("Micro Lab id:  " + id);
 		
 		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
 		{
@@ -926,7 +978,7 @@ public class Scheduler
 
 	}
 
-	//	addEvent()
+
 	/**
 	Called when wanting to add an event to the schedule and thereby, adding it to the event Map.
 	
@@ -937,20 +989,18 @@ public class Scheduler
 
 	The code has to handle both single instance (none recurring) events as well as recurring events.
 
-	 * @param newEvent: the new event to be scheduled
-	 * @param taskMap: Hashmap containing all the scheduled tasks
-	 * @param eventMap: Hashmap containg all the scheduled events
+	 * @param newEvent the new event to be scheduled
 	 **/
-	public static boolean addEvent(Event newEvent, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap)
+	public static boolean addEvent(Event newEvent)
 	{	
 		
-		boolean status = processEvent(false, newEvent, taskMap, eventMap);
+		boolean status = processEvent(false, newEvent);
 	
 		return status;
 	}
-	
 
-	public static boolean processEvent(boolean checking, Event newEvent, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap)
+
+	public static boolean processEvent(boolean checking, Event newEvent)
 	{	  
 		// first check if new event has an assigned start time
 
@@ -1019,7 +1069,7 @@ public class Scheduler
 				priority = newEvent.getPriorityLevel();
 			}
 			
-			LinkedList<TimeBlock> holelist = findOpeningsFromEvents(priority, newEventDueDate, eventMap);
+			LinkedList<TimeBlock> holelist = findOpeningsFromEvents(priority, newEventDueDate);
 
 			// if not a recurring event then simply check this one event for conflicts
 			if( recurrencetype  == RecurrenceType.NONE)
@@ -1033,7 +1083,7 @@ public class Scheduler
 
 				if( foundSpot == true)
 				{
-					addToEventMap( newEvent, eventMap);
+					addToEventMap(newEvent);
 					
 					newEvent.printEventInfo();
 		
@@ -1041,7 +1091,7 @@ public class Scheduler
 					// as opposed to an conflict check
 					if( checking == false)
 					{
-						searchForConflicts(newEvent, taskMap, eventMap);
+						searchForConflicts(newEvent);
 					}
 				
 					return true;
@@ -1213,7 +1263,7 @@ public class Scheduler
 				if(eventFits == true )
 				{
 				
-					addToEventMap( newEvent, eventMap);
+					addToEventMap(newEvent);
 					
 					newEvent.printEventInfo();
 					
@@ -1221,7 +1271,7 @@ public class Scheduler
 					 // as opposed to an conflict check
 				    if( checking == false)
 					{
-						searchForConflicts(newEvent, taskMap, eventMap);
+						searchForConflicts(newEvent);
 					}
 					return true;
 				}
@@ -1246,16 +1296,25 @@ public class Scheduler
 		return false;
 	}
 
-	private static void addToEventMap(Event newEvent, HashMap<UUID, Event> eventMap)
+	/**
+	 * Adds an event to the schedule
+	 * @param newEvent the event to be added to the schedule
+	 */
+	private static void addToEventMap(Event newEvent)
 	{	
 			
 		UUID id = newEvent.getId();
 
 		// Put event back in HashMap
-		eventMap.put(id, newEvent);
+		Schedule.getCurrentEvents().put(id, newEvent);
 			
 	}
 
+	/**
+	 * Attempts to find a spot to locate in the list of holes
+	 * @param startTime start time of task/event
+	 * @param endTime end time of the task/event
+	 */
 	private static boolean findSpot( Date startTime, Date endTime, LinkedList<TimeBlock> holelist)
 	{
 	   boolean foundSpot = false;
@@ -1280,11 +1339,15 @@ public class Scheduler
 		}
 		return foundSpot;
 	}
-	
-	private static void searchForConflicts( Event newEvent, HashMap<UUID, Task> taskMap, HashMap<UUID, Event> eventMap)
+
+	/**
+	 * Searches for conflicts in the current schedule
+	 * @param newEvent the event to be added to the schedule
+	 */
+	private static void searchForConflicts( Event newEvent)
 	{
 
-		for ( Map.Entry<UUID, Event> entry : eventMap.entrySet() )
+		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
 		{
 
 			Event myEvent = entry.getValue();
@@ -1305,7 +1368,7 @@ public class Scheduler
 
 			myEvent.setChecking(true);
 
-			boolean status = processEvent(true, myEvent, taskMap, eventMap);
+			boolean status = processEvent(true, myEvent);
 
 			// if event cannot be fitted, then mark as displaced
 			if( status == false)
@@ -1319,7 +1382,7 @@ public class Scheduler
 		
 		// loop thru all existing tasks
 
-		for ( Map.Entry<UUID, Task> entry : taskMap.entrySet() )
+		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
 		{
 
 			Task myTask = entry.getValue();
@@ -1347,7 +1410,7 @@ public class Scheduler
 			Date taskDueDate = myTask.getDueDate();
 
 			// create hole list from all events
-			LinkedList<TimeBlock> holelist = findOpeningsFromEvents(-1, taskDueDate, eventMap);
+			LinkedList<TimeBlock> holelist = findOpeningsFromEvents(-1, taskDueDate);
 
 			// assume no conflict, unless proven otherwise
 			boolean conflicting = false;
@@ -1379,13 +1442,14 @@ public class Scheduler
 			{
 				myTask.isDisplaced(true);
 				// update task map
-				addToTaskMap(myTask, taskTimes, taskMap);
+				addToTaskMap(myTask, taskTimes);
 			}
 
 		}
 	}
-	
-	private static LinkedList<TimeBlock> findOpeningsFromEvents( int priorityLevel, Date newDueDate, HashMap<UUID, Event> eventMap )
+
+
+	private static LinkedList<TimeBlock> findOpeningsFromEvents( int priorityLevel, Date newDueDate)
 	{
 		// Start the "hole list" with a single node/hole with a time
 		// span from current time to the due date.
@@ -1406,7 +1470,7 @@ public class Scheduler
 		
 		// Go thru Event map entries
 
-		for ( Map.Entry<UUID, Event> entry : eventMap.entrySet() )
+		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
 		{
 
 			Event myEvent = entry.getValue();
@@ -1478,9 +1542,12 @@ public class Scheduler
 		return holelist;
 	}
 
+	/**
+	 * Removes an event from the Schedule
+	 * @param id the unique id of the event to be removed
+	 */
 	public static void removeEvent(UUID id)
 	{
-		//System.out.println("Event id:  " + id);
 		
 		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
 		{
@@ -1509,16 +1576,27 @@ public class Scheduler
 
 	}
 
+	/**
+	 * Adds a timefence to the schedule
+	 * @param timeFence the timefence to be added
+	 */
 	public static void addTimeFence(TimeFence timeFence)
 	{
 		Schedule.getCurrentTimeFences().put(timeFence.getId(),timeFence);
 	}
 
+	/**
+	 * Removes a timefence from the Schedule
+	 * @param id the unique id of the timefence to be removed
+	 */
 	public static void removeTimeFence(UUID id)
 	{
 		Schedule.getCurrentTimeFences().remove(id);
 	}
 
+	/**
+	 * Reschedules current tasks and events for better time use
+	 */
 	public static void reschedule()
 	{
 		// TODO 

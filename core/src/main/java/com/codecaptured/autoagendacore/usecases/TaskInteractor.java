@@ -42,7 +42,7 @@ public class TaskInteractor
 		TimeBlock[] tb = {};
 
 		// Add to scheduler to decide where to put it in the schedule
-		tb = Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		tb = Scheduler.addTask(task);
 
 		if (tb != null)
 		{
@@ -84,7 +84,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.addTask(task);
 	}
 
 	/**

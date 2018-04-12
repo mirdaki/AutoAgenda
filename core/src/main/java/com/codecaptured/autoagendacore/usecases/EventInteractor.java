@@ -35,7 +35,7 @@ public class EventInteractor
 		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addEvent(event, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.addEvent(event);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class EventInteractor
 						-1);
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addEvent(event, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.addEvent(event);
 	}
 
 
@@ -98,7 +98,7 @@ public class EventInteractor
 		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addEvent(event, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.addEvent(event);
 	}
 
 	/**
