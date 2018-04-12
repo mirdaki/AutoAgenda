@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
@@ -24,9 +25,12 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
 		UserTask userTask = taskList.get(i);
 		taskViewHolder.mDescription.setText(userTask.getDescription());
-		taskViewHolder.mCompleted.setText(userTask.getCompleted().toString());
-		taskViewHolder.mDueDate.setText(userTask.getDueDate().toString());
+//		taskViewHolder.mCompleted.setText(userTask.getCompleted().toString());
+		taskViewHolder.mDueDate.setText("Due: " + userTask.getDueDate().toString());
 		taskViewHolder.mTitle.setText(userTask.getTitle());
+
+		TimeBlock[] temp = userTask.getTimeBlocks();
+		taskViewHolder.mScheduleDate.setText("Scheduled for: " + temp[0].getStartTime().toString());
 	}
 
 	@Override
@@ -43,13 +47,15 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		protected TextView mCompleted;
 		protected TextView mDueDate;
 		protected TextView mTitle;
+		protected TextView mScheduleDate;
 
 		public TaskViewHolder(View v) {
 			super(v);
 			mDescription =  (TextView) v.findViewById(R.id.description);
-			mCompleted = (TextView)  v.findViewById(R.id.completed);
+			//mCompleted = (TextView)  v.findViewById(R.id.completed);
 			mDueDate = (TextView)  v.findViewById(R.id.dueDate);
 			mTitle = (TextView) v.findViewById(R.id.title);
+			mScheduleDate = (TextView) v.findViewById(R.id.scheduleDate);
 		}
 	}
 }
