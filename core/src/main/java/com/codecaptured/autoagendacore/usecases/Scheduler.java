@@ -1598,7 +1598,41 @@ public class Scheduler
 	 */
 	public static void reschedule()
 	{
-		// TODO 
+		// clear out all task times prior to rescheduling
+		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
+		{
+
+			Task myTask = entry.getValue();
+
+			// Set all the tasktimes to null for clearing them
+			myTask.setTaskTimes(null);
+
+			UUID id = myTask.getId();
+
+			// put tasks back into the taskMap
+			Schedule.getCurrentTasks().put(id, myTask);
+		}
+
+		// add task starting with highest priority going down to lowest
+		for(int i = 9; i > -1; i--)
+		{
+			for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
+			{
+				Task myTask = entry.getValue();
+				int priority = myTask.getPriorityLevel();
+
+				if( priority == i )
+				{
+					TimeBlock[] newTimes = addTask( myTask );
+
+					if( newTimes == null )
+					{
+						// cant add task
+						// TODO: notify operator
+					}
+				}
+			}
+		}
 	}
 
 
