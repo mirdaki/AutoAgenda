@@ -22,6 +22,7 @@ public class UserTask implements TaskInteractor.UserTask
 	int timeRequiredInMinutes;
 	int priorityLevel;
 	String[] tags;
+	TimeBlock thisTimeBlock;
 
 	// Values set by software
 	UUID id;

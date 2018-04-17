@@ -1,7 +1,10 @@
 package com.codecaptured.autoagenda;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -299,7 +302,7 @@ public class taskFragment extends DialogFragment
 	}
 
 	private void updateDate() {
-		String myFormat = "MM/dd/yy hh:mm";
+		String myFormat = "MM/dd/yy hh:mm aa";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
 		dateEditText.setText(sdf.format(calendar.getTime()));
@@ -339,8 +342,19 @@ public class taskFragment extends DialogFragment
 		String[] tempTags  = {"work"};
 		String[] tempTags2  = {"school", "gym"};
 
-
-  		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+		if(postIsProper() == true)
+		{
+			UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+			TaskInteractor.addTask(tempTask1);
+			for(int i = 0; i < tempTask1.timeBlocks.length; i++){
+				UserTask temp = tempTask1;
+				temp.thisTimeBlock = temp.timeBlocks[i];
+				ListFragment.finalTaskList.add(temp);
+			}
+			//ListFragment.finalTaskList.add(tempTask1);
+			ListFragment.mAdapter.notifyDataSetChanged();
+			dismiss();
+		}
 //		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
 //		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
 //		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
@@ -362,9 +376,23 @@ public class taskFragment extends DialogFragment
 //		ListFragment.finalTaskList.add(tempTask9);
 //		ListFragment.finalTaskList.add(tempTask10);
 
-		TaskInteractor.addTask(tempTask1);
-		ListFragment.finalTaskList.add(tempTask1);
-		ListFragment.mAdapter.notifyDataSetChanged();
+
+		else{
+			AlertDialog.Builder builder;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				builder = new AlertDialog.Builder(RootView.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+			} else {
+				builder = new AlertDialog.Builder(RootView.getContext());
+			}
+			builder.setTitle("Oops!")
+							.setMessage("Please fill in all of the required fields")
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+
+								}
+							})
+							.show();
+		}
 
 
 		//		TaskInteractor.addTask(tempTask1);
@@ -381,11 +409,24 @@ public class taskFragment extends DialogFragment
 		//System.out.println("Tasks have been added");
 
 		// TODO: Create a notification (just use the Task ID for nwo)
-		dismiss();
+
 	}
 
 	public void cancelButtonClicked(View view){
 		dismiss();
 	}
+
+	public boolean postIsProper(){
+		boolean isProper = true;
+		if (taskEditText.getText().toString().equals("") || timeRequiredEditText.getText().toString().equals("") || dateEditText.getText().toString().equals("") ||
+						taskEditText.getText().toString().equals(null) || timeRequiredEditText.getText().toString().equals(null) || dateEditText.getText().toString().equals(null))
+		{
+			isProper = false;
+		}
+
+		return isProper;
+	}
 }
+
+
 

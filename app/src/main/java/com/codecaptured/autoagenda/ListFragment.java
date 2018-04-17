@@ -1,5 +1,6 @@
 package com.codecaptured.autoagenda;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class ListFragment extends Fragment
 	RecyclerView mRecyclerView;
 	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
-	public static List<UserTask> finalTaskList, fullTaskList;
+	public static List<UserTask> finalTaskList, tagTaskList;
 
 	int check = 0, check2 = 0;
 
@@ -105,7 +106,7 @@ public class ListFragment extends Fragment
 
 		// Task list
 		finalTaskList = new ArrayList<UserTask>();
-		fullTaskList = new ArrayList<UserTask>();
+		tagTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
@@ -128,6 +129,10 @@ public class ListFragment extends Fragment
 				{
 					if(position == 0)
 						sortListByDate();
+					else if(position == 1)
+						sortListByPriority();
+					else if(position == 2)
+						sortByShortest();
 				}
 			} // to close the onItemSelected
 			public void onNothingSelected(AdapterView<?> parent)
@@ -225,18 +230,43 @@ public class ListFragment extends Fragment
 
 	public void sortListByDate(){
 		Collections.sort(finalTaskList, new Comparator<UserTask>() {
-			public int compare(UserTask o1, UserTask o2) {
-				if (o1.getDueDate() == null || o2.getDueDate() == null)
+			public int compare(UserTask u1, UserTask u2) {
+				if (u1.getDueDate() == null || u2.getDueDate() == null)
 					return 0;
-				return o1.getDueDate().compareTo(o2.getDueDate());
+				return u1.getDueDate().compareTo(u2.getDueDate());
 			}
+		});
+		reloadRecyclerView();
+	}
+
+	public void sortListByPriority()
+	{
+		Collections.sort(finalTaskList, new Comparator<UserTask>()
+		{
+			public int compare(UserTask u1, UserTask u2)
+			{
+				return u2.priorityLevel - u1.priorityLevel;
+			}
+
+		});
+		reloadRecyclerView();
+	}
+
+	public void sortByShortest(){
+		Collections.sort(finalTaskList, new Comparator<UserTask>()
+		{
+			public int compare(UserTask u1, UserTask u2)
+			{
+				return u1.timeRequiredInMinutes - u2.timeRequiredInMinutes;
+			}
+
 		});
 		reloadRecyclerView();
 	}
 
 	public void sortListByTag(String tagString){
 
-		finalTaskList = fullTaskList;
+		finalTaskList = tagTaskList;
 
 
 		if(tagString.equals("All tags"))
@@ -252,7 +282,16 @@ public class ListFragment extends Fragment
 		reloadRecyclerView();
 	}
 
-	public void reloadRecyclerView(){
+	public void reloadRecyclerView()
+	{
+
 		mAdapter.notifyDataSetChanged();
+		CalendarFragment fragment = (CalendarFragment)
+						getFragmentManager().findFragmentById(R.id.pager);
+
+		getFragmentManager().beginTransaction()
+						.detach(fragment)
+						.attach(fragment)
+						.commit();
 	}
 }

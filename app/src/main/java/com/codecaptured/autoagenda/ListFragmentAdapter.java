@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.TimeBlock;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
@@ -23,14 +26,29 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 	@Override
 	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
+		String priority;
+		String myFormat = "MM/dd/yy hh:mm aa";
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
+
 		UserTask userTask = taskList.get(i);
+
+		if(userTask.priorityLevel == 1)
+			priority = "Low";
+		else if(userTask.priorityLevel == 2)
+			priority = "Medium";
+		else
+			priority = "High";
+
 		taskViewHolder.mDescription.setText(userTask.getDescription());
 //		taskViewHolder.mCompleted.setText(userTask.getCompleted().toString());
-		taskViewHolder.mDueDate.setText("Due: " + userTask.getDueDate().toString());
+		taskViewHolder.mDueDate.setText("Due: " + sdf.format(userTask.getDueDate()).toString());
 		taskViewHolder.mTitle.setText(userTask.getTitle());
 
 		TimeBlock[] temp = userTask.getTimeBlocks();
-		taskViewHolder.mScheduleDate.setText("Scheduled for: " + temp[0].getStartTime().toString());
+		taskViewHolder.mScheduleDate.setText("Scheduled for: " + sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
+
+		taskViewHolder.mDuration.setText("Duration: " + userTask.getTimeRequiredInMinutes() + "mins");
+		taskViewHolder.mPriority.setText("Priority: " + priority);
 	}
 
 	@Override
@@ -48,6 +66,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		protected TextView mDueDate;
 		protected TextView mTitle;
 		protected TextView mScheduleDate;
+		protected TextView mDuration;
+		protected TextView mPriority;
 
 		public TaskViewHolder(View v) {
 			super(v);
@@ -56,6 +76,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			mDueDate = (TextView)  v.findViewById(R.id.dueDate);
 			mTitle = (TextView) v.findViewById(R.id.title);
 			mScheduleDate = (TextView) v.findViewById(R.id.scheduleDate);
+			mDuration = (TextView) v.findViewById(R.id.durationTextView);
+			mPriority = (TextView) v.findViewById(R.id.priorityTextView);
 		}
 	}
 }

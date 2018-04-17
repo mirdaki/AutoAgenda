@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		mAdapter = new HomePageAdapter(getSupportFragmentManager());
 		mPager = (android.support.v4.view.ViewPager)findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
+
 
 		//        mTextMessage = (TextView) findViewById(R.id.message);
 //		BottomNavigationView navigation = (BottomNavigationView) findViewById(com.codecaptured.autoagenda.R.id.navigation);

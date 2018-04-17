@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.github.tibolte.agendacalendarview.AgendaCalendarView;
 import com.github.tibolte.agendacalendarview.CalendarPickerController;
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
@@ -18,6 +19,7 @@ import com.github.tibolte.agendacalendarview.models.DayItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -191,14 +193,33 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 		BaseCalendarEvent event1 = new BaseCalendarEvent("Gym", "A wonderful journey!", "Iceland",
 						ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), startTime1, endTime1, true);
 		eventList.add(event1);
+//
+//		Calendar startTime2 = Calendar.getInstance();
+//		startTime2.add(Calendar.DAY_OF_YEAR, 1);
+//		Calendar endTime2 = Calendar.getInstance();
+//		endTime2.add(Calendar.DAY_OF_YEAR, 3);
+//		BaseCalendarEvent event2 = new BaseCalendarEvent("Homework", "A beautiful small town", "Dalvík",
+//						ContextCompat.getColor(RootView.getContext(), R.color.colorPrimary), startTime2, endTime2, true);
+//		eventList.add(event2);
 
-		Calendar startTime2 = Calendar.getInstance();
-		startTime2.add(Calendar.DAY_OF_YEAR, 1);
-		Calendar endTime2 = Calendar.getInstance();
-		endTime2.add(Calendar.DAY_OF_YEAR, 3);
-		BaseCalendarEvent event2 = new BaseCalendarEvent("Homework", "A beautiful small town", "Dalvík",
-						ContextCompat.getColor(RootView.getContext(), R.color.colorPrimary), startTime2, endTime2, true);
-		eventList.add(event2);
+		for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
+			UserTask currTask = ListFragment.finalTaskList.get(i);
+			TimeBlock[] timeBlocks = currTask.getTimeBlocks();
+
+			for(int j = 0; j < timeBlocks.length; j++)
+			{
+				BaseCalendarEvent tempEvent = new BaseCalendarEvent(currTask.getTitle(), "A wonderful journey!", currTask.getTimeRequiredInMinutes() + " min",
+								ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), toCalendar(timeBlocks[j].getStartTime()), toCalendar(timeBlocks[j].getStartTime()), true);
+				eventList.add(tempEvent);
+			}
+		}
+
+	}
+
+	public static Calendar toCalendar(Date date){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal;
 	}
 
 
