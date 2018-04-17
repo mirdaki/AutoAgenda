@@ -19,7 +19,7 @@ public class TaskInteractor
 	 * Add a new task to be scheduled
 	 * @param newTask The new task
 	 */
-	public static void addTask(UserTask newTask)
+	public static boolean addTask(UserTask newTask)
 	{
 		// Create a new ID
 		UUID id = UUID.randomUUID();
@@ -38,11 +38,31 @@ public class TaskInteractor
 			new Schedule();
 		}
 
-		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		// Timeblock for debug
+		TimeBlock[] tb = {};
 
-		// Updated user task
-		newTask.setTimeBlocks(task.getTaskTimes());
+		// Add to scheduler to decide where to put it in the schedule
+		tb = Scheduler.addTask(task);
+
+		if (tb != null)
+		{
+			System.out.println("Task start date:   " + tb[0].getStartTime());
+
+			System.out.println("Mins Required:     " + tb[0].getNumberOfMinutes());
+
+			System.out.println(" ");
+
+			// Updated user task
+			newTask.setTimeBlocks(task.getTaskTimes());
+
+			return true;
+		}
+		else
+		{
+			//System.out.println("Timeblock is null.");
+		}
+
+		return false;
 	}
 
 	/**
@@ -56,7 +76,7 @@ public class TaskInteractor
 		newTask.setId(originalTask.getId());
 
 		// Remove the old task
-		Scheduler.removeTask(originalTask.getId(), Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.removeTask(originalTask.getId());
 
 		// Make the task
 		Task task = new Task(newTask.getId(), newTask.getTitle(), newTask.getDescription(),
@@ -64,7 +84,7 @@ public class TaskInteractor
 						newTask.getPriorityLevel(), newTask.getTags());
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task, Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.addTask(task);
 	}
 
 	/**
@@ -74,7 +94,7 @@ public class TaskInteractor
 	public static void removeTask(UserTask oldTask)
 	{
 		// Delete old task
-		Scheduler.removeTask(oldTask.getId(), Schedule.getCurrentTasks(), Schedule.getCurrentEvents());
+		Scheduler.removeTask(oldTask.getId());
 	}
 
 	/**

@@ -1,8 +1,13 @@
 package com.codecaptured.autoagendacore.usecases;
 
 import com.codecaptured.autoagendacore.entities.Event;
+import com.codecaptured.autoagendacore.entities.RecurrenceType;
+import com.codecaptured.autoagendacore.entities.Schedule;
 import com.codecaptured.autoagendacore.entities.TimeBlock;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 import java.util.Date;
 
@@ -32,6 +37,49 @@ public class EventInteractor
 		// Add to scheduler to decide where to put it in the schedule
 		Scheduler.addEvent(event);
 	}
+
+	/**
+	 * Adds Sleeping as an event to the schedule.
+	 */
+	public static void addSleepingEvent()
+	{
+		// Create a new ID
+		UUID id = UUID.randomUUID();
+
+		// Fix error if Schedule has not be instantiated
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
+		// Hardcoded event info
+		// Sleep 7 Hours
+		int sleepingHours = 420;
+		Calendar eventTime = new GregorianCalendar(2018,3,12,23,30,00);
+
+		// Sleep from 11:30 - 6:30 each day
+		Date startTimeEvent = eventTime.getTime();
+		TimeBlock eventTB = new TimeBlock(startTimeEvent, sleepingHours);
+
+		Event event = new Event(id, "Sleeping", "Time which user sleeps", eventTB, 10, null);
+
+		//RecurrenceType recurrenceType, Date recurrenceStartDate, Date recurrenceEndDate,
+		//int hourOfDay, int minOfHour,
+		//boolean monday, boolean tuesday, boolean wednesday, boolean thursday,
+		//boolean friday, boolean saturday, boolean sunday, int dayOfMonth, int monthOfYear)
+
+		Calendar eventEndTime = new GregorianCalendar(2018,4,1,6,30,00);
+		Date endTimeEvent = eventEndTime.getTime();
+
+		event.setRecurrenceInfo(RecurrenceType.DAILY, startTimeEvent, endTimeEvent, 23, 30, false,
+						false, false, false, false, false, false, -1,
+						-1);
+
+		// Add to scheduler to decide where to put it in the schedule
+		Scheduler.addEvent(event);
+	}
+
+
 
 	/**
 	 * Change an existing scheduled event and reschedule it if using the default date/time
@@ -133,7 +181,7 @@ public class EventInteractor
 		String getDescription();
 		void setDescription(String description);
 		TimeBlock getEventTime();
-		void setEventTime(TimeBlock timeBlocks);
+		void setEventTime(TimeBlock eventTime);
 		int getPriorityLevel();
 		void setPriorityLevel(int priorityLevel);
 		String[] getTags();

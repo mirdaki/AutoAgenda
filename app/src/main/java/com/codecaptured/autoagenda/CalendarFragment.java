@@ -4,9 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.tibolte.agendacalendarview.AgendaCalendarView;
+import com.github.tibolte.agendacalendarview.CalendarPickerController;
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
+import com.github.tibolte.agendacalendarview.models.CalendarEvent;
+import com.github.tibolte.agendacalendarview.models.DayItem;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -18,12 +31,14 @@ import static android.content.ContentValues.TAG;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment implements com.prolificinteractive.materialcalendarview.OnDateSelectedListener, com.prolificinteractive.materialcalendarview.OnMonthChangedListener
+public class CalendarFragment extends Fragment implements com.prolificinteractive.materialcalendarview.OnDateSelectedListener, com.prolificinteractive.materialcalendarview.OnMonthChangedListener, CalendarPickerController
 {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
+
+	private static final String LOG_TAG = "Cal";
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
@@ -35,6 +50,8 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 	private static final java.text.DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
 	private com.prolificinteractive.materialcalendarview.MaterialCalendarView mCalendarView;
 	private android.widget.TextView tempTextView;
+
+	public AgendaCalendarView mAgendaCalendarView;
 
 	private OnFragmentInteractionListener mListener;
 
@@ -79,11 +96,23 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 	{
 
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_calendar, container, false);
-		tempTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.calTextView);
-		mCalendarView = (com.prolificinteractive.materialcalendarview.MaterialCalendarView) RootView.findViewById(R.id.calendarView);
-		mCalendarView.setOnDateChangedListener(this);
+//		tempTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.calTextView);
+//		mCalendarView = (com.prolificinteractive.materialcalendarview.MaterialCalendarView) RootView.findViewById(R.id.calendarView);
+//		mCalendarView.setOnDateChangedListener(this);
 
 
+		Calendar minDate = Calendar.getInstance();
+		Calendar maxDate = Calendar.getInstance();
+
+		minDate.add(Calendar.MONTH, -2);
+		minDate.set(Calendar.DAY_OF_MONTH, 1);
+		maxDate.add(Calendar.YEAR, 1);
+
+		List<CalendarEvent> eventList = new ArrayList<>();
+		mockList(eventList);
+
+		mAgendaCalendarView = RootView.findViewById(R.id.agenda_calendar_view);
+		mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
 
 
 		// Inflate the layout for this fragment
@@ -154,4 +183,40 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 		// TODO: Update argument type and name
 		void onFragmentInteraction(Uri uri);
 	}
+
+	private void mockList(List<CalendarEvent> eventList) {
+		Calendar startTime1 = Calendar.getInstance();
+		Calendar endTime1 = Calendar.getInstance();
+		endTime1.add(Calendar.MONTH, 1);
+		BaseCalendarEvent event1 = new BaseCalendarEvent("Gym", "A wonderful journey!", "Iceland",
+						ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), startTime1, endTime1, true);
+		eventList.add(event1);
+
+		Calendar startTime2 = Calendar.getInstance();
+		startTime2.add(Calendar.DAY_OF_YEAR, 1);
+		Calendar endTime2 = Calendar.getInstance();
+		endTime2.add(Calendar.DAY_OF_YEAR, 3);
+		BaseCalendarEvent event2 = new BaseCalendarEvent("Homework", "A beautiful small town", "Dalvík",
+						ContextCompat.getColor(RootView.getContext(), R.color.colorPrimary), startTime2, endTime2, true);
+		eventList.add(event2);
+	}
+
+
+	@Override
+	public void onDaySelected(DayItem dayItem) {
+		Log.d(LOG_TAG, String.format("Selected day: %s", dayItem));
+	}
+
+	@Override
+	public void onEventSelected(CalendarEvent event) {
+		Log.d(LOG_TAG, String.format("Selected event: %s", event));
+	}
+
+
+	@Override
+	public void onScrollToDate(Calendar calendar)
+	{
+
+	}
 }
+

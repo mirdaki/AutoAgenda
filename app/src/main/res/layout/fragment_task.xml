@@ -25,48 +25,56 @@
         android:layout_below="@id/create_message"
         android:maxLines="1"
         android:maxLength="30"
-        android:hint="Task" />
+        android:hint="Task Name" />
 
     <EditText
         android:id="@+id/dateEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date"
+        android:hint="Time &amp; Date"
         android:inputType="none"
         android:focusable="false"
         android:layout_below="@id/taskEditText"/>
 
+    <!--<EditText-->
+        <!--android:id="@+id/timeEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Time"-->
+        <!--android:inputType="none"-->
+        <!--android:focusable="false"-->
+        <!--android:layout_below="@id/dateEditText"/>-->
+
     <EditText
-        android:id="@+id/timeEditText"
+        android:id="@+id/timeRequiredEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Time"
-        android:inputType="none"
-        android:focusable="false"
+        android:hint="Estimated Length (minutes)"
+        android:inputType="number"
         android:layout_below="@id/dateEditText"/>
 
-    <TextView
-        android:id="@+id/repeatTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Repeat"
-        android:layout_below="@id/timeEditText"
-        android:paddingBottom="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--<TextView-->
+        <!--android:id="@+id/repeatTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Repeat"-->
+        <!--android:layout_below="@id/timeRequiredEditText"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
 
-    <Spinner
-        android:id="@+id/repeatSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/repeatTextView"
-        android:layout_toRightOf="@id/repeatTextView"/>
+    <!--<Spinner-->
+        <!--android:id="@+id/repeatSpinner"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/repeatTextView"-->
+        <!--android:layout_toRightOf="@id/repeatTextView"/>-->
 
     <TextView
         android:id="@+id/priorityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Priority"
-        android:layout_below="@id/repeatTextView"
+        android:layout_below="@id/timeRequiredEditText"
         android:paddingBottom="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -77,21 +85,21 @@
         android:layout_alignBaseline="@id/priorityTextView"
         android:layout_toRightOf="@id/priorityTextView"/>
 
-    <TextView
-        android:id="@+id/reminderTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reminder"
-        android:layout_below="@id/priorityTextView"
-        android:paddingBottom="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--<TextView-->
+        <!--android:id="@+id/reminderTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Reminder"-->
+        <!--android:layout_below="@id/priorityTextView"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
 
-    <Spinner
-        android:id="@+id/reminderSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/reminderTextView"
-        android:layout_toRightOf="@id/reminderTextView"/>
+    <!--<Spinner-->
+        <!--android:id="@+id/reminderSpinner"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/reminderTextView"-->
+        <!--android:layout_toRightOf="@id/reminderTextView"/>-->
 
 
     <TextView
@@ -99,12 +107,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
-        android:layout_below="@id/reminderTextView"
+        android:layout_below="@id/priorityTextView"
         android:paddingBottom="50dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="50dp"
