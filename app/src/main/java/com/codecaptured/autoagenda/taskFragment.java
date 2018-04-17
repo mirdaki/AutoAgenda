@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import android.content.Intent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -398,6 +399,7 @@ public class taskFragment extends DialogFragment
 			System.out.println("Task has been added");
 			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
 			toast1.show();
+			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
 		}
 		else
 		{
