@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import org.w3c.dom.Text;
 
@@ -23,7 +24,9 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 
 
-	private List<UserTask> taskList;
+	public List<UserTask> taskList;
+	UserTask userTask;
+	int currPosition;
 
 	public static View ListFragmentAdapterView;
 
@@ -42,7 +45,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		String myFormat = "E, MMM dd 'at' hh:mm aa";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
-		UserTask userTask = taskList.get(i);
+		userTask = taskList.get(i);
+		currPosition = i;
 
 		if(userTask.priorityLevel == 1)
 			priority = "Low";
@@ -53,11 +57,11 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 		taskViewHolder.mDescription.setText(userTask.getDescription());
 //		taskViewHolder.mCompleted.setText(userTask.getCompleted().toString());
-		taskViewHolder.mDueDate.setText("Due: " + sdf.format(userTask.getDueDate()).toString());
+		taskViewHolder.mDueDate.setText("(Due: " + sdf.format(userTask.getDueDate()).toString() + ")");
 		taskViewHolder.mTitle.setText(userTask.getTitle());
 
 		TimeBlock[] temp = userTask.getTimeBlocks();
-		taskViewHolder.mScheduleDate.setText("Scheduled for: " + sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
+		taskViewHolder.mScheduleDate.setText(sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
 
 		taskViewHolder.mDuration.setText("Duration: " + userTask.getTimeRequiredInMinutes() + "mins");
 		taskViewHolder.mPriority.setText("Priority: " + priority);
@@ -128,7 +132,9 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-
+								TaskInteractor.removeTask(userTask);
+								taskList.remove(currPosition);
+								ListFragment.reloadRecyclerView();
 							}
 						})
 						.setNegativeButton("NO", new DialogInterface.OnClickListener() {

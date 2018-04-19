@@ -14,19 +14,35 @@
         android:id="@+id/create_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create a new task or event"
+        android:text="New item"
         android:padding="5dp"
         android:textColor="@color/theme_primary_dark"
         android:textSize="25dp"/>
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/radio_buttons"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                android:layout_below="@id/create_message"
+                 android:orientation="vertical">
+        <RadioButton android:id="@+id/radio_task"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Task - Schedule for me"/>
+        <RadioButton android:id="@+id/radio_event"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Event - Schedule at specific time"/>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/taskEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/create_message"
+        android:layout_below="@id/radio_buttons"
         android:maxLines="1"
         android:maxLength="30"
-        android:hint="Task Name" />
+        android:hint="Name" />
 
     <EditText
         android:id="@+id/dateEditText"

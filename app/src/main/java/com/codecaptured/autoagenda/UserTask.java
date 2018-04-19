@@ -23,6 +23,7 @@ public class UserTask implements TaskInteractor.UserTask
 	int priorityLevel;
 	String[] tags;
 	TimeBlock thisTimeBlock;
+	boolean isEvent = false;
 
 	// Values set by software
 	UUID id;

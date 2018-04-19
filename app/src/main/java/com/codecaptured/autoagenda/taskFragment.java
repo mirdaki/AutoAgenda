@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -92,9 +94,12 @@ public class taskFragment extends DialogFragment
 	/** Cancel Button */
 	Button cancelButton;
 
-	/** ADd Button */
+	/** Add Button */
 	Button addButton;
 
+	/** Radio */
+	RadioGroup mRadioGroup;
+	RadioButton mRadioTask, mRadioEvent;
 
 	/** Date picker dialog */
 	android.app.DatePickerDialog.OnDateSetListener date;
@@ -189,27 +194,6 @@ public class taskFragment extends DialogFragment
 
 		};
 
-//		timeEditText.setOnClickListener(new android.view.View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
-//				int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
-//				int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
-//				android.app.TimePickerDialog mTimePicker;
-//				mTimePicker = new android.app.TimePickerDialog(getContext(), new android.app.TimePickerDialog.OnTimeSetListener() {
-//					@Override
-//					public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//						timeEditText.setText( selectedHour + ":" + selectedMinute);
-//					}
-//				}, hour, minute, false);//Yes 24 hour time
-//				mTimePicker.setTitle("Select Time");
-//				mTimePicker.show();
-//
-//			}
-//		});
-
 //		// Setup repeat spinner
 //		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
 //		ArrayAdapter<CharSequence> repeatAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.repeatSpinnerArray, android.R.layout.simple_spinner_item);
@@ -244,6 +228,26 @@ public class taskFragment extends DialogFragment
 			{
 				addButtonClicked(view);
 			}
+		});
+
+		// Set up radio buttons
+		mRadioGroup = (RadioGroup) RootView.findViewById(R.id.radio_buttons);
+		mRadioTask = (RadioButton) RootView.findViewById(R.id.radio_task);
+		mRadioEvent = (RadioButton) RootView.findViewById(R.id.radio_event);
+		mRadioGroup.check(R.id.radio_task);
+
+		mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+					case R.id.radio_task:
+						dateEditText.setHint("Due Date");
+						break;
+					case R.id.radio_event:
+						dateEditText.setHint("Scheduled Date");
+						break;
+				}
+			}
+
 		});
 
 		return RootView;
@@ -310,34 +314,6 @@ public class taskFragment extends DialogFragment
 
 	public void addButtonClicked(View view){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-//		Date tempDate1 = new Date();
-//		Date tempDate2 = new Date();
-//		Date tempDate3 = new Date();
-//		Date tempDate4 = new Date();
-//		Date tempDate5 = new Date();
-//		Date tempDate6 = new Date();
-//		Date tempDate7 = new Date();
-//		Date tempDate8 = new Date();
-//		Date tempDate9 = new Date();
-//		Date tempDate10 = new Date();
-//
-//		try
-//		{
-//			tempDate1 = sdf.parse("13/9/2018 12:00:00");
-//			tempDate2 = sdf.parse("13/8/2018 12:00:00");
-//			tempDate3 = sdf.parse("13/7/2018 12:00:00");
-//			tempDate4 = sdf.parse("13/6/2018 12:00:00");
-//			tempDate5 = sdf.parse("13/5/2018 12:00:00");
-//			tempDate6 = sdf.parse("13/10/2018 12:00:00");
-//			tempDate7 = sdf.parse("13/11/2018 12:00:00");
-//			tempDate8 = sdf.parse("13/12/2018 12:00:00");
-//			tempDate9 = sdf.parse("11/12/2018 12:00:00");
-//			tempDate10 = sdf.parse("22/7/2018 12:00:00");
-//		}
-//		catch (ParseException e)
-//		{
-//			e.printStackTrace();
-//		}
 
 		String[] tempTags  = {"work"};
 		String[] tempTags2  = {"school", "gym"};
@@ -346,6 +322,10 @@ public class taskFragment extends DialogFragment
 		{
 			UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
 			TaskInteractor.addTask(tempTask1);
+			if(mRadioTask.isChecked())
+				tempTask1.isEvent = false;
+			else
+				tempTask1.isEvent = true;
 			for(int i = 0; i < tempTask1.timeBlocks.length; i++){
 				UserTask temp = tempTask1;
 				temp.thisTimeBlock = temp.timeBlocks[i];
@@ -355,26 +335,6 @@ public class taskFragment extends DialogFragment
 			ListFragment.reloadRecyclerView();
 			dismiss();
 		}
-//		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
-//		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
-//		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
-//		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
-//		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 1, tempTags);
-//		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
-//		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 2, tempTags2);
-//		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 1, tempTags2);
-//		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags2);
-//
-//		ListFragment.finalTaskList.add(tempTask1);
-//		ListFragment.finalTaskList.add(tempTask2);
-//		ListFragment.finalTaskList.add(tempTask3);
-//		ListFragment.finalTaskList.add(tempTask4);
-//		ListFragment.finalTaskList.add(tempTask5);
-//		ListFragment.finalTaskList.add(tempTask6);
-//		ListFragment.finalTaskList.add(tempTask7);
-//		ListFragment.finalTaskList.add(tempTask8);
-//		ListFragment.finalTaskList.add(tempTask9);
-//		ListFragment.finalTaskList.add(tempTask10);
 
 
 		else{
@@ -394,19 +354,6 @@ public class taskFragment extends DialogFragment
 							.show();
 		}
 
-
-		//		TaskInteractor.addTask(tempTask1);
-//		TaskInteractor.addTask(tempTask2);
-//		TaskInteractor.addTask(tempTask3);
-//		TaskInteractor.addTask(tempTask4);
-//		TaskInteractor.addTask(tempTask5);
-//		TaskInteractor.addTask(tempTask6);
-//		TaskInteractor.addTask(tempTask7);
-//		TaskInteractor.addTask(tempTask8);
-//		TaskInteractor.addTask(tempTask9);
-//		TaskInteractor.addTask(tempTask10);
-
-		//System.out.println("Tasks have been added");
 
 		// TODO: Create a notification (just use the Task ID for nwo)
 
