@@ -210,6 +210,7 @@ public class ListFragment extends Fragment
 		finalTaskList.add(temp);
 
 		calTaskList = finalTaskList;
+		reloadRecyclerView();
 		return RootView;
 	}
 

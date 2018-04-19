@@ -47,7 +47,7 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 	private String mParam2;
 
 	View RootView;
-
+	boolean hasLoaded = false;
 
 	private static final java.text.DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
 	private android.widget.TextView tempTextView;
@@ -110,6 +110,7 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 		eventList = new ArrayList<>();
 		mockList(eventList);
+		hasLoaded = true;
 
 		mAgendaCalendarView = RootView.findViewById(R.id.agenda_calendar_view);
 		mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
@@ -226,8 +227,11 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 	public void refreshCal()
 	{
-		mockList(eventList);
-		mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+		if(hasLoaded)
+		{
+			mockList(eventList);
+			mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+		}
 	}
 }
 

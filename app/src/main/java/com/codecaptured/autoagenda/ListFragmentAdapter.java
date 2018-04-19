@@ -125,7 +125,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			builder = new AlertDialog.Builder(ListFragment.RootView.getContext());
 		}
 		builder.setTitle("Delete")
-						.setMessage("Are you sure you want to do this?")
+						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 

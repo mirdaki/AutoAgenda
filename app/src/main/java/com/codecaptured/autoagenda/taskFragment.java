@@ -144,7 +144,7 @@ public class taskFragment extends DialogFragment
 		//		testTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.textView);
 		//		testTextView.setText(mParam2);
 		dateEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.dateEditText);
-		timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
+		//timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
 
 		taskEditText = (android.widget.EditText) RootView.findViewById(R.id.taskEditText);
 		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
@@ -310,34 +310,34 @@ public class taskFragment extends DialogFragment
 
 	public void addButtonClicked(View view){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		Date tempDate1 = new Date();
-		Date tempDate2 = new Date();
-		Date tempDate3 = new Date();
-		Date tempDate4 = new Date();
-		Date tempDate5 = new Date();
-		Date tempDate6 = new Date();
-		Date tempDate7 = new Date();
-		Date tempDate8 = new Date();
-		Date tempDate9 = new Date();
-		Date tempDate10 = new Date();
-
-		try
-		{
-			tempDate1 = sdf.parse("13/9/2018 12:00:00");
-			tempDate2 = sdf.parse("13/8/2018 12:00:00");
-			tempDate3 = sdf.parse("13/7/2018 12:00:00");
-			tempDate4 = sdf.parse("13/6/2018 12:00:00");
-			tempDate5 = sdf.parse("13/5/2018 12:00:00");
-			tempDate6 = sdf.parse("13/10/2018 12:00:00");
-			tempDate7 = sdf.parse("13/11/2018 12:00:00");
-			tempDate8 = sdf.parse("13/12/2018 12:00:00");
-			tempDate9 = sdf.parse("11/12/2018 12:00:00");
-			tempDate10 = sdf.parse("22/7/2018 12:00:00");
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
+//		Date tempDate1 = new Date();
+//		Date tempDate2 = new Date();
+//		Date tempDate3 = new Date();
+//		Date tempDate4 = new Date();
+//		Date tempDate5 = new Date();
+//		Date tempDate6 = new Date();
+//		Date tempDate7 = new Date();
+//		Date tempDate8 = new Date();
+//		Date tempDate9 = new Date();
+//		Date tempDate10 = new Date();
+//
+//		try
+//		{
+//			tempDate1 = sdf.parse("13/9/2018 12:00:00");
+//			tempDate2 = sdf.parse("13/8/2018 12:00:00");
+//			tempDate3 = sdf.parse("13/7/2018 12:00:00");
+//			tempDate4 = sdf.parse("13/6/2018 12:00:00");
+//			tempDate5 = sdf.parse("13/5/2018 12:00:00");
+//			tempDate6 = sdf.parse("13/10/2018 12:00:00");
+//			tempDate7 = sdf.parse("13/11/2018 12:00:00");
+//			tempDate8 = sdf.parse("13/12/2018 12:00:00");
+//			tempDate9 = sdf.parse("11/12/2018 12:00:00");
+//			tempDate10 = sdf.parse("22/7/2018 12:00:00");
+//		}
+//		catch (ParseException e)
+//		{
+//			e.printStackTrace();
+//		}
 
 		String[] tempTags  = {"work"};
 		String[] tempTags2  = {"school", "gym"};
