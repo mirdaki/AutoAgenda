@@ -208,14 +208,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		taskFragment.show(fm, "fragment_task");
 	}
 
+	@Override
 	public void needToRefresh()
 	{
-		Fragment frg = null;
-		frg = getFragmentManager().findFragmentByTag("Your_Fragment_TAG");
-		final FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.detach(frg);
-		ft.attach(frg);
-		ft.commit();
-	}
 
+		CalendarFragment calFrag = (CalendarFragment)
+						getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 1);
+			calFrag.refreshCal();
+	}
 }

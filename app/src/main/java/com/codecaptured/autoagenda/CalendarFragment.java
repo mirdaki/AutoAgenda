@@ -56,6 +56,9 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 	private OnFragmentInteractionListener mListener;
 
+	public List<CalendarEvent> eventList;
+	public Calendar minDate, maxDate;
+
 	public CalendarFragment()
 	{
 		// Required empty public constructor
@@ -98,14 +101,14 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_calendar, container, false);
 
-		Calendar minDate = Calendar.getInstance();
-		Calendar maxDate = Calendar.getInstance();
+		minDate = Calendar.getInstance();
+		maxDate = Calendar.getInstance();
 
 		minDate.add(Calendar.MONTH, -2);
 		minDate.set(Calendar.DAY_OF_MONTH, 1);
 		maxDate.add(Calendar.YEAR, 1);
 
-		List<CalendarEvent> eventList = new ArrayList<>();
+		eventList = new ArrayList<>();
 		mockList(eventList);
 
 		mAgendaCalendarView = RootView.findViewById(R.id.agenda_calendar_view);
@@ -164,12 +167,13 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 
 	private void mockList(List<CalendarEvent> eventList) {
-		Calendar startTime1 = Calendar.getInstance();
-		Calendar endTime1 = Calendar.getInstance();
-		endTime1.add(Calendar.MONTH, 1);
-		BaseCalendarEvent event1 = new BaseCalendarEvent("Gym", "A wonderful journey!", "Iceland",
-						ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), startTime1, endTime1, true);
-		eventList.add(event1);
+		eventList.clear();
+//		Calendar startTime1 = Calendar.getInstance();
+//		Calendar endTime1 = Calendar.getInstance();
+//		endTime1.add(Calendar.MONTH, 1);
+//		BaseCalendarEvent event1 = new BaseCalendarEvent("Gym", "A wonderful journey!", "Iceland",
+//						ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), startTime1, endTime1, true);
+//		eventList.add(event1);
 
 		ListFragment.sortCalListByDate();
 		String myFormat = "hh:mm aa";
@@ -220,6 +224,10 @@ public class CalendarFragment extends Fragment implements CalendarPickerControll
 
 	}
 
-
+	public void refreshCal()
+	{
+		mockList(eventList);
+		mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+	}
 }
 
