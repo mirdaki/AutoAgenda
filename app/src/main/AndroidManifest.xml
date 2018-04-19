@@ -19,11 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".taskActivity"
-            android:theme="@style/AppTheme.popupTheme"
-            ></activity>
-
+        <activity
+            android:name=".taskActivity"
+            android:theme="@style/AppTheme.popupTheme"/>
     </application>
 
 </manifest>

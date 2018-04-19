@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,14 @@ import java.util.List;
  */
 public class ListFragment extends Fragment
 {
+
+	// Container Activity must implement this interface
+	public interface TasksListener {
+		public void needToRefresh();
+	}
+
+	public static TasksListener mCallback;
+
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -60,7 +69,7 @@ public class ListFragment extends Fragment
 	public static RecyclerView mRecyclerView;
 	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
-	public static List<UserTask> finalTaskList, tagTaskList;
+	public static List<UserTask> finalTaskList, tagTaskList, calTaskList;
 
 	int check = 0, check2 = 0;
 
@@ -110,6 +119,7 @@ public class ListFragment extends Fragment
 		// Task list
 		finalTaskList = new ArrayList<UserTask>();
 		tagTaskList = new ArrayList<UserTask>();
+		calTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
@@ -179,7 +189,27 @@ public class ListFragment extends Fragment
 			}
 		});
 
+		String[] temps = {"hi"};
 
+
+		Calendar time1 = Calendar.getInstance();
+		time1.add(Calendar.HOUR, 1);
+
+		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 99, 1, temps);
+		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 99);
+		TimeBlock[] timeBlock2 = {tblock2};
+		temp2.setTimeBlocks(timeBlock2);
+		temp2.thisTimeBlock = tblock2;
+		finalTaskList.add(temp2);
+
+		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 5, 1, temps);
+		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 5);
+		TimeBlock[] timeBlock = {tblock};
+		temp.setTimeBlocks(timeBlock);
+		temp.thisTimeBlock = tblock;
+		finalTaskList.add(temp);
+
+		calTaskList = finalTaskList;
 		return RootView;
 	}
 
@@ -203,6 +233,15 @@ public class ListFragment extends Fragment
 		{
 			throw new RuntimeException(context.toString()
 							+ " must implement OnFragmentInteractionListener");
+		}
+
+		// This makes sure that the container activity has implemented
+		// the callback interface. If not, it throws an exception
+		try {
+			mCallback = (TasksListener) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString()
+							+ " must implement TasksListener");
 		}
 	}
 
@@ -245,12 +284,23 @@ public class ListFragment extends Fragment
 	public void sortListByDate(){
 		Collections.sort(finalTaskList, new Comparator<UserTask>() {
 			public int compare(UserTask u1, UserTask u2) {
-				if (u1.getDueDate() == null || u2.getDueDate() == null)
+				if (u1.thisTimeBlock.getStartTime() == null || u2.thisTimeBlock.getStartTime() == null)
 					return 0;
-				return u1.getDueDate().compareTo(u2.getDueDate());
+				return u1.thisTimeBlock.getStartTime().compareTo(u2.thisTimeBlock.getStartTime());
 			}
 		});
 		reloadRecyclerView();
+	}
+
+	public static void sortCalListByDate(){
+		Collections.sort(calTaskList, new Comparator<UserTask>() {
+			public int compare(UserTask u1, UserTask u2) {
+				if (u1.thisTimeBlock.getStartTime() == null || u2.thisTimeBlock.getStartTime() == null)
+					return 0;
+				return u1.thisTimeBlock.getStartTime().compareTo(u2.thisTimeBlock.getStartTime());
+			}
+		});
+		//reloadRecyclerView();
 	}
 
 	public void sortListByPriority()
@@ -298,6 +348,7 @@ public class ListFragment extends Fragment
 
 	public static void reloadRecyclerView()
 	{
+		calTaskList = finalTaskList;
 
 		if (finalTaskList.isEmpty()) {
 			mRecyclerView.setVisibility(View.GONE);
@@ -310,6 +361,8 @@ public class ListFragment extends Fragment
 
 
 		mAdapter.notifyDataSetChanged();
+		mCallback.needToRefresh();
+
 
 
 

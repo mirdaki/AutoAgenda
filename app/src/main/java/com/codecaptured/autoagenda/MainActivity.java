@@ -1,9 +1,12 @@
 package com.codecaptured.autoagenda;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -13,7 +16,8 @@ import java.util.List;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity implements com.codecaptured.autoagenda.taskFragment.OnFragmentInteractionListener,
 				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener,
-				ListFragment.OnFragmentInteractionListener
+				ListFragment.OnFragmentInteractionListener,
+				ListFragment.TasksListener
 {
 
 	/** Number of pages in the view pager */
@@ -136,6 +140,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 			else
 				return "Calendar";
 		}
+
+
 	}
 
 	public static class ArrayListFragment extends android.support.v4.app.ListFragment
@@ -197,38 +203,19 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
 	public void onButtonShowPopupWindowClick(android.view.View view) {
 
-		//		// get a reference to the already created main layout
-		//		android.widget.RelativeLayout mainLayout = (android.widget.RelativeLayout)
-		//						findViewById(com.codecaptured.autoagenda.R.id.mainRelativeLayout);
-		//
-		//		// inflate the layout of the popup window
-		//		android.view.LayoutInflater inflater = (android.view.LayoutInflater)
-		//						getSystemService(LAYOUT_INFLATER_SERVICE);
-		//		android.view.View popupView = inflater.inflate(com.codecaptured.autoagenda.R.layout.activity_task, null);
-		//
-		//		// create the popup window
-		//		int width = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
-		//		int height = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
-		//		boolean focusable = true; // lets taps outside the popup also dismiss it
-		//		final android.widget.PopupWindow popupWindow = new android.widget.PopupWindow(popupView, width, height, focusable);
-		//
-		//		// show the popup window
-		//		popupWindow.showAtLocation(mainLayout, android.view.Gravity.CENTER, 0, 0);
-		//
-		//		// dismiss the popup window when touched
-		//		popupView.setOnTouchListener(new android.view.View.OnTouchListener() {
-		//			@Override
-		//			public boolean onTouch(android.view.View v, android.view.MotionEvent event) {
-		//				popupWindow.dismiss();
-		//				return true;
-		//			}
-		//		});
-
-		//startActivity(new android.content.Intent(MainActivity.this, taskActivity.class));
-
 		android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
 		taskFragment taskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
 		taskFragment.show(fm, "fragment_task");
+	}
+
+	public void needToRefresh()
+	{
+		Fragment frg = null;
+		frg = getFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+		final FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.detach(frg);
+		ft.attach(frg);
+		ft.commit();
 	}
 
 }

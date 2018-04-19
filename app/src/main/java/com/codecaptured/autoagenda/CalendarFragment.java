@@ -33,7 +33,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment implements com.prolificinteractive.materialcalendarview.OnDateSelectedListener, com.prolificinteractive.materialcalendarview.OnMonthChangedListener, CalendarPickerController
+public class CalendarFragment extends Fragment implements CalendarPickerController
 {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +50,6 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 
 
 	private static final java.text.DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
-	private com.prolificinteractive.materialcalendarview.MaterialCalendarView mCalendarView;
 	private android.widget.TextView tempTextView;
 
 	public AgendaCalendarView mAgendaCalendarView;
@@ -98,10 +97,6 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 	{
 
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_calendar, container, false);
-//		tempTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.calTextView);
-//		mCalendarView = (com.prolificinteractive.materialcalendarview.MaterialCalendarView) RootView.findViewById(R.id.calendarView);
-//		mCalendarView.setOnDateChangedListener(this);
-
 
 		Calendar minDate = Calendar.getInstance();
 		Calendar maxDate = Calendar.getInstance();
@@ -119,25 +114,6 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 
 		// Inflate the layout for this fragment
 		return RootView;
-	}
-
-	@Override
-	public void onDateSelected(@android.support.annotation.NonNull com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, @android.support.annotation.Nullable com.prolificinteractive.materialcalendarview.CalendarDay date, boolean selected) {
-		tempTextView.setText(getSelectedDatesString());
-	}
-
-	@Override
-	public void onMonthChanged(com.prolificinteractive.materialcalendarview.MaterialCalendarView widget, com.prolificinteractive.materialcalendarview.CalendarDay date) {
-		//noinspection ConstantConditions
-		//getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
-	}
-
-	private String getSelectedDatesString() {
-		com.prolificinteractive.materialcalendarview.CalendarDay date = mCalendarView.getSelectedDate();
-		if (date == null) {
-			return "No Selection";
-		}
-		return FORMATTER.format(date.getDate());
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
@@ -186,6 +162,7 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 		void onFragmentInteraction(Uri uri);
 	}
 
+
 	private void mockList(List<CalendarEvent> eventList) {
 		Calendar startTime1 = Calendar.getInstance();
 		Calendar endTime1 = Calendar.getInstance();
@@ -193,25 +170,28 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 		BaseCalendarEvent event1 = new BaseCalendarEvent("Gym", "A wonderful journey!", "Iceland",
 						ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), startTime1, endTime1, true);
 		eventList.add(event1);
-//
-//		Calendar startTime2 = Calendar.getInstance();
-//		startTime2.add(Calendar.DAY_OF_YEAR, 1);
-//		Calendar endTime2 = Calendar.getInstance();
-//		endTime2.add(Calendar.DAY_OF_YEAR, 3);
-//		BaseCalendarEvent event2 = new BaseCalendarEvent("Homework", "A beautiful small town", "Dalvík",
-//						ContextCompat.getColor(RootView.getContext(), R.color.colorPrimary), startTime2, endTime2, true);
-//		eventList.add(event2);
 
-		for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
-			UserTask currTask = ListFragment.finalTaskList.get(i);
-			TimeBlock[] timeBlocks = currTask.getTimeBlocks();
+		ListFragment.sortCalListByDate();
+		String myFormat = "hh:mm aa";
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
-			for(int j = 0; j < timeBlocks.length; j++)
-			{
-				BaseCalendarEvent tempEvent = new BaseCalendarEvent(currTask.getTitle(), "A wonderful journey!", currTask.getTimeRequiredInMinutes() + " min",
-								ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), toCalendar(timeBlocks[j].getStartTime()), toCalendar(timeBlocks[j].getStartTime()), true);
-				eventList.add(tempEvent);
-			}
+		for(int i = 0; i < ListFragment.calTaskList.size(); i++){
+			UserTask currTask = ListFragment.calTaskList.get(i);
+			//TimeBlock[] timeBlocks = currTask.getTimeBlocks();
+			BaseCalendarEvent tempEvent = new BaseCalendarEvent(currTask.getTitle(), "A wonderful journey!", sdf.format(toCalendar(currTask.thisTimeBlock.getStartTime()).getTime()) + " - " + sdf.format(toCalendar(currTask.thisTimeBlock.getEndingTime()).getTime()),
+															ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), toCalendar(currTask.thisTimeBlock.getStartTime()), toCalendar(currTask.thisTimeBlock.getEndingTime()), true);
+											eventList.add(tempEvent);
+
+
+
+
+
+//			for(int j = 0; j < timeBlocks.length; j++)
+//			{
+//				BaseCalendarEvent tempEvent = new BaseCalendarEvent(currTask.getTitle(), "A wonderful journey!", currTask.getTimeRequiredInMinutes() + " min",
+//								ContextCompat.getColor(RootView.getContext(), R.color.blue_selected), toCalendar(timeBlocks[j].getStartTime()), toCalendar(timeBlocks[j].getStartTime()), true);
+//				eventList.add(tempEvent);
+//			}
 		}
 
 	}
@@ -239,5 +219,7 @@ public class CalendarFragment extends Fragment implements com.prolificinteractiv
 	{
 
 	}
+
+
 }
 

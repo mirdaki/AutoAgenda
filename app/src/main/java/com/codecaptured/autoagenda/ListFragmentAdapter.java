@@ -21,6 +21,8 @@ import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
 
+
+
 	private List<UserTask> taskList;
 
 	public static View ListFragmentAdapterView;
@@ -37,7 +39,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	@Override
 	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
 		String priority;
-		String myFormat = "MM/dd/yy hh:mm aa";
+		String myFormat = "E, MMM dd 'at' hh:mm aa";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
 		UserTask userTask = taskList.get(i);
