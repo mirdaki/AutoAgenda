@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.Task;
 
@@ -47,14 +48,16 @@ public class ListFragment extends Fragment
 
 	private OnFragmentInteractionListener mListener;
 
-	View RootView;
+	public static View RootView;
+
+	public static TextView emptyView;
 
 	/** Spinner components */
 	Spinner sortSpinner, tagSpinner;
 	ArrayList<String> tagList = new ArrayList<String>();
 
 	/** Recycler View components */
-	RecyclerView mRecyclerView;
+	public static RecyclerView mRecyclerView;
 	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
 	public static List<UserTask> finalTaskList, tagTaskList;
@@ -115,6 +118,17 @@ public class ListFragment extends Fragment
 		mRecyclerView.setLayoutManager(mLayoutManager);
 		mAdapter = new ListFragmentAdapter(finalTaskList);
 		mRecyclerView.setAdapter(mAdapter);
+		emptyView = (TextView) RootView.findViewById(R.id.empty_view);
+
+		if (finalTaskList.isEmpty()) {
+			mRecyclerView.setVisibility(View.GONE);
+			emptyView.setVisibility(View.VISIBLE);
+		}
+		else {
+			mRecyclerView.setVisibility(View.VISIBLE);
+			emptyView.setVisibility(View.GONE);
+		}
+
 
 		// Setup sort spinner
 		sortSpinner = (Spinner) RootView.findViewById(R.id.sortSpinner);
@@ -282,16 +296,29 @@ public class ListFragment extends Fragment
 		reloadRecyclerView();
 	}
 
-	public void reloadRecyclerView()
+	public static void reloadRecyclerView()
 	{
 
-		mAdapter.notifyDataSetChanged();
-		CalendarFragment fragment = (CalendarFragment)
-						getFragmentManager().findFragmentById(R.id.pager);
+		if (finalTaskList.isEmpty()) {
+			mRecyclerView.setVisibility(View.GONE);
+			emptyView.setVisibility(View.VISIBLE);
+		}
+		else {
+			mRecyclerView.setVisibility(View.VISIBLE);
+			emptyView.setVisibility(View.GONE);
+		}
 
-		getFragmentManager().beginTransaction()
-						.detach(fragment)
-						.attach(fragment)
-						.commit();
+
+		mAdapter.notifyDataSetChanged();
+
+
+
+//		CalendarFragment fragment = (CalendarFragment)
+//						getFragmentManager().findFragmentById(R.id.pager);
+//
+//		getFragmentManager().beginTransaction()
+//						.detach(fragment)
+//						.attach(fragment)
+//						.commit();
 	}
 }

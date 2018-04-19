@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="12dp">
+
+    <TextView
+        android:id="@+id/create_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create a task"
+        android:padding="5dp"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/taskEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_message"
+        android:maxLines="1"
+        android:maxLength="30"
+        android:hint="Task Name" />
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Time &amp; Date"
+        android:inputType="none"
+        android:focusable="false"
+        android:layout_below="@id/taskEditText"/>
+
+    <!--<EditText-->
+        <!--android:id="@+id/timeEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Time"-->
+        <!--android:inputType="none"-->
+        <!--android:focusable="false"-->
+        <!--android:layout_below="@id/dateEditText"/>-->
+
+    <EditText
+        android:id="@+id/timeRequiredEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Estimated Length (minutes)"
+        android:inputType="number"
+        android:layout_below="@id/dateEditText"/>
+
+    <!--<TextView-->
+        <!--android:id="@+id/repeatTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Repeat"-->
+        <!--android:layout_below="@id/timeRequiredEditText"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<Spinner-->
+        <!--android:id="@+id/repeatSpinner"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/repeatTextView"-->
+        <!--android:layout_toRightOf="@id/repeatTextView"/>-->
+
+    <TextView
+        android:id="@+id/priorityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Priority"
+        android:layout_below="@id/timeRequiredEditText"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Spinner
+        android:id="@+id/prioritySpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/priorityTextView"
+        android:layout_toRightOf="@id/priorityTextView"/>
+
+    <!--<TextView-->
+        <!--android:id="@+id/reminderTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Reminder"-->
+        <!--android:layout_below="@id/priorityTextView"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<Spinner-->
+        <!--android:id="@+id/reminderSpinner"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBaseline="@id/reminderTextView"-->
+        <!--android:layout_toRightOf="@id/reminderTextView"/>-->
+
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_below="@id/priorityTextView"
+        android:paddingBottom="50dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="50dp"
+        android:hint="(optional)"
+        android:layout_alignBaseline="@id/descriptionTextView"
+        android:layout_toRightOf="@id/descriptionTextView"/>
+
+
+    <Button
+        android:id="@+id/addUpdateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:layout_below="@id/descriptionTextView"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/holo_blue_light"/>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_toLeftOf="@id/addUpdateButton"
+        android:layout_alignBaseline="@id/addUpdateButton"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/holo_blue_light"/>
+
+</RelativeLayout>
+

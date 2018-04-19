@@ -342,7 +342,7 @@ public class taskFragment extends DialogFragment
 		String[] tempTags  = {"work"};
 		String[] tempTags2  = {"school", "gym"};
 
-		if(postIsProper() == true)
+		if(postIsProper() == true && dateIsProper(selectedDate) == true)
 		{
 			UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
 			TaskInteractor.addTask(tempTask1);
@@ -352,7 +352,7 @@ public class taskFragment extends DialogFragment
 				ListFragment.finalTaskList.add(temp);
 			}
 			//ListFragment.finalTaskList.add(tempTask1);
-			ListFragment.mAdapter.notifyDataSetChanged();
+			ListFragment.reloadRecyclerView();
 			dismiss();
 		}
 //		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
@@ -385,7 +385,7 @@ public class taskFragment extends DialogFragment
 				builder = new AlertDialog.Builder(RootView.getContext());
 			}
 			builder.setTitle("Oops!")
-							.setMessage("Please fill in all of the required fields")
+							.setMessage("All required fields must be filled. Selected time cannot be in the past.")
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 
@@ -425,6 +425,20 @@ public class taskFragment extends DialogFragment
 		}
 
 		return isProper;
+	}
+
+	public boolean dateIsProper(Date date){
+		boolean isProper = true;
+
+		Date today = Calendar.getInstance().getTime();
+
+		if(date.before(today)){
+			isProper = false;
+		}
+
+
+		return isProper;
+
 	}
 }
 
