@@ -1,7 +1,8 @@
 package com.codecaptured.autoagenda;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
@@ -11,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import org.w3c.dom.Text;
@@ -24,15 +27,16 @@ import java.util.List;
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
 
 
-
 	public List<UserTask> taskList;
-	UserTask userTask;
+	public static FragmentManager mListFragmentAdapterManager;
+	public static UserTask mListFragmentAdapterUserTask;
 	int currPosition;
 
-	public static View ListFragmentAdapterView;
+	public static View mListFragmentAdapterView;
 
-	public ListFragmentAdapter(List<UserTask> taskList) {
+	public ListFragmentAdapter(List<UserTask> taskList,  FragmentManager fm) {
 		this.taskList = taskList;
+		this.mListFragmentAdapterManager = fm;
 	}
 
 	@Override
@@ -50,36 +54,45 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat(myFormat2, java.util.Locale.US);
 		java.text.SimpleDateFormat sdf3 = new java.text.SimpleDateFormat(myFormat3, java.util.Locale.US);
 
-		userTask = taskList.get(i);
+		mListFragmentAdapterUserTask = taskList.get(i);
 		currPosition = i;
 
-		if(userTask.priorityLevel == 1)
+		if(mListFragmentAdapterUserTask.priorityLevel == 1)
 			priority = "Low";
-		else if(userTask.priorityLevel == 2)
+		else if(mListFragmentAdapterUserTask.priorityLevel == 2)
 			priority = "Medium";
 		else
 			priority = "High";
 
-		taskViewHolder.mDescription.setText(userTask.getDescription());
+		taskViewHolder.mDescription.setText(mListFragmentAdapterUserTask.getDescription());
 
 		// Set due date
-		if(sdf2.format(userTask.getDueDate()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
-			taskViewHolder.mDueDate.setText("(Due: Today at " + sdf3.format(userTask.getDueDate()).toString() + ")");
+		if(mListFragmentAdapterUserTask.isEvent)
+		{
+			taskViewHolder.mDueDate.setVisibility(View.GONE);
+		}
 		else
-			taskViewHolder.mDueDate.setText("(Due: " + sdf.format(userTask.getDueDate()).toString() + ")");
+		{
+			taskViewHolder.mDueDate.setVisibility(View.VISIBLE);
 
-		taskViewHolder.mTitle.setText(userTask.getTitle());
+			if (sdf2.format(mListFragmentAdapterUserTask.getDueDate()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
+				taskViewHolder.mDueDate.setText("(Due: Today at " + sdf3.format(mListFragmentAdapterUserTask.getDueDate()).toString() + ")");
+			else
+				taskViewHolder.mDueDate.setText("(Due: " + sdf.format(mListFragmentAdapterUserTask.getDueDate()).toString() + ")");
+		}
 
-		TimeBlock[] temp = userTask.getTimeBlocks();
+		taskViewHolder.mTitle.setText(mListFragmentAdapterUserTask.getTitle());
+
+		TimeBlock[] temp = mListFragmentAdapterUserTask.getTimeBlocks();
 
 		// Set scheduled date
-		if(sdf2.format(userTask.thisTimeBlock.getStartTime()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
-			taskViewHolder.mScheduleDate.setText("Today at " + sdf3.format(userTask.thisTimeBlock.getStartTime()).toString());
+		if(sdf2.format(mListFragmentAdapterUserTask.thisTimeBlock.getStartTime()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
+			taskViewHolder.mScheduleDate.setText("Today at " + sdf3.format(mListFragmentAdapterUserTask.thisTimeBlock.getStartTime()).toString());
 		else
-			taskViewHolder.mScheduleDate.setText(sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
+			taskViewHolder.mScheduleDate.setText(sdf.format(mListFragmentAdapterUserTask.thisTimeBlock.getStartTime()).toString());
 
 
-		taskViewHolder.mDuration.setText("Duration: " + userTask.getTimeRequiredInMinutes() + "mins");
+		taskViewHolder.mDuration.setText("Duration: " + mListFragmentAdapterUserTask.getTimeRequiredInMinutes() + "mins");
 		taskViewHolder.mPriority.setText("Priority: " + priority);
 
 		taskViewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener()
@@ -90,14 +103,21 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 				deleteButtonClicked();
 			}
 		});
-		taskViewHolder.mCompleteButton.setOnClickListener(new View.OnClickListener()
-		{
 
-			public void onClick(View v)
+		if(mListFragmentAdapterUserTask.isEvent)
+			taskViewHolder.mCompleteButton.setVisibility(View.GONE);
+		else
+		{
+			taskViewHolder.mCompleteButton.setVisibility(View.VISIBLE);
+			taskViewHolder.mCompleteButton.setOnClickListener(new View.OnClickListener()
 			{
-				completeButtonClicked();
-			}
-		});
+
+				public void onClick(View v)
+				{
+					completeButtonClicked();
+				}
+			});
+		}
 
 	}
 
@@ -123,6 +143,12 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 		public TaskViewHolder(View v) {
 			super(v);
+			mListFragmentAdapterView = v;
+			mListFragmentAdapterView.setOnClickListener(new View.OnClickListener() {
+				@Override public void onClick(View v) {
+					viewClicked();
+				}
+			});
 
 			mDescription =  (TextView) v.findViewById(R.id.description);
 			//mCompleted = (TextView)  v.findViewById(R.id.completed);
@@ -147,7 +173,10 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								//TaskInteractor.removeTask(userTask);
+								if(!mListFragmentAdapterUserTask.isEvent)
+									TaskInteractor.removeTask(mListFragmentAdapterUserTask);
+								else
+									EventInteractor.removeEvent(mListFragmentAdapterUserTask.eventID);
 								taskList.remove(currPosition);
 								ListFragment.reloadRecyclerView();
 							}
@@ -167,11 +196,11 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		} else {
 			builder = new AlertDialog.Builder(ListFragment.RootView.getContext());
 		}
-		builder.setTitle("Delete")
+		builder.setTitle("Mark as complete")
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								//TaskInteractor.removeTask(userTask);
+								TaskInteractor.removeTask(mListFragmentAdapterUserTask);
 								taskList.remove(currPosition);
 								ListFragment.reloadRecyclerView();
 							}
@@ -182,5 +211,13 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 							}
 						})
 						.show();
+	}
+
+	public static void viewClicked(){
+		android.support.v4.app.FragmentManager fm = mListFragmentAdapterManager;
+		taskFragment theTaskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
+		theTaskFragment.isModify = true;
+		theTaskFragment.ut = mListFragmentAdapterUserTask;
+		theTaskFragment.show(fm, "fragment_task_tag");
 	}
 }

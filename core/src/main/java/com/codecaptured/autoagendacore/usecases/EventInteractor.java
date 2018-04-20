@@ -103,12 +103,12 @@ public class EventInteractor
 
 	/**
 	 * Remove an event from the schedule
-	 * @param oldEvent The event to be removed
+	 * @param oldEventID The ID of the event to be removed
 	 */
-	public static void removeEvent(UserEvent oldEvent)
+	public static void removeEvent(UUID oldEventID)
 	{
 		// Delete old event
-		Scheduler.removeEvent(oldEvent.getId());
+		Scheduler.removeEvent(oldEventID);
 	}
 
 	/**

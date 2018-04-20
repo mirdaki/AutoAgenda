@@ -126,7 +126,7 @@ public class ListFragment extends Fragment
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(RootView.getContext());
 		mRecyclerView.setLayoutManager(mLayoutManager);
-		mAdapter = new ListFragmentAdapter(finalTaskList);
+		mAdapter = new ListFragmentAdapter(finalTaskList, getActivity().getSupportFragmentManager());
 		mRecyclerView.setAdapter(mAdapter);
 		emptyView = (TextView) RootView.findViewById(R.id.empty_view);
 
@@ -193,14 +193,14 @@ public class ListFragment extends Fragment
 		TimeBlock[] timeBlock2 = {tblock2};
 		temp2.setTimeBlocks(timeBlock2);
 		temp2.thisTimeBlock = tblock2;
-		finalTaskList.add(temp2);
+		//finalTaskList.add(temp2);
 
 		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 99, 2, temps);
 		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 99);
 		TimeBlock[] timeBlock = {tblock};
 		temp.setTimeBlocks(timeBlock);
 		temp.thisTimeBlock = tblock;
-		finalTaskList.add(temp);
+		//finalTaskList.add(temp);
 
 		sortListByDate();
 		List<UserTask> newList = new ArrayList<>(finalTaskList);

@@ -24,6 +24,7 @@ public class UserTask implements TaskInteractor.UserTask
 	String[] tags;
 	TimeBlock thisTimeBlock;
 	boolean isEvent = false;
+	UUID eventID = null;
 
 	// Values set by software
 	UUID id;
