@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.codecaptured.autoagenda.database">
+          package="com.codecaptured.autoagenda.database.database">
 
     <application
         android:allowBackup="true"

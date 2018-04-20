@@ -1,4 +1,4 @@
-package com.codecaptured.autoagenda.database;
+package com.codecaptured.autoagenda.database.database;
 
 import org.junit.Test;
 

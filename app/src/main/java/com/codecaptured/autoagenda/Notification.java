@@ -17,11 +17,12 @@ import android.support.v7.app.AppCompatActivity;
 
 public class Notification extends AppCompatActivity
 {
-	private NotificationManager notifManager;
+	private static NotificationManager notifManager;
 
-	public void createNotification(MainActivity main, long time){
 
-				final int NOTIFY_ID = 1002;
+	public static void createNotification(int idTask,Context context, long time, String nameTask, String descriptionTask){
+
+				final int NOTIFY_ID = idTask;
 
 				String name = "my_package_channel";
 				String id = "my_package_channel_1"; // The user-visible name of the channel.
@@ -32,7 +33,7 @@ public class Notification extends AppCompatActivity
 				NotificationCompat.Builder builder;
 
 				if (notifManager == null) {
-					notifManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+					notifManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 				}
 
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -47,15 +48,15 @@ public class Notification extends AppCompatActivity
 						notifManager.createNotificationChannel(mChannel);
 					}
 
-					builder = new NotificationCompat.Builder(getApplicationContext(), id);
+					builder = new NotificationCompat.Builder(context.getApplicationContext(), id);
 
-					intent = new Intent(this, MainActivity.class);
+					intent = new Intent(context, taskFragment.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+					pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-					builder.setContentTitle("Notification")
+					builder.setContentTitle(nameTask)
 									.setSmallIcon(android.R.drawable.ic_popup_reminder)
-									.setContentText("Content of notification")
+									.setContentText(descriptionTask)
 									.setDefaults(android.app.Notification.DEFAULT_ALL)
 									.setAutoCancel(true)
 									.setContentIntent(pendingIntent)
@@ -63,15 +64,15 @@ public class Notification extends AppCompatActivity
 									.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 				} else {
 
-					builder = new NotificationCompat.Builder(getApplicationContext(), id);
+					builder = new NotificationCompat.Builder(context.getApplicationContext(), id);
 
-					intent = new Intent(this, MainActivity.class);
+					intent = new Intent(context, taskFragment.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+					pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-					builder.setContentTitle("Notification")
+					builder.setContentTitle(nameTask)
 									.setSmallIcon(android.R.drawable.ic_popup_reminder)
-									.setContentText("Content of notification")
+									.setContentText(descriptionTask)
 									.setDefaults(android.app.Notification.DEFAULT_ALL)
 									.setAutoCancel(true)
 									.setContentIntent(pendingIntent)

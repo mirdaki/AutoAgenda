@@ -16,19 +16,16 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.codecaptured.autoagendacore.entities.TimeBlock;
+import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -333,6 +330,16 @@ public class taskFragment extends DialogFragment
 		}
 
 
+		boolean status1;
+		//boolean status2;
+		//boolean status3;
+		//boolean status4;
+		//boolean status5;
+		//boolean status6;
+		//boolean status7;
+		//boolean status8;
+		//boolean status9;
+		//boolean status10;
 		else{
 			AlertDialog.Builder builder;
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -345,14 +352,45 @@ public class taskFragment extends DialogFragment
 							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 
+		EventInteractor.addSleepingEvent();
 								}
 							})
 							.show();
 		}
 
+		System.out.println(" ");
+
+		status1 = TaskInteractor.addTask(tempTask1);
+//		ListFragment.finalTaskList.add(tempTask1);
+//		ListFragment.mAdapter.notifyDataSetChanged();
+		//status2 = TaskInteractor.addTask(tempTask2);
+		//status3 = TaskInteractor.addTask(tempTask3);
+		//status4 = TaskInteractor.addTask(tempTask4);
+		//status5 = TaskInteractor.addTask(tempTask5);
+		//status6 = TaskInteractor.addTask(tempTask6);
+		//status7 = TaskInteractor.addTask(tempTask7);
+		//status8 = TaskInteractor.addTask(tempTask8);
+		//status9 = TaskInteractor.addTask(tempTask9);
+		//status10 = TaskInteractor.addTask(tempTask10);
+
+		if (status1 == true)
+		{
+			System.out.println("Task has been added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
+			toast1.show();
+			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
+		}
+		else
+		{
+			System.out.println("Task could not be added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task cannot be added", Toast.LENGTH_SHORT);
+			toast1.show();
+		}
+
+		//System.out.println("Tasks have been added");
 
 		// TODO: Create a notification (just use the Task ID for nwo)
-
+//		dismiss();
 	}
 
 	public void cancelButtonClicked(View view){

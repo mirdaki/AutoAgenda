@@ -27,15 +27,15 @@ public class TimeBlock
 		this.numberOfMinutes = timeInMinutes;
 	}
 
-	// copy constructor
-	public TimeBlock( TimeBlock tb)
+		// copy constructor
+	public TimeBlock(TimeBlock tb)
 	{
 		this.startTime = tb.getStartTime();
 		this.numberOfMinutes = tb.getNumberOfMinutes();
 	}
 
 	// this method will allow assignment of a TimeBlock to another
-	public void clone(TimeBlock rhs)
+	public void clone(TimeBlock rhs) 
 	{
 		this.startTime = rhs.getStartTime();
 		this.numberOfMinutes = rhs.getNumberOfMinutes();
@@ -43,10 +43,10 @@ public class TimeBlock
 
 	public void printout()
 	{
-		System.out.println("TimeBlock ST=" + startTime);
-		System.out.println("TimeBlock NM=" + numberOfMinutes);
+		System.out.println("TimeBlock start time: " + startTime);
+		System.out.println("TimeBlock duration: " + numberOfMinutes);
 	}
-
+	
 	public Date getStartTime()
 	{
 		return startTime;
@@ -66,9 +66,6 @@ public class TimeBlock
 	{
 		this.numberOfMinutes = timeInMinutes;
 	}
-
-
-	// ************* NEW CHANGES BELOW FOR THE SCHEDULER ADD TASK METHOD **************
 
 	public long getEpochStartTime()
 	{

@@ -1,5 +1,7 @@
 package com.codecaptured.autoagenda;
 
+import android.app.Activity;
+import android.app.Application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -12,7 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.List;
+import com.codecaptured.autoagenda.database.Data;
+import com.codecaptured.autoagenda.database.room.entities.DataTimeBlock;
+import com.codecaptured.autoagenda.database.room.entities.Task;
+import com.codecaptured.autoagendacore.usecases.LoadSaveData;
+import com.codecaptured.autoagendacore.usecases.TaskInteractor;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity implements com.codecaptured.autoagenda.taskFragment.OnFragmentInteractionListener,
 				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener,
