@@ -29,7 +29,6 @@ public class DataInteractor
 	 */
 	public static TaskInteractor.UserTask[] loadData(Application application)
 	{
-//		TaskInteractor.UserTask[] tasks = ((BasicSetUp) application).getDatabase().taskDao().loadAllTasks();
 		TaskDao tDao = ((BasicSetUp) application).getDatabase().taskDao();
 		TaskInteractor.UserTask[] tasks = tDao.loadAllTasks();
 

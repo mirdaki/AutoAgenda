@@ -25,6 +25,13 @@ public class EventInteractor
 	 */
 	public static void addEvent(UserEvent newEvent)
 	{
+
+		// Fix error if Schedule has not be instantiated
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		// Create a new ID
 		UUID id = UUID.randomUUID();
 

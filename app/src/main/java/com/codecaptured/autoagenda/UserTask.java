@@ -39,6 +39,24 @@ public class UserTask implements TaskInteractor.UserTask
 		this.tags = tags;
 	}
 
+	public UserTask(TaskInteractor.UserTask task)
+	{
+		this.title = task.getTitle();
+		this.description = task.getDescription();
+		this.completed = task.getCompleted();
+		this.dueDate = task.getDueDate();
+		this.timeRequiredInMinutes = task.getTimeRequiredInMinutes();
+		this.priorityLevel = task.getPriorityLevel();
+		this.tags = task.getTags();
+		this.id = task.getId();
+
+		this.timeBlocks = new TimeBlock[task.getTimeBlocks().length];
+		for (int i = 0; i < task.getTimeBlocks().length; i++)
+		{
+			this.timeBlocks[i] = new TimeBlock(task.getTimeBlocks()[i]);
+		}
+	}
+
 	// Getters and setters
 	// Values set by user
 	public String getTitle()

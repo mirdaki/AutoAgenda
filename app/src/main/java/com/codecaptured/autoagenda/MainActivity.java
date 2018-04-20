@@ -14,6 +14,7 @@ import com.codecaptured.autoagenda.database.room.entities.Task;
 import com.codecaptured.autoagendacore.usecases.LoadSaveData;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -34,6 +35,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
 	/** The new task button */
 	android.support.design.widget.FloatingActionButton fab;
+
+	/** The lists the database loads */
+	public static ArrayList<UserTask> loadedTaskList;
 
 	private TextView mTextMessage;
 
@@ -62,6 +66,13 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// Load from database
+		TaskInteractor.UserTask[] tempList = DataInteractor.loadData(getApplication());
+		for (TaskInteractor.UserTask tempTask : tempList)
+		{
+			loadedTaskList.add(new UserTask(tempTask));
+		}
 
 		// Set up view pager
 		mAdapter = new HomePageAdapter(getSupportFragmentManager());
@@ -237,4 +248,20 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		taskFragment.show(fm, "fragment_task");
 	}
 
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+
+
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+
+		// Save to database
+		DataInteractor.saveData(getApplication());
+	}
 }
