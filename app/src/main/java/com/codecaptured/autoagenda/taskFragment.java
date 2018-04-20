@@ -146,11 +146,7 @@ public class taskFragment extends DialogFragment
 	{
 		// Inflate the layout for this fragment
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_task, container, false);
-		//		testTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.textView);
-		//		testTextView.setText(mParam2);
 		dateEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.dateEditText);
-		//timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
-
 		taskEditText = (android.widget.EditText) RootView.findViewById(R.id.taskEditText);
 		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
 		descriptionEditText = (android.widget.EditText) RootView.findViewById(R.id.descriptionEditText);

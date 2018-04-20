@@ -18,6 +18,7 @@ import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
@@ -43,7 +44,11 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
 		String priority;
 		String myFormat = "E, MMM dd 'at' hh:mm aa";
+		String myFormat2 = "MM/dd/yy";
+		String myFormat3 = "hh:mm aa";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
+		java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat(myFormat2, java.util.Locale.US);
+		java.text.SimpleDateFormat sdf3 = new java.text.SimpleDateFormat(myFormat3, java.util.Locale.US);
 
 		userTask = taskList.get(i);
 		currPosition = i;
@@ -56,12 +61,23 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			priority = "High";
 
 		taskViewHolder.mDescription.setText(userTask.getDescription());
-//		taskViewHolder.mCompleted.setText(userTask.getCompleted().toString());
-		taskViewHolder.mDueDate.setText("(Due: " + sdf.format(userTask.getDueDate()).toString() + ")");
+
+		// Set due date
+		if(sdf2.format(userTask.getDueDate()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
+			taskViewHolder.mDueDate.setText("(Due: Today at " + sdf3.format(userTask.getDueDate()).toString() + ")");
+		else
+			taskViewHolder.mDueDate.setText("(Due: " + sdf.format(userTask.getDueDate()).toString() + ")");
+
 		taskViewHolder.mTitle.setText(userTask.getTitle());
 
 		TimeBlock[] temp = userTask.getTimeBlocks();
-		taskViewHolder.mScheduleDate.setText(sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
+
+		// Set scheduled date
+		if(sdf2.format(userTask.thisTimeBlock.getStartTime()).toString().equals(sdf2.format(Calendar.getInstance().getTime()).toString()))
+			taskViewHolder.mScheduleDate.setText("Today at " + sdf3.format(userTask.thisTimeBlock.getStartTime()).toString());
+		else
+			taskViewHolder.mScheduleDate.setText(sdf.format(userTask.thisTimeBlock.getStartTime()).toString());
+
 
 		taskViewHolder.mDuration.setText("Duration: " + userTask.getTimeRequiredInMinutes() + "mins");
 		taskViewHolder.mPriority.setText("Priority: " + priority);
@@ -72,6 +88,14 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			public void onClick(View v)
 			{
 				deleteButtonClicked();
+			}
+		});
+		taskViewHolder.mCompleteButton.setOnClickListener(new View.OnClickListener()
+		{
+
+			public void onClick(View v)
+			{
+				completeButtonClicked();
 			}
 		});
 
@@ -95,20 +119,10 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		protected TextView mDuration;
 		protected TextView mPriority;
 		protected Button mDeleteButton;
+		protected Button mCompleteButton;
 
 		public TaskViewHolder(View v) {
 			super(v);
-
-//			ListFragmentAdapterView = v;
-//			ListFragmentAdapterView.setOnClickListener(new View.OnClickListener() {
-//				@Override public void onClick(View v) {
-//					Bundle args = new Bundle();
-//					args.putString("key", "value");
-//					UpdateTaskFragment newFragment = new UpdateTaskFragment();
-//					newFragment.setArguments(args);
-//					newFragment.show(getActivity(), "TAG");
-//				}
-//			});
 
 			mDescription =  (TextView) v.findViewById(R.id.description);
 			//mCompleted = (TextView)  v.findViewById(R.id.completed);
@@ -118,6 +132,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			mDuration = (TextView) v.findViewById(R.id.durationTextView);
 			mPriority = (TextView) v.findViewById(R.id.priorityTextView);
 			mDeleteButton = (Button) v.findViewById(R.id.deleteButton);
+			mCompleteButton = (Button) v.findViewById(R.id.completeButton);
 		}
 	}
 
@@ -132,7 +147,31 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								TaskInteractor.removeTask(userTask);
+								//TaskInteractor.removeTask(userTask);
+								taskList.remove(currPosition);
+								ListFragment.reloadRecyclerView();
+							}
+						})
+						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+						})
+						.show();
+	}
+
+	public void completeButtonClicked(){
+		final AlertDialog.Builder builder;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			builder = new AlertDialog.Builder(ListFragment.RootView.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+		} else {
+			builder = new AlertDialog.Builder(ListFragment.RootView.getContext());
+		}
+		builder.setTitle("Delete")
+						.setMessage("Are you sure?")
+						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								//TaskInteractor.removeTask(userTask);
 								taskList.remove(currPosition);
 								ListFragment.reloadRecyclerView();
 							}

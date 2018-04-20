@@ -44,7 +44,7 @@ public class ListFragment extends Fragment
 		public void needToRefresh();
 	}
 
-	public static TasksListener mCallback;
+	public static TasksListener mTaskListenerCallback;
 
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +71,7 @@ public class ListFragment extends Fragment
 	RecyclerView.LayoutManager mLayoutManager;
 	public static List<UserTask> finalTaskList, tagTaskList, calTaskList;
 
-	int check = 0, check2 = 0;
+	public static int check = 0, check2 = 0;
 
 
 	public ListFragment()
@@ -130,14 +130,7 @@ public class ListFragment extends Fragment
 		mRecyclerView.setAdapter(mAdapter);
 		emptyView = (TextView) RootView.findViewById(R.id.empty_view);
 
-		if (finalTaskList.isEmpty()) {
-			mRecyclerView.setVisibility(View.GONE);
-			emptyView.setVisibility(View.VISIBLE);
-		}
-		else {
-			mRecyclerView.setVisibility(View.VISIBLE);
-			emptyView.setVisibility(View.GONE);
-		}
+		setListVisibility();
 
 
 		// Setup sort spinner
@@ -156,7 +149,7 @@ public class ListFragment extends Fragment
 					else if(position == 1)
 						sortListByPriority();
 					else if(position == 2)
-						sortByShortest();
+						sortListByShortest();
 				}
 			} // to close the onItemSelected
 			public void onNothingSelected(AdapterView<?> parent)
@@ -195,21 +188,23 @@ public class ListFragment extends Fragment
 		Calendar time1 = Calendar.getInstance();
 		time1.add(Calendar.HOUR, 1);
 
-		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 99, 1, temps);
-		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 99);
+		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 5, 1, temps);
+		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 5);
 		TimeBlock[] timeBlock2 = {tblock2};
 		temp2.setTimeBlocks(timeBlock2);
 		temp2.thisTimeBlock = tblock2;
 		finalTaskList.add(temp2);
 
-		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 5, 1, temps);
-		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 5);
+		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 99, 2, temps);
+		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 99);
 		TimeBlock[] timeBlock = {tblock};
 		temp.setTimeBlocks(timeBlock);
 		temp.thisTimeBlock = tblock;
 		finalTaskList.add(temp);
 
-		calTaskList = finalTaskList;
+		sortListByDate();
+		List<UserTask> newList = new ArrayList<>(finalTaskList);
+		calTaskList = newList;
 		reloadRecyclerView();
 		return RootView;
 	}
@@ -239,7 +234,7 @@ public class ListFragment extends Fragment
 		// This makes sure that the container activity has implemented
 		// the callback interface. If not, it throws an exception
 		try {
-			mCallback = (TasksListener) context;
+			mTaskListenerCallback = (TasksListener) context;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(context.toString()
 							+ " must implement TasksListener");
@@ -317,7 +312,7 @@ public class ListFragment extends Fragment
 		reloadRecyclerView();
 	}
 
-	public void sortByShortest(){
+	public void sortListByShortest(){
 		Collections.sort(finalTaskList, new Comparator<UserTask>()
 		{
 			public int compare(UserTask u1, UserTask u2)
@@ -349,8 +344,21 @@ public class ListFragment extends Fragment
 
 	public static void reloadRecyclerView()
 	{
-		calTaskList = finalTaskList;
+		setListVisibility();
 
+
+		//reload
+		mAdapter.notifyDataSetChanged();
+
+		//Refresh calendar page
+		List<UserTask> newList = new ArrayList<>(finalTaskList);
+		calTaskList = newList;
+		sortCalListByDate();
+		mTaskListenerCallback.needToRefresh();
+
+	}
+
+	public static void setListVisibility(){
 		if (finalTaskList.isEmpty()) {
 			mRecyclerView.setVisibility(View.GONE);
 			emptyView.setVisibility(View.VISIBLE);
@@ -359,20 +367,5 @@ public class ListFragment extends Fragment
 			mRecyclerView.setVisibility(View.VISIBLE);
 			emptyView.setVisibility(View.GONE);
 		}
-
-
-		mAdapter.notifyDataSetChanged();
-		mCallback.needToRefresh();
-
-
-
-
-//		CalendarFragment fragment = (CalendarFragment)
-//						getFragmentManager().findFragmentById(R.id.pager);
-//
-//		getFragmentManager().beginTransaction()
-//						.detach(fragment)
-//						.attach(fragment)
-//						.commit();
 	}
 }
