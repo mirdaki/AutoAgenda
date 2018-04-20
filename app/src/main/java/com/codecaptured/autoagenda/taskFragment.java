@@ -12,8 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.codecaptured.autoagendacore.usecases.EventInteractor;
+import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -372,7 +374,7 @@ public class taskFragment extends DialogFragment
 
 		System.out.println(" ");
 
-//		status1 = TaskInteractor.addTask(tempTask1);
+		status1 = TaskInteractor.addTask(tempTask1);
 //		ListFragment.finalTaskList.add(tempTask1);
 //		ListFragment.mAdapter.notifyDataSetChanged();
 		//status2 = TaskInteractor.addTask(tempTask2);
@@ -385,22 +387,19 @@ public class taskFragment extends DialogFragment
 		//status9 = TaskInteractor.addTask(tempTask9);
 		//status10 = TaskInteractor.addTask(tempTask10);
 
-
-//		if (status1 == true)
-//		{
-//			System.out.println("Task has been added");
-//			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
-//			toast1.show();
-//		}
-//		else
-//		{
-//			System.out.println("Task could not be added");
-//			Toast toast1 = Toast.makeText(getActivity(), "Task cannot be added", Toast.LENGTH_SHORT);
-//			toast1.show();
-//		}
-
-//		AppDatabase.getInstance(getContext());
-
+		if (status1 == true)
+		{
+			System.out.println("Task has been added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
+			toast1.show();
+			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
+		}
+		else
+		{
+			System.out.println("Task could not be added");
+			Toast toast1 = Toast.makeText(getActivity(), "Task cannot be added", Toast.LENGTH_SHORT);
+			toast1.show();
+		}
 
 		//System.out.println("Tasks have been added");
 

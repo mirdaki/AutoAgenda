@@ -15,6 +15,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+// Example:
+// Pull in database info
+//		TaskInteractor.UserTask[] task = DataInteractor.loadData(getApplication());
+
 public class DataInteractor
 {
 	private AppDatabase database;
