@@ -102,7 +102,7 @@ public class TaskInteractor
 	 * @param userTask User task to be based off of
 	 * @return task with same data as userTask
 	 */
-	protected static Task userTaskToTask(UserTask userTask)
+	public static Task userTaskToTask(UserTask userTask)
 	{
 		// Make the event
 		return new Task(userTask.getId(), userTask.getTitle(), userTask.getDescription(),
@@ -116,7 +116,7 @@ public class TaskInteractor
 	 * @param userTask Must be passed in (interfaces can't be instantiated)
 	 * @return userTask with same data as task
 	 */
-	protected static UserTask taskToUserTask(Task task, UserTask userTask)
+	public static UserTask taskToUserTask(Task task, UserTask userTask)
 	{
 		// Set the passed user event to have all the attributes of the event
 		userTask.setId(task.getId());

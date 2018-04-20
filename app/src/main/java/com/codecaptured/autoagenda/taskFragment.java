@@ -11,22 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.codecaptured.autoagendacore.usecases.EventInteractor;
-import com.codecaptured.autoagendacore.usecases.TaskInteractor;
-import com.codecaptured.autoagenda.database.room.AppDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

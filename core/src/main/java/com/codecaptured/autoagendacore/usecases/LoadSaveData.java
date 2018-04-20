@@ -16,29 +16,35 @@ public class LoadSaveData
 {
 	public static void loadDataToSchedule(ScheduleInfo dataSource)
 	{
+		// Fix error if Schedule has not be instantiated
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		// Load data from source into data source
 		dataSource.loadData();
 
 		// Event data
 		// Get the current events data and convert it to the entities event class
-		HashMap<UUID, Event> userEvents = new HashMap<>();
-		for (EventInteractor.UserEvent event : dataSource.getCurrentEvents())
-		{
-			userEvents.put(event.getId(), EventInteractor.userEventToEvent(event));
-		}
+//		HashMap<UUID, Event> userEvents = new HashMap<>();
+//		for (EventInteractor.UserEvent event : dataSource.getCurrentEvents())
+//		{
+//			userEvents.put(event.getId(), EventInteractor.userEventToEvent(event));
+//		}
 
 		// Load the current events data into the schedule class
-		Schedule.setCurrentEvents(userEvents);
-
-		// Get the old events data and convert it to the entities event class
-		HashMap<UUID, Event> oldEvents = new HashMap<>();
-		for (EventInteractor.UserEvent event : dataSource.getOldEvents())
-		{
-			oldEvents.put(event.getId(), EventInteractor.userEventToEvent(event));
-		}
+//		Schedule.setCurrentEvents(userEvents);
+//
+//		// Get the old events data and convert it to the entities event class
+//		HashMap<UUID, Event> oldEvents = new HashMap<>();
+//		for (EventInteractor.UserEvent event : dataSource.getOldEvents())
+//		{
+//			oldEvents.put(event.getId(), EventInteractor.userEventToEvent(event));
+//		}
 
 		// Load the old events data into the schedule class
-		Schedule.setOldEvents(oldEvents);
+//		Schedule.setOldEvents(oldEvents);
 
 		// Task data
 		// Get the current tasks data and convert it to the entities task class
@@ -63,50 +69,56 @@ public class LoadSaveData
 
 		// TimeFence data
 		// Get the current time fences data and convert it to the entities time fences class
-		HashMap<UUID, TimeFence> userTimeFences = new HashMap<>();
-		for (TimeFenceInteractor.UserTimeFence timeFence : dataSource.getCurrentTimeFences())
-		{
-			userTimeFences.put(timeFence.getId(),
-							TimeFenceInteractor.userTimeFenceToTimeFence(timeFence));
-		}
+//		HashMap<UUID, TimeFence> userTimeFences = new HashMap<>();
+//		for (TimeFenceInteractor.UserTimeFence timeFence : dataSource.getCurrentTimeFences())
+//		{
+//			userTimeFences.put(timeFence.getId(),
+//							TimeFenceInteractor.userTimeFenceToTimeFence(timeFence));
+//		}
 
 		// Load the current time fences data into the schedule class
-		Schedule.setCurrentTimeFences(userTimeFences);
+//		Schedule.setCurrentTimeFences(userTimeFences);
 
 		// Get the old time fences data and convert it to the entities time fences class
-		HashMap<UUID, TimeFence> oldTimeFences = new HashMap<>();
-		for (TimeFenceInteractor.UserTimeFence timeFence : dataSource.getOldTimeFences())
-		{
-			oldTimeFences.put(timeFence.getId(), TimeFenceInteractor.userTimeFenceToTimeFence(timeFence));
-		}
+//		HashMap<UUID, TimeFence> oldTimeFences = new HashMap<>();
+//		for (TimeFenceInteractor.UserTimeFence timeFence : dataSource.getOldTimeFences())
+//		{
+//			oldTimeFences.put(timeFence.getId(), TimeFenceInteractor.userTimeFenceToTimeFence(timeFence));
+//		}
 
 		// Load the old time fences data into the schedule class
-		Schedule.setOldTimeFences(oldTimeFences);
+//		Schedule.setOldTimeFences(oldTimeFences);
 	}
 
 	public static void saveDataFromSchedule(ScheduleInfo dataSource)
 	{
+		// Fix error if Schedule has not be instantiated
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		// Event data
 		// Get the scheduled current events
-		Event[] currentScheduledEvents = new Event[dataSource.getCurrentEvents().length];
-		currentScheduledEvents = Schedule.getCurrentEvents().values().toArray(currentScheduledEvents);
+//		Event[] currentScheduledEvents = new Event[dataSource.getCurrentEvents().length];
+//		currentScheduledEvents = Schedule.getCurrentEvents().values().toArray(currentScheduledEvents);
 
 		// Get the previously saved current events
-		EventInteractor.UserEvent[] currentSavedEvents = dataSource.getCurrentEvents();
+//		EventInteractor.UserEvent[] currentSavedEvents = dataSource.getCurrentEvents();
 
 		// Set the scheduled events to be saved
-		dataSource.setCurrentEvents(EventInteractor.eventsToUserEvents(currentScheduledEvents,
-						currentSavedEvents));
+//		dataSource.setCurrentEvents(EventInteractor.eventsToUserEvents(currentScheduledEvents,
+//						currentSavedEvents));
 
 		// Get the scheduled current events
-		Event[] oldScheduledEvents = new Event[dataSource.getOldEvents().length];
-		oldScheduledEvents = Schedule.getOldEvents().values().toArray(oldScheduledEvents);
+//		Event[] oldScheduledEvents = new Event[dataSource.getOldEvents().length];
+//		oldScheduledEvents = Schedule.getOldEvents().values().toArray(oldScheduledEvents);
 
 		// Get the previously saved current events
-		EventInteractor.UserEvent[] oldSavedEvents = dataSource.getOldEvents();
+//		EventInteractor.UserEvent[] oldSavedEvents = dataSource.getOldEvents();
 
 		// Set the scheduled events to be saved
-		dataSource.setOldEvents(EventInteractor.eventsToUserEvents(oldScheduledEvents, oldSavedEvents));
+//		dataSource.setOldEvents(EventInteractor.eventsToUserEvents(oldScheduledEvents, oldSavedEvents));
 
 		// Task data
 		// Get the scheduled current tasks
@@ -132,28 +144,28 @@ public class LoadSaveData
 
 		// TimeFence data
 		// Get the scheduled current time fences
-		TimeFence[] currentScheduledTimeFences =
-						new TimeFence[dataSource.getCurrentTimeFences().length];
-		currentScheduledTimeFences =
-						Schedule.getCurrentTimeFences().values().toArray(currentScheduledTimeFences);
+//		TimeFence[] currentScheduledTimeFences =
+//						new TimeFence[dataSource.getCurrentTimeFences().length];
+//		currentScheduledTimeFences =
+//						Schedule.getCurrentTimeFences().values().toArray(currentScheduledTimeFences);
 
 		// Get the previously saved current time fences
-		TimeFenceInteractor.UserTimeFence[] currentSavedTimeFences = dataSource.getCurrentTimeFences();
+//		TimeFenceInteractor.UserTimeFence[] currentSavedTimeFences = dataSource.getCurrentTimeFences();
 
 		// Set the scheduled time fences to be saved
-		dataSource.setCurrentTimeFences(TimeFenceInteractor.timeFencesToUserTimeFences(
-						currentScheduledTimeFences, currentSavedTimeFences));
+//		dataSource.setCurrentTimeFences(TimeFenceInteractor.timeFencesToUserTimeFences(
+//						currentScheduledTimeFences, currentSavedTimeFences));
 
 		// Get the scheduled current time fences
-		TimeFence[] oldScheduledTimeFences = new TimeFence[dataSource.getOldTimeFences().length];
-		oldScheduledTimeFences = Schedule.getOldTimeFences().values().toArray(oldScheduledTimeFences);
+//		TimeFence[] oldScheduledTimeFences = new TimeFence[dataSource.getOldTimeFences().length];
+//		oldScheduledTimeFences = Schedule.getOldTimeFences().values().toArray(oldScheduledTimeFences);
 
 		// Get the previously saved current time fences
-		TimeFenceInteractor.UserTimeFence[] oldSavedTimeFences = dataSource.getOldTimeFences();
+//		TimeFenceInteractor.UserTimeFence[] oldSavedTimeFences = dataSource.getOldTimeFences();
 
 		// Set the scheduled time fences to be saved
-		dataSource.setOldTimeFences(TimeFenceInteractor.timeFencesToUserTimeFences(
-						oldScheduledTimeFences, oldSavedTimeFences));
+//		dataSource.setOldTimeFences(TimeFenceInteractor.timeFencesToUserTimeFences(
+//						oldScheduledTimeFences, oldSavedTimeFences));
 
 		// Commit new data to be saved to the data source
 		dataSource.saveData();
@@ -163,18 +175,18 @@ public class LoadSaveData
 	public interface ScheduleInfo
 	{
 		// Get and set data
-		EventInteractor.UserEvent[] getCurrentEvents();
-		void setCurrentEvents(EventInteractor.UserEvent[] events);
-		EventInteractor.UserEvent[] getOldEvents();
-		void setOldEvents(EventInteractor.UserEvent[] events);
+//		EventInteractor.UserEvent[] getCurrentEvents();
+//		void setCurrentEvents(EventInteractor.UserEvent[] events);
+//		EventInteractor.UserEvent[] getOldEvents();
+//		void setOldEvents(EventInteractor.UserEvent[] events);
 		TaskInteractor.UserTask[] getCurrentTasks();
 		void setCurrentTasks(TaskInteractor.UserTask[] tasks);
 		TaskInteractor.UserTask[] getOldTasks();
 		void setOldTasks(TaskInteractor.UserTask[] tasks);
-		TimeFenceInteractor.UserTimeFence[] getCurrentTimeFences();
-		void setCurrentTimeFences(TimeFenceInteractor.UserTimeFence[] timeFences);
-		TimeFenceInteractor.UserTimeFence[] getOldTimeFences();
-		void setOldTimeFences(TimeFenceInteractor.UserTimeFence[] timeFences);
+//		TimeFenceInteractor.UserTimeFence[] getCurrentTimeFences();
+//		void setCurrentTimeFences(TimeFenceInteractor.UserTimeFence[] timeFences);
+//		TimeFenceInteractor.UserTimeFence[] getOldTimeFences();
+//		void setOldTimeFences(TimeFenceInteractor.UserTimeFence[] timeFences);
 
 		/**
 		 * Save the data in this object to the source

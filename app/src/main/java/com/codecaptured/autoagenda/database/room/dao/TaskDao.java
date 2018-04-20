@@ -17,14 +17,14 @@ import com.codecaptured.autoagenda.database.room.entities.Task;
 public interface TaskDao
 {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	public void insertTasks(Task... task);
+	void insertTasks(Task... task);
 
 	@Update
-	public void updateTasks(Task... tasks);
+	void updateTasks(Task... tasks);
 
 	@Delete
-	public void deleteTasks(Task... tasks);
+	void deleteTasks(Task... tasks);
 
 	@Query("SELECT * FROM Task")
-	public Task[] loadAllTasks();
+	Task[] loadAllTasks();
 }

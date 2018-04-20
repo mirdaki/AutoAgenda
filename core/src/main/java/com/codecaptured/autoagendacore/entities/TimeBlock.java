@@ -28,7 +28,7 @@ public class TimeBlock
 	}
 
 		// copy constructor
-	public TimeBlock( TimeBlock tb)
+	public TimeBlock(TimeBlock tb)
 	{
 		this.startTime = tb.getStartTime();
 		this.numberOfMinutes = tb.getNumberOfMinutes();
