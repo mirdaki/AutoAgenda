@@ -83,16 +83,16 @@ public class EventInteractor
 
 	/**
 	 * Change an existing scheduled event and reschedule it if using the default date/time
-	 * @param originalEvent The original event to be changed
+	 * @param originalID The id of the original event to be changed
 	 * @param newEvent The new changed event
 	 */
-	public static void modifyEvent(UserEvent originalEvent, UserEvent newEvent)
+	public static void modifyEvent(UUID originalID, UserEvent newEvent)
 	{
 		// Make the IDs the same
-		newEvent.setId(originalEvent.getId());
+		newEvent.setId(originalID);
 
 		// Remove the old event
-		Scheduler.removeEvent(originalEvent.getId());
+		Scheduler.removeEvent(originalID);
 
 		// Make the event
 		Event event = userEventToEvent(newEvent);

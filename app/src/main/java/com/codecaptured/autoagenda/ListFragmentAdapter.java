@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +28,10 @@ import java.util.List;
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.TaskViewHolder> {
 
 
-	public List<UserTask> taskList;
+	public static List<UserTask> taskList;
 	public static FragmentManager mListFragmentAdapterManager;
 	public static UserTask mListFragmentAdapterUserTask;
-	int currPosition;
+	public static int currPosition;
 
 	public static View mListFragmentAdapterView;
 
@@ -46,6 +47,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 	@Override
 	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
+		taskViewHolder.mCardView.setTag(i);
 		String priority;
 		String myFormat = "E, MMM dd 'at' hh:mm aa";
 		String myFormat2 = "MM/dd/yy";
@@ -130,7 +132,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		return new TaskViewHolder(itemView);
 	}
 
-	public static class TaskViewHolder extends RecyclerView.ViewHolder {
+	public static class TaskViewHolder extends RecyclerView.ViewHolder{
 		protected TextView mDescription;
 		protected TextView mCompleted;
 		protected TextView mDueDate;
@@ -140,13 +142,21 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		protected TextView mPriority;
 		protected Button mDeleteButton;
 		protected Button mCompleteButton;
+		public CardView mCardView;
 
 		public TaskViewHolder(View v) {
 			super(v);
+			mCardView = (CardView) v.findViewById(R.id.card_view);
 			mListFragmentAdapterView = v;
 			mListFragmentAdapterView.setOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View v) {
-					viewClicked();
+					int position = (int) mCardView.getTag();
+
+					android.support.v4.app.FragmentManager fm = mListFragmentAdapterManager;
+					taskFragment theTaskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
+					theTaskFragment.isModify = true;
+					theTaskFragment.ut = taskList.get(position);
+					theTaskFragment.show(fm, "fragment_task_tag");
 				}
 			});
 
@@ -217,7 +227,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		android.support.v4.app.FragmentManager fm = mListFragmentAdapterManager;
 		taskFragment theTaskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
 		theTaskFragment.isModify = true;
-		theTaskFragment.ut = mListFragmentAdapterUserTask;
+		theTaskFragment.ut = taskList.get(currPosition);
 		theTaskFragment.show(fm, "fragment_task_tag");
 	}
 }

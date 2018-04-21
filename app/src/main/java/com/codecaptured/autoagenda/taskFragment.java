@@ -31,6 +31,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -266,11 +267,12 @@ public class taskFragment extends DialogFragment
 
 			taskEditText.setText(ut.getTitle());
 
+			selectedDate = ut.getDueDate();
 			String myFormat = "MM/dd/yy hh:mm aa";
 			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 			dateEditText.setText(sdf.format(ut.getDueDate()).toString());
 
-			timeRequiredEditText.setText(ut.getTimeRequiredInMinutes());
+			timeRequiredEditText.setText(Integer.toString(ut.getTimeRequiredInMinutes()));
 
 			prioritySpinner.setSelection(ut.getPriorityLevel() - 1);
 
@@ -357,12 +359,56 @@ public class taskFragment extends DialogFragment
 			// If it is modifying existing task or event
 			if(isModify){
 				if(!ut.isEvent){
+
+					// Remove all old timeblocks from final task list
+					for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
+						if(ListFragment.finalTaskList.get(i).getId() == ut.getId()){
+							ListFragment.finalTaskList.remove(i);
+						}
+					}
+
 					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-					TaskInteractor.modifyTask();
+					TaskInteractor.modifyTask(ut, tempTask1);
+
+					// Add new timeblocks to UI in real time
+					for(int i = 0; i < tempTask1.timeBlocks.length; i++){
+						UserTask temp = tempTask1;
+						temp.thisTimeBlock = temp.timeBlocks[i];
+						ListFragment.finalTaskList.add(temp);
+					}
 				}
+				else{ // it is an event
+
+					// Remove from list fragment; there is only one instance since its an event
+					for(int i = 0; i < ListFragment.finalTaskList.size(); i++)
+					{
+						if (ListFragment.finalTaskList.get(i).getId() == ut.eventID)
+						{
+							ListFragment.finalTaskList.remove(i);
+							break;
+						}
+					}
+
+					TimeBlock tempTimeBlock = new TimeBlock(selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()));
+					tempEvent = new UserEvent(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), tempTimeBlock, prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					EventInteractor.modifyEvent(ut.eventID, tempEvent);
+
+					// Add to List Fragment in form of task
+					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					tempTask1.isEvent = true;
+					tempTask1.eventID = ut.getId();
+					tempTask1.thisTimeBlock = tempEvent.eventTime;
+					ListFragment.finalTaskList.add(tempTask1);
+
+				}
+
+				// End here if modifying
+				ListFragment.reloadRecyclerView();
+				dismiss();
+				return;
 			}
 
-
+			// Begins here if creating a new task instead of modifying
 			if(mRadioTask.isChecked())
 			{
 
@@ -417,25 +463,12 @@ public class taskFragment extends DialogFragment
 
 		System.out.println(" ");
 
-		//status1 = TaskInteractor.addTask(tempTask1);
-//		ListFragment.finalTaskList.add(tempTask1);
-//		ListFragment.mAdapter.notifyDataSetChanged();
-		//status2 = TaskInteractor.addTask(tempTask2);
-		//status3 = TaskInteractor.addTask(tempTask3);
-		//status4 = TaskInteractor.addTask(tempTask4);
-		//status5 = TaskInteractor.addTask(tempTask5);
-		//status6 = TaskInteractor.addTask(tempTask6);
-		//status7 = TaskInteractor.addTask(tempTask7);
-		//status8 = TaskInteractor.addTask(tempTask8);
-		//status9 = TaskInteractor.addTask(tempTask9);
-		//status10 = TaskInteractor.addTask(tempTask10);
-
 		if (status1 == true)
 		{
 			System.out.println("Task has been added");
 			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
 			toast1.show();
-			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
+			//Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
 		}
 		else
 		{
