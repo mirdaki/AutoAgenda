@@ -39,12 +39,12 @@ public class Event implements EventInteractor.UserEvent
 	private int priorityLevel;
 	private String[] tags;
 
-	public Event(String title, String description, TimeBlock eventTime, int priorityLevel, String[] tags, @NonNull UUID id)
+	public Event(String title, String description, DataTimeBlock dataEventTime, int priorityLevel, String[] tags, @NonNull UUID id)
 	{
 		this.title = title;
 		this.description = description;
 		this.id = id;
-		this.eventTime = eventTime;
+		this.dataEventTime = dataEventTime;
 		this.priorityLevel = priorityLevel;
 		this.tags = tags;
 
@@ -61,7 +61,7 @@ public class Event implements EventInteractor.UserEvent
 		this.priorityLevel = event.getPriorityLevel();
 		this.tags = event.getTags();
 
-		this.eventTime = new TimeBlock(event.getEventTime().getStartTime(), event.getEventTime().getNumberOfMinutes());
+		this.dataEventTime = new DataTimeBlock(event.getEventTime().getStartTime(), event.getEventTime().getNumberOfMinutes());
 	}
 
 	public Event(com.codecaptured.autoagendacore.entities.Event event)
@@ -73,7 +73,7 @@ public class Event implements EventInteractor.UserEvent
 		this.priorityLevel = event.getPriorityLevel();
 		this.tags = event.getTags();
 
-		this.eventTime = new TimeBlock(eventTime.getStartTime(), eventTime.getNumberOfMinutes());
+		this.dataEventTime = new DataTimeBlock(eventTime.getStartTime(), eventTime.getNumberOfMinutes());
 	}
 
 	@Override

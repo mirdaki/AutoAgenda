@@ -14,24 +14,41 @@
         android:id="@+id/create_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create a task"
+        android:text="New item"
         android:padding="5dp"
+        android:textColor="@color/theme_primary_dark"
         android:textSize="25dp"/>
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/radio_buttons"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+                android:layout_below="@id/create_message"
+                 android:orientation="vertical">
+        <RadioButton android:id="@+id/radio_task"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Task - Schedule for me"/>
+        <RadioButton android:id="@+id/radio_event"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Event - Schedule at specific time"/>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/taskEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/create_message"
+        android:layout_below="@id/radio_buttons"
         android:maxLines="1"
         android:maxLength="30"
-        android:hint="Task Name" />
+        android:hint="Name" />
 
     <EditText
         android:id="@+id/dateEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Time &amp; Date"
+        android:hint="Date &amp; Time"
         android:inputType="none"
         android:focusable="false"
         android:layout_below="@id/taskEditText"/>
@@ -51,6 +68,7 @@
         android:layout_height="wrap_content"
         android:hint="Estimated Length (minutes)"
         android:inputType="number"
+        android:layout_marginBottom="5dp"
         android:layout_below="@id/dateEditText"/>
 
     <!--<TextView-->
@@ -102,23 +120,30 @@
         <!--android:layout_toRightOf="@id/reminderTextView"/>-->
 
 
-    <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:layout_below="@id/priorityTextView"
-        android:paddingBottom="50dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--<TextView-->
+        <!--android:id="@+id/descriptionTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Description"-->
+        <!--android:layout_below="@id/priorityTextView"-->
+        <!--android:paddingBottom="50dp"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
 
     <EditText
         android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="50dp"
-        android:hint="(optional)"
-        android:layout_alignBaseline="@id/descriptionTextView"
-        android:layout_toRightOf="@id/descriptionTextView"/>
+        android:hint="Description (optional)"
+        android:layout_below="@id/priorityTextView"/>
+
+    <EditText
+        android:id="@+id/tagEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="50dp"
+        android:hint="Tag"
+        android:layout_below="@id/descriptionEditText"/>
 
 
     <Button
@@ -126,10 +151,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:layout_below="@id/descriptionTextView"
+        android:layout_below="@id/tagEditText"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:textColor="@android:color/holo_blue_light"/>
+        android:textColor="@color/theme_primary"/>
 
     <Button
         android:id="@+id/cancelButton"
@@ -139,7 +164,7 @@
         android:layout_toLeftOf="@id/addUpdateButton"
         android:layout_alignBaseline="@id/addUpdateButton"
         android:background="@android:color/transparent"
-        android:textColor="@android:color/holo_blue_light"/>
+        android:textColor="@color/theme_primary"/>
 
 </RelativeLayout>
 

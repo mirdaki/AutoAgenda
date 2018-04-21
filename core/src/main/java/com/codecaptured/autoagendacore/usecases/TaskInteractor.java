@@ -83,8 +83,23 @@ public class TaskInteractor
 						newTask.getCompleted(), newTask.getDueDate(), newTask.getTimeRequiredInMinutes(),
 						newTask.getPriorityLevel(), newTask.getTags());
 
+		// Timeblock for debug
+		TimeBlock[] tb = {};
+
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addTask(task);
+		tb = Scheduler.addTask(task);
+
+		if (tb != null)
+		{
+			System.out.println("Task start date:   " + tb[0].getStartTime());
+
+			System.out.println("Mins Required:     " + tb[0].getNumberOfMinutes());
+
+			System.out.println(" ");
+
+			// Updated user task
+			newTask.setTimeBlocks(task.getTaskTimes());
+		}
 	}
 
 	/**

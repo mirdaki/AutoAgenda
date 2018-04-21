@@ -1,7 +1,10 @@
 package com.codecaptured.autoagenda;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -10,17 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.codecaptured.autoagendacore.entities.Event;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
+
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +48,10 @@ public class taskFragment extends DialogFragment
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
+
+	/** For modification */
+	public boolean isModify = false;
+	public UserTask ut = null;
 
 	/** The rootview from Main */
 	View RootView;
@@ -65,8 +81,8 @@ public class taskFragment extends DialogFragment
 	Date selectedDate;
 	String selectedTime;
 
-	/** The edittext used to select the task time */
-	private android.widget.EditText timeEditText;
+	/** The edittext used to select the task tag */
+	private android.widget.EditText tagEditText;
 
 	/** The edittext used to select the task required time */
 	private android.widget.EditText timeRequiredEditText;
@@ -86,12 +102,18 @@ public class taskFragment extends DialogFragment
 	/** Cancel Button */
 	Button cancelButton;
 
-	/** ADd Button */
+	/** Add Button */
 	Button addButton;
 
+	/** Radio */
+	RadioGroup mRadioGroup;
+	RadioButton mRadioTask, mRadioEvent;
 
 	/** Date picker dialog */
 	android.app.DatePickerDialog.OnDateSetListener date;
+
+	/** Title */
+	TextView titleTextView;
 
 	public taskFragment()
 	{
@@ -135,14 +157,12 @@ public class taskFragment extends DialogFragment
 	{
 		// Inflate the layout for this fragment
 		RootView = inflater.inflate(com.codecaptured.autoagenda.R.layout.fragment_task, container, false);
-		//		testTextView = (android.widget.TextView) RootView.findViewById(com.codecaptured.autoagenda.R.id.textView);
-		//		testTextView.setText(mParam2);
 		dateEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.dateEditText);
-		timeEditText = (android.widget.EditText) RootView.findViewById(com.codecaptured.autoagenda.R.id.timeEditText);
-
 		taskEditText = (android.widget.EditText) RootView.findViewById(R.id.taskEditText);
 		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
 		descriptionEditText = (android.widget.EditText) RootView.findViewById(R.id.descriptionEditText);
+		titleTextView = (TextView) RootView.findViewById(R.id.create_message);
+		tagEditText = (EditText) RootView.findViewById(R.id.tagEditText);
 
 		dateEditText.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -183,27 +203,6 @@ public class taskFragment extends DialogFragment
 
 		};
 
-//		timeEditText.setOnClickListener(new android.view.View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
-//				int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
-//				int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
-//				android.app.TimePickerDialog mTimePicker;
-//				mTimePicker = new android.app.TimePickerDialog(getContext(), new android.app.TimePickerDialog.OnTimeSetListener() {
-//					@Override
-//					public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//						timeEditText.setText( selectedHour + ":" + selectedMinute);
-//					}
-//				}, hour, minute, false);//Yes 24 hour time
-//				mTimePicker.setTitle("Select Time");
-//				mTimePicker.show();
-//
-//			}
-//		});
-
 //		// Setup repeat spinner
 //		repeatSpinner = (Spinner) RootView.findViewById(R.id.repeatSpinner);
 //		ArrayAdapter<CharSequence> repeatAdapter = ArrayAdapter.createFromResource(RootView.getContext(), R.array.repeatSpinnerArray, android.R.layout.simple_spinner_item);
@@ -239,6 +238,50 @@ public class taskFragment extends DialogFragment
 				addButtonClicked(view);
 			}
 		});
+
+		// Set up radio buttons
+		mRadioGroup = (RadioGroup) RootView.findViewById(R.id.radio_buttons);
+		mRadioTask = (RadioButton) RootView.findViewById(R.id.radio_task);
+		mRadioEvent = (RadioButton) RootView.findViewById(R.id.radio_event);
+		mRadioGroup.check(R.id.radio_task);
+
+		mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+					case R.id.radio_task:
+						dateEditText.setHint("Due Date");
+						break;
+					case R.id.radio_event:
+						dateEditText.setHint("Scheduled Date");
+						break;
+				}
+			}
+
+		});
+
+		// Pre fill fields if modifying
+		if(isModify){
+			titleTextView.setText("Modify");
+
+			if(ut.isEvent){
+				mRadioEvent.setChecked(true);
+			}
+
+			taskEditText.setText(ut.getTitle());
+
+			selectedDate = ut.getDueDate();
+			String myFormat = "MM/dd/yy hh:mm aa";
+			java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
+			dateEditText.setText(sdf.format(ut.getDueDate()).toString());
+
+			timeRequiredEditText.setText(Integer.toString(ut.getTimeRequiredInMinutes()));
+
+			prioritySpinner.setSelection(ut.getPriorityLevel() - 1);
+
+			descriptionEditText.setText(ut.getDescription());
+
+
+		}
 
 		return RootView;
 	}
@@ -296,103 +339,138 @@ public class taskFragment extends DialogFragment
 	}
 
 	private void updateDate() {
-		String myFormat = "MM/dd/yy hh:mm";
+		String myFormat = "MM/dd/yy hh:mm aa";
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(myFormat, java.util.Locale.US);
 
 		dateEditText.setText(sdf.format(calendar.getTime()));
 	}
 
 	public void addButtonClicked(View view){
+
+
+		boolean status1 = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		Date tempDate1 = new Date();
-		Date tempDate2 = new Date();
-		Date tempDate3 = new Date();
-		Date tempDate4 = new Date();
-		Date tempDate5 = new Date();
-		Date tempDate6 = new Date();
-		Date tempDate7 = new Date();
-		Date tempDate8 = new Date();
-		Date tempDate9 = new Date();
-		Date tempDate10 = new Date();
 
-		try
+		String[] tempTags2  = {tagEditText.getText().toString()};
+//		String[] tempTags2  = {"school", "gym"};
+		UserTask tempTask1 = null;
+		UserEvent tempEvent = null;
+
+		if(postIsProper() == true && dateIsProper(selectedDate) == true)
 		{
-			tempDate1 = sdf.parse("13/9/2018 12:00:00");
-			tempDate2 = sdf.parse("13/8/2018 12:00:00");
-			tempDate3 = sdf.parse("13/7/2018 12:00:00");
-			tempDate4 = sdf.parse("13/6/2018 12:00:00");
-			tempDate5 = sdf.parse("13/5/2018 12:00:00");
-			tempDate6 = sdf.parse("13/10/2018 12:00:00");
-			tempDate7 = sdf.parse("13/11/2018 12:00:00");
-			tempDate8 = sdf.parse("13/12/2018 12:00:00");
-			tempDate9 = sdf.parse("11/12/2018 12:00:00");
-			tempDate10 = sdf.parse("22/7/2018 12:00:00");
+			// If it is modifying existing task or event
+			if(isModify){
+				if(!ut.isEvent){
+
+					// Remove all old timeblocks from final task list
+					for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
+						if(ListFragment.finalTaskList.get(i).getId() == ut.getId()){
+							ListFragment.finalTaskList.remove(i);
+						}
+					}
+
+					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					TaskInteractor.modifyTask(ut, tempTask1);
+
+					// Add new timeblocks to UI in real time
+					for(int i = 0; i < tempTask1.timeBlocks.length; i++){
+						UserTask temp = tempTask1;
+						temp.thisTimeBlock = temp.timeBlocks[i];
+						ListFragment.finalTaskList.add(temp);
+					}
+				}
+				else{ // it is an event
+
+					// Remove from list fragment; there is only one instance since its an event
+					for(int i = 0; i < ListFragment.finalTaskList.size(); i++)
+					{
+						if (ListFragment.finalTaskList.get(i).getId() == ut.getId())
+						{
+							ListFragment.finalTaskList.remove(i);
+							break;
+						}
+					}
+
+					TimeBlock tempTimeBlock = new TimeBlock(selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()));
+					tempEvent = new UserEvent(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), tempTimeBlock, prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					EventInteractor.modifyEvent(ut.eventID, tempEvent);
+
+					// Add to List Fragment in form of task
+					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					tempTask1.isEvent = true;
+					tempTask1.eventID = ut.getId();
+					tempTask1.thisTimeBlock = tempEvent.eventTime;
+					ListFragment.finalTaskList.add(tempTask1);
+
+				}
+
+				// End here if modifying
+				ListFragment.reloadRecyclerView();
+				dismiss();
+				return;
+			}
+
+			// Begins here if creating a new task instead of modifying
+			if(mRadioTask.isChecked())
+			{
+
+				tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+				status1 = TaskInteractor.addTask(tempTask1);
+
+				// Add to UI in real time
+				for(int i = 0; i < tempTask1.timeBlocks.length; i++){
+					UserTask temp = tempTask1;
+					temp.thisTimeBlock = temp.timeBlocks[i];
+					ListFragment.finalTaskList.add(temp);
+				}
+			}
+			else
+			{
+
+				TimeBlock tempTimeBlock = new TimeBlock(selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()));
+				tempEvent = new UserEvent(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), tempTimeBlock, prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+				EventInteractor.addEvent(tempEvent);
+				status1 = true;
+
+				// Add to List Fragment in form of task
+				tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+				tempTask1.isEvent = true;
+				tempTask1.eventID = tempEvent.getId();
+				tempTask1.thisTimeBlock = tempEvent.eventTime;
+				ListFragment.finalTaskList.add(tempTask1);
+			}
+
+
+			ListFragment.reloadRecyclerView();
+			dismiss();
 		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
 
-		String[] tempTags  = {"work"};
-		String[] tempTags2  = {"school", "gym"};
-
-
-  		UserTask tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-//		UserTask tempTask2 = new UserTask("Temp2", "Hello", false, tempDate2, 15, 2, tempTags);
-//		UserTask tempTask3 = new UserTask("Temp3", "Hello", false, tempDate3, 20, 1, tempTags);
-//		UserTask tempTask4 = new UserTask("Temp4", "Hello", false, tempDate4, 60, 2, tempTags);
-//		UserTask tempTask5 = new UserTask("Temp5", "Hello", false, tempDate5, 100, 3, tempTags);
-//		UserTask tempTask6 = new UserTask("Temp6", "Hello", false, tempDate6, 15, 1, tempTags);
-//		UserTask tempTask7 = new UserTask("Temp7", "Hello", false, tempDate7, 120, 3, tempTags);
-//		UserTask tempTask8 = new UserTask("Temp8", "Hello", false, tempDate8, 20, 2, tempTags2);
-//		UserTask tempTask9 = new UserTask("Temp9", "Hello", false, tempDate9, 60, 1, tempTags2);
-//		UserTask tempTask10 = new UserTask("Temp10", "Hello", false, tempDate10, 120, 3, tempTags2);
-//
-//		ListFragment.finalTaskList.add(tempTask1);
-//		ListFragment.finalTaskList.add(tempTask2);
-//		ListFragment.finalTaskList.add(tempTask3);
-//		ListFragment.finalTaskList.add(tempTask4);
-//		ListFragment.finalTaskList.add(tempTask5);
-//		ListFragment.finalTaskList.add(tempTask6);
-//		ListFragment.finalTaskList.add(tempTask7);
-//		ListFragment.finalTaskList.add(tempTask8);
-//		ListFragment.finalTaskList.add(tempTask9);
-//		ListFragment.finalTaskList.add(tempTask10);
-
-		boolean status1;
-		//boolean status2;
-		//boolean status3;
-		//boolean status4;
-		//boolean status5;
-		//boolean status6;
-		//boolean status7;
-		//boolean status8;
-		//boolean status9;
-		//boolean status10;
+		else{
+			AlertDialog.Builder builder;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				builder = new AlertDialog.Builder(RootView.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+			} else {
+				builder = new AlertDialog.Builder(RootView.getContext());
+			}
+			builder.setTitle("Oops!")
+							.setMessage("All required fields must be filled. Selected time cannot be in the past.")
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
 
 		EventInteractor.addSleepingEvent();
+								}
+							})
+							.show();
+		}
 
 		System.out.println(" ");
-
-		status1 = TaskInteractor.addTask(tempTask1);
-//		ListFragment.finalTaskList.add(tempTask1);
-//		ListFragment.mAdapter.notifyDataSetChanged();
-		//status2 = TaskInteractor.addTask(tempTask2);
-		//status3 = TaskInteractor.addTask(tempTask3);
-		//status4 = TaskInteractor.addTask(tempTask4);
-		//status5 = TaskInteractor.addTask(tempTask5);
-		//status6 = TaskInteractor.addTask(tempTask6);
-		//status7 = TaskInteractor.addTask(tempTask7);
-		//status8 = TaskInteractor.addTask(tempTask8);
-		//status9 = TaskInteractor.addTask(tempTask9);
-		//status10 = TaskInteractor.addTask(tempTask10);
 
 		if (status1 == true)
 		{
 			System.out.println("Task has been added");
 			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
 			toast1.show();
-			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
+			//Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
 		}
 		else
 		{
@@ -410,5 +488,32 @@ public class taskFragment extends DialogFragment
 	public void cancelButtonClicked(View view){
 		dismiss();
 	}
+
+	public boolean postIsProper(){
+		boolean isProper = true;
+		if (taskEditText.getText().toString().equals("") || timeRequiredEditText.getText().toString().equals("") || dateEditText.getText().toString().equals("") ||
+						taskEditText.getText().toString().equals(null) || timeRequiredEditText.getText().toString().equals(null) || dateEditText.getText().toString().equals(null))
+		{
+			isProper = false;
+		}
+
+		return isProper;
+	}
+
+	public boolean dateIsProper(Date date){
+		boolean isProper = true;
+
+		Date today = Calendar.getInstance().getTime();
+
+		if(date.before(today)){
+			isProper = false;
+		}
+
+
+		return isProper;
+
+	}
 }
+
+
 

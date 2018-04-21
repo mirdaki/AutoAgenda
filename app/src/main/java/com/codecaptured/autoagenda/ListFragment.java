@@ -1,5 +1,6 @@
 package com.codecaptured.autoagenda;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +38,14 @@ import java.util.List;
  */
 public class ListFragment extends Fragment
 {
+
+	// Container Activity must implement this interface
+	public interface TasksListener {
+		public void needToRefresh();
+	}
+
+	public static TasksListener mTaskListenerCallback;
+
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -46,19 +57,26 @@ public class ListFragment extends Fragment
 
 	private OnFragmentInteractionListener mListener;
 
-	View RootView;
+	public static View RootView;
+
+	public static TextView emptyView;
 
 	/** Spinner components */
 	Spinner sortSpinner, tagSpinner;
 	ArrayList<String> tagList = new ArrayList<String>();
 
 	/** Recycler View components */
-	RecyclerView mRecyclerView;
+	public static RecyclerView mRecyclerView;
 	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
-	public static List<UserTask> finalTaskList, fullTaskList;
 
-	int check = 0, check2 = 0;
+	/** Final - what gets displayed in the recycler view
+	 * Cal - what gets displayed on the calendar
+	 * Full - permanently keeps track of all of the tasks
+	 */
+	public static List<UserTask> finalTaskList, calTaskList, fullTaskList;
+
+	public static int check = 0, check2 = 0;
 
 
 	public ListFragment()
@@ -105,6 +123,7 @@ public class ListFragment extends Fragment
 
 		// Task list
 		finalTaskList = MainActivity.getLoadedTaskList(getActivity().getApplication());
+		calTaskList = new ArrayList<UserTask>();
 		fullTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
@@ -112,8 +131,12 @@ public class ListFragment extends Fragment
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(RootView.getContext());
 		mRecyclerView.setLayoutManager(mLayoutManager);
-		mAdapter = new ListFragmentAdapter(finalTaskList);
+		mAdapter = new ListFragmentAdapter(finalTaskList, getActivity().getSupportFragmentManager());
 		mRecyclerView.setAdapter(mAdapter);
+		emptyView = (TextView) RootView.findViewById(R.id.empty_view);
+
+		setListVisibility();
+
 
 		// Setup sort spinner
 		sortSpinner = (Spinner) RootView.findViewById(R.id.sortSpinner);
@@ -128,6 +151,10 @@ public class ListFragment extends Fragment
 				{
 					if(position == 0)
 						sortListByDate();
+					else if(position == 1)
+						sortListByPriority();
+					else if(position == 2)
+						sortListByShortest();
 				}
 			} // to close the onItemSelected
 			public void onNothingSelected(AdapterView<?> parent)
@@ -160,7 +187,36 @@ public class ListFragment extends Fragment
 			}
 		});
 
+		String[] temps = {"hi"};
 
+
+		Calendar time1 = Calendar.getInstance();
+		time1.add(Calendar.HOUR, 1);
+
+		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 5, 1, temps);
+		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 5);
+		TimeBlock[] timeBlock2 = {tblock2};
+		temp2.setTimeBlocks(timeBlock2);
+		temp2.thisTimeBlock = tblock2;
+		//finalTaskList.add(temp2);
+
+		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 99, 2, temps);
+		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 99);
+		TimeBlock[] timeBlock = {tblock};
+		temp.setTimeBlocks(timeBlock);
+		temp.thisTimeBlock = tblock;
+		//finalTaskList.add(temp);
+
+		// Setup cal task list
+		sortListByDate();
+		List<UserTask> newList = new ArrayList<>(finalTaskList);
+		calTaskList = newList;
+
+		// Setup full task list
+		List<UserTask> newList2 = new ArrayList<>(finalTaskList);
+		fullTaskList = newList2;
+
+		reloadRecyclerView();
 		return RootView;
 	}
 
@@ -184,6 +240,15 @@ public class ListFragment extends Fragment
 		{
 			throw new RuntimeException(context.toString()
 							+ " must implement OnFragmentInteractionListener");
+		}
+
+		// This makes sure that the container activity has implemented
+		// the callback interface. If not, it throws an exception
+		try {
+			mTaskListenerCallback = (TasksListener) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString()
+							+ " must implement TasksListener");
 		}
 	}
 
@@ -225,34 +290,99 @@ public class ListFragment extends Fragment
 
 	public void sortListByDate(){
 		Collections.sort(finalTaskList, new Comparator<UserTask>() {
-			public int compare(UserTask o1, UserTask o2) {
-				if (o1.getDueDate() == null || o2.getDueDate() == null)
+			public int compare(UserTask u1, UserTask u2) {
+				if (u1.thisTimeBlock.getStartTime() == null || u2.thisTimeBlock.getStartTime() == null)
 					return 0;
-				return o1.getDueDate().compareTo(o2.getDueDate());
+				return u1.thisTimeBlock.getStartTime().compareTo(u2.thisTimeBlock.getStartTime());
 			}
+		});
+		reloadRecyclerView();
+	}
+
+	public static void sortCalListByDate(){
+		Collections.sort(calTaskList, new Comparator<UserTask>() {
+			public int compare(UserTask u1, UserTask u2) {
+				if (u1.thisTimeBlock.getStartTime() == null || u2.thisTimeBlock.getStartTime() == null)
+					return 0;
+				return u1.thisTimeBlock.getStartTime().compareTo(u2.thisTimeBlock.getStartTime());
+			}
+		});
+		//reloadRecyclerView();
+	}
+
+	public void sortListByPriority()
+	{
+		Collections.sort(finalTaskList, new Comparator<UserTask>()
+		{
+			public int compare(UserTask u1, UserTask u2)
+			{
+				return u2.priorityLevel - u1.priorityLevel;
+			}
+
+		});
+		reloadRecyclerView();
+	}
+
+	public void sortListByShortest(){
+		Collections.sort(finalTaskList, new Comparator<UserTask>()
+		{
+			public int compare(UserTask u1, UserTask u2)
+			{
+				return u1.timeRequiredInMinutes - u2.timeRequiredInMinutes;
+			}
+
 		});
 		reloadRecyclerView();
 	}
 
 	public void sortListByTag(String tagString){
 
-		finalTaskList = fullTaskList;
+//		List<UserTask> tempList1 = new ArrayList<>(fullTaskList);
+//		finalTaskList = tempList1;
 
 
+		// Get all tasks again
 		if(tagString.equals("All tags"))
 		{
+			List<UserTask> tempList2 = new ArrayList<>(fullTaskList);
+			finalTaskList = tempList2;
+			reloadRecyclerView();
 			return;
 		}
 
-//		for(int i = 0; i < finalTaskList.size(); i++){
-//			if(!finalTaskList.get(i).tags.contains(tagString.toLowerCase()));
-//			finalTaskList.remove(i);
-//		}
+		// Remove tasks that do not have the selected tag
+		for(int i = 0; i < finalTaskList.size(); i++){
+			if(!finalTaskList.get(i).getTag().contains(tagString.toLowerCase()));
+			finalTaskList.remove(i);
+		}
 
 		reloadRecyclerView();
 	}
 
-	public void reloadRecyclerView(){
+	public static void reloadRecyclerView()
+	{
+		setListVisibility();
+
+
+		//reload
 		mAdapter.notifyDataSetChanged();
+
+		//Refresh calendar page
+		List<UserTask> newList = new ArrayList<>(fullTaskList);
+		calTaskList = newList;
+		sortCalListByDate();
+		mTaskListenerCallback.needToRefresh();
+
+	}
+
+	public static void setListVisibility(){
+		if (finalTaskList.isEmpty()) {
+			mRecyclerView.setVisibility(View.GONE);
+			emptyView.setVisibility(View.VISIBLE);
+		}
+		else {
+			mRecyclerView.setVisibility(View.VISIBLE);
+			emptyView.setVisibility(View.GONE);
+		}
 	}
 }

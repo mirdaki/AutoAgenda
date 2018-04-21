@@ -39,5 +39,6 @@
         <item>Priority</item>
         <item>Shortest</item>
     </string-array>
+    <string name="title_activity_kotlin">kotlinActivity</string>
 
 </resources>
