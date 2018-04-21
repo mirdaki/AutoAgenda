@@ -382,7 +382,7 @@ public class taskFragment extends DialogFragment
 					// Remove from list fragment; there is only one instance since its an event
 					for(int i = 0; i < ListFragment.finalTaskList.size(); i++)
 					{
-						if (ListFragment.finalTaskList.get(i).getId() == ut.eventID)
+						if (ListFragment.finalTaskList.get(i).getId() == ut.getId())
 						{
 							ListFragment.finalTaskList.remove(i);
 							break;
