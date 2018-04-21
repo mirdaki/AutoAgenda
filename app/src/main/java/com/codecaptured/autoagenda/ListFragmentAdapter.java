@@ -31,7 +31,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	public static List<UserTask> taskList;
 	public static FragmentManager mListFragmentAdapterManager;
 	public static UserTask mListFragmentAdapterUserTask;
-	public static int currPosition;
+	public static int position;
 
 	public static View mListFragmentAdapterView;
 
@@ -57,7 +57,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		java.text.SimpleDateFormat sdf3 = new java.text.SimpleDateFormat(myFormat3, java.util.Locale.US);
 
 		mListFragmentAdapterUserTask = taskList.get(i);
-		currPosition = i;
+		//currPosition = i;
 
 		if(mListFragmentAdapterUserTask.priorityLevel == 1)
 			priority = "Low";
@@ -148,9 +148,14 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			super(v);
 			mCardView = (CardView) v.findViewById(R.id.card_view);
 			mListFragmentAdapterView = v;
+
+			int count = 0;
+			if(++count > 1)
+				position = (int) mCardView.getTag();
+
 			mListFragmentAdapterView.setOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View v) {
-					int position = (int) mCardView.getTag();
+
 
 					android.support.v4.app.FragmentManager fm = mListFragmentAdapterManager;
 					taskFragment theTaskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
@@ -187,7 +192,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 									TaskInteractor.removeTask(mListFragmentAdapterUserTask);
 								else
 									EventInteractor.removeEvent(mListFragmentAdapterUserTask.eventID);
-								taskList.remove(currPosition);
+								taskList.remove(position);
 								ListFragment.reloadRecyclerView();
 							}
 						})
@@ -211,7 +216,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
 								TaskInteractor.removeTask(mListFragmentAdapterUserTask);
-								taskList.remove(currPosition);
+								taskList.remove(position);
 								ListFragment.reloadRecyclerView();
 							}
 						})
@@ -221,13 +226,5 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 							}
 						})
 						.show();
-	}
-
-	public static void viewClicked(){
-		android.support.v4.app.FragmentManager fm = mListFragmentAdapterManager;
-		taskFragment theTaskFragment = com.codecaptured.autoagenda.taskFragment.newInstance("Some Title", "someotherthing");
-		theTaskFragment.isModify = true;
-		theTaskFragment.ut = taskList.get(currPosition);
-		theTaskFragment.show(fm, "fragment_task_tag");
 	}
 }
