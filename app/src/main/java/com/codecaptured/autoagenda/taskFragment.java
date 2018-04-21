@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -80,8 +81,8 @@ public class taskFragment extends DialogFragment
 	Date selectedDate;
 	String selectedTime;
 
-	/** The edittext used to select the task time */
-	private android.widget.EditText timeEditText;
+	/** The edittext used to select the task tag */
+	private android.widget.EditText tagEditText;
 
 	/** The edittext used to select the task required time */
 	private android.widget.EditText timeRequiredEditText;
@@ -161,6 +162,7 @@ public class taskFragment extends DialogFragment
 		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
 		descriptionEditText = (android.widget.EditText) RootView.findViewById(R.id.descriptionEditText);
 		titleTextView = (TextView) RootView.findViewById(R.id.create_message);
+		tagEditText = (EditText) RootView.findViewById(R.id.tagEditText);
 
 		dateEditText.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -349,8 +351,8 @@ public class taskFragment extends DialogFragment
 		boolean status1 = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
-		String[] tempTags  = {"work"};
-		String[] tempTags2  = {"school", "gym"};
+		String[] tempTags2  = {tagEditText.getText().toString()};
+//		String[] tempTags2  = {"school", "gym"};
 		UserTask tempTask1 = null;
 		UserEvent tempEvent = null;
 

@@ -69,7 +69,12 @@ public class ListFragment extends Fragment
 	public static RecyclerView mRecyclerView;
 	public static ListFragmentAdapter mAdapter;
 	RecyclerView.LayoutManager mLayoutManager;
-	public static List<UserTask> finalTaskList, tagTaskList, calTaskList;
+
+	/** Final - what gets displayed in the recycler view
+	 * Cal - what gets displayed on the calendar
+	 * Full - permanently keeps track of all of the tasks
+	 */
+	public static List<UserTask> finalTaskList, calTaskList, fullTaskList;
 
 	public static int check = 0, check2 = 0;
 
@@ -118,8 +123,8 @@ public class ListFragment extends Fragment
 
 		// Task list
 		finalTaskList = new ArrayList<UserTask>();
-		tagTaskList = new ArrayList<UserTask>();
 		calTaskList = new ArrayList<UserTask>();
+		fullTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
@@ -202,9 +207,15 @@ public class ListFragment extends Fragment
 		temp.thisTimeBlock = tblock;
 		//finalTaskList.add(temp);
 
+		// Setup cal task list
 		sortListByDate();
 		List<UserTask> newList = new ArrayList<>(finalTaskList);
 		calTaskList = newList;
+
+		// Setup full task list
+		List<UserTask> newList2 = new ArrayList<>(finalTaskList);
+		fullTaskList = newList2;
+
 		reloadRecyclerView();
 		return RootView;
 	}
@@ -326,18 +337,24 @@ public class ListFragment extends Fragment
 
 	public void sortListByTag(String tagString){
 
-		finalTaskList = tagTaskList;
+//		List<UserTask> tempList1 = new ArrayList<>(fullTaskList);
+//		finalTaskList = tempList1;
 
 
+		// Get all tasks again
 		if(tagString.equals("All tags"))
 		{
+			List<UserTask> tempList2 = new ArrayList<>(fullTaskList);
+			finalTaskList = tempList2;
+			reloadRecyclerView();
 			return;
 		}
 
-//		for(int i = 0; i < finalTaskList.size(); i++){
-//			if(!finalTaskList.get(i).tags.contains(tagString.toLowerCase()));
-//			finalTaskList.remove(i);
-//		}
+		// Remove tasks that do not have the selected tag
+		for(int i = 0; i < finalTaskList.size(); i++){
+			if(!finalTaskList.get(i).getTag().contains(tagString.toLowerCase()));
+			finalTaskList.remove(i);
+		}
 
 		reloadRecyclerView();
 	}
@@ -351,7 +368,7 @@ public class ListFragment extends Fragment
 		mAdapter.notifyDataSetChanged();
 
 		//Refresh calendar page
-		List<UserTask> newList = new ArrayList<>(finalTaskList);
+		List<UserTask> newList = new ArrayList<>(fullTaskList);
 		calTaskList = newList;
 		sortCalListByDate();
 		mTaskListenerCallback.needToRefresh();
