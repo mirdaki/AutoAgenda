@@ -104,7 +104,7 @@ public class ListFragment extends Fragment
 		RootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		// Task list
-		finalTaskList = MainActivity.loadedTaskList;
+		finalTaskList = MainActivity.getLoadedTaskList(getActivity().getApplication());
 		fullTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view

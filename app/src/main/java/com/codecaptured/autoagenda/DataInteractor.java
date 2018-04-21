@@ -4,10 +4,13 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.codecaptured.autoagenda.database.room.AppDatabase;
+import com.codecaptured.autoagenda.database.room.dao.EventDao;
 import com.codecaptured.autoagenda.database.room.dao.TaskDao;
 import com.codecaptured.autoagenda.database.room.entities.DataTimeBlock;
+import com.codecaptured.autoagendacore.entities.Event;
 import com.codecaptured.autoagendacore.entities.Schedule;
 import com.codecaptured.autoagendacore.entities.Task;
+import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.util.Calendar;
@@ -17,17 +20,18 @@ import java.util.UUID;
 
 // Example:
 // Pull in database info
-//		TaskInteractor.UserTask[] task = DataInteractor.loadData(getApplication());
+//		TaskInteractor.UserTask[] task = DataInteractor.loadTaskData(getApplication());
 
 public class DataInteractor
 {
 	private AppDatabase database;
 
 	/**
-	 * Load data from database into schedule and return a list of tasks
+	 * Load task data from database into schedule and return a list of tasks
 	 * @param application
+	 * @return
 	 */
-	public static TaskInteractor.UserTask[] loadData(Application application)
+	public static TaskInteractor.UserTask[] loadTaskData(Application application)
 	{
 		TaskDao tDao = ((BasicSetUp) application).getDatabase().taskDao();
 		TaskInteractor.UserTask[] tasks = tDao.loadAllTasks();
@@ -44,6 +48,27 @@ public class DataInteractor
 	}
 
 	/**
+	 * Load event data from database into schedule and return a list of events
+	 * @param application
+	 * @return
+	 */
+	public static EventInteractor.UserEvent[] loadEventData(Application application)
+	{
+		EventDao eDao = ((BasicSetUp) application).getDatabase().eventDao();
+		EventInteractor.UserEvent[] events = eDao.loadAllEvents();
+
+		HashMap<UUID, Event> userEvents = new HashMap<>();
+		for (EventInteractor.UserEvent event : events)
+		{
+			userEvents.put(event.getId(), EventInteractor.userEventToEvent(event));
+		}
+
+		Schedule.setCurrentEvents(userEvents);
+
+		return events;
+	}
+
+	/**
 	 * Save data from schedule into database
 	 * @param application
 	 */
@@ -57,6 +82,16 @@ public class DataInteractor
 		for (Task task : currentScheduledTasks)
 		{
 			tDao.insertTasks(new com.codecaptured.autoagenda.database.room.entities.Task(task));
+		}
+
+		EventDao eDao = ((BasicSetUp) application).getDatabase().eventDao();
+
+		Event[] currentScheduledEvents = new Event[eDao.loadAllEvents().length];
+		currentScheduledEvents = Schedule.getCurrentEvents().values().toArray(currentScheduledEvents);
+
+		for (Event event : currentScheduledEvents)
+		{
+			eDao.insertEvents(new com.codecaptured.autoagenda.database.room.entities.Event(event));
 		}
 	}
 

@@ -52,6 +52,7 @@ public class Task implements TaskInteractor.UserTask
 		this.priorityLevel = task.getPriorityLevel();
 		this.tags = task.getTags();
 		this.id = task.getId();
+		this.timeBlocks = task.getTimeBlocks();
 
 		this.dataTimeBlocks = new DataTimeBlock[task.getTimeBlocks().length];
 		for (int i = 0; i < task.getTimeBlocks().length; i++)
@@ -70,6 +71,7 @@ public class Task implements TaskInteractor.UserTask
 		this.priorityLevel = task.getPriorityLevel();
 		this.tags = task.getTags();
 		this.id = task.getId();
+		this.timeBlocks = task.getTaskTimes();
 
 		this.dataTimeBlocks = new DataTimeBlock[task.getTaskTimes().length];
 		for (int i = 0; i < task.getTaskTimes().length; i++)
@@ -91,6 +93,12 @@ public class Task implements TaskInteractor.UserTask
 		this.tags = tags;
 		this.id = id;
 		this.dataTimeBlocks = dataTimeBlocks;
+
+		this.timeBlocks = new TimeBlock[dataTimeBlocks.length];
+		for (int i = 0; i < dataTimeBlocks.length; i++)
+		{
+			this.timeBlocks[i] = new TimeBlock(dataTimeBlocks[i].getStartTime(), dataTimeBlocks[i].getNumberOfMinutes());
+		}
 	}
 
 	// Getters and setters
@@ -187,6 +195,12 @@ public class Task implements TaskInteractor.UserTask
 		{
 			this.dataTimeBlocks[i] = new DataTimeBlock(dataTimeBlocks[i]);
 		}
+
+		this.timeBlocks = new TimeBlock[dataTimeBlocks.length];
+		for (int i = 0; i < dataTimeBlocks.length; i++)
+		{
+			this.timeBlocks[i] = new TimeBlock(dataTimeBlocks[i].getStartTime(), dataTimeBlocks[i].getNumberOfMinutes());
+		}
 	}
 
 	public TimeBlock[] getTimeBlocks()
@@ -196,6 +210,7 @@ public class Task implements TaskInteractor.UserTask
 
 	public void setTimeBlocks(TimeBlock[] timeBlocks)
 	{
+		this.timeBlocks = timeBlocks;
 		this.dataTimeBlocks = new DataTimeBlock[timeBlocks.length];
 		for (int i = 0; i < timeBlocks.length; i++)
 		{

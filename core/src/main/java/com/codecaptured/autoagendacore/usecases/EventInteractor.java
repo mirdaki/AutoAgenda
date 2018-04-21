@@ -123,7 +123,7 @@ public class EventInteractor
 	 * @param userEvent User event to be based off of
 	 * @return event with same data as userEvent
 	 */
-	protected static Event userEventToEvent(UserEvent userEvent)
+	public static Event userEventToEvent(UserEvent userEvent)
 	{
 		// Make the event
 		return new Event(userEvent.getId(), userEvent.getTitle(), userEvent.getDescription(),
@@ -136,7 +136,7 @@ public class EventInteractor
 	 * @param userEvent Must be passed in (interfaces can't be instantiated)
 	 * @return tempUserEvent with the same data as event
 	 */
-	protected static UserEvent eventToUserEvent(Event event, UserEvent userEvent)
+	public static UserEvent eventToUserEvent(Event event, UserEvent userEvent)
 	{
 		// Set the passed user event to have all the attributes of the event
 		userEvent.setId(event.getId());

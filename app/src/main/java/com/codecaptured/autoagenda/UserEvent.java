@@ -26,6 +26,15 @@ public class UserEvent implements EventInteractor.UserEvent
 		this.tags = tags;
 	}
 
+	public UserEvent(EventInteractor.UserEvent userEvent)
+	{
+		this.title = userEvent.getTitle();
+		this.description = userEvent.getDescription();
+		this.eventTime = userEvent.getEventTime();
+		this.priorityLevel = userEvent.getPriorityLevel();
+		this.tags = userEvent.getTags();
+	}
+
 	@Override
 	public String getTitle()
 	{

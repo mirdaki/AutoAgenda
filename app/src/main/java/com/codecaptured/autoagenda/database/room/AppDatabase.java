@@ -9,14 +9,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.codecaptured.autoagenda.AppExecutors;
+import com.codecaptured.autoagenda.database.room.dao.EventDao;
 import com.codecaptured.autoagenda.database.room.dao.TaskDao;
+import com.codecaptured.autoagenda.database.room.entities.Event;
 import com.codecaptured.autoagenda.database.room.entities.Task;
 
 /**
  * Created by matthew on 3/28/18.
  */
 
-@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, Event.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase
 {
@@ -27,6 +29,7 @@ public abstract class AppDatabase extends RoomDatabase
 
 	// Type of data to be stored
 	public abstract TaskDao taskDao();
+	public abstract EventDao eventDao();
 
 	// Flag to see if database
 	private static AppDatabase appDatabase;

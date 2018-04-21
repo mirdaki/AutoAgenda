@@ -1,6 +1,5 @@
 package com.codecaptured.autoagenda;
 
-import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,16 +7,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.codecaptured.autoagenda.database.Data;
-import com.codecaptured.autoagenda.database.room.entities.DataTimeBlock;
-import com.codecaptured.autoagenda.database.room.entities.Task;
-import com.codecaptured.autoagendacore.usecases.LoadSaveData;
+import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity implements com.codecaptured.autoagenda.taskFragment.OnFragmentInteractionListener,
 				com.codecaptured.autoagenda.CalendarFragment.OnFragmentInteractionListener,
@@ -35,9 +28,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
 	/** The new task button */
 	android.support.design.widget.FloatingActionButton fab;
-
-	/** The lists the database loads */
-	public static ArrayList<UserTask> loadedTaskList;
 
 	private TextView mTextMessage;
 
@@ -66,13 +56,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		// Load from database
-		TaskInteractor.UserTask[] tempList = DataInteractor.loadData(getApplication());
-		for (TaskInteractor.UserTask tempTask : tempList)
-		{
-			loadedTaskList.add(new UserTask(tempTask));
-		}
 
 		// Set up view pager
 		mAdapter = new HomePageAdapter(getSupportFragmentManager());
@@ -263,5 +246,31 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 
 		// Save to database
 		DataInteractor.saveData(getApplication());
+	}
+
+	public static ArrayList<UserTask> getLoadedTaskList(Application app)
+	{
+		// Load from database
+		TaskInteractor.UserTask[] tempList = DataInteractor.loadTaskData(app);
+		ArrayList<UserTask> loadedTaskList = new ArrayList<>();
+		for (TaskInteractor.UserTask tempTask : tempList)
+		{
+			loadedTaskList.add(new UserTask(tempTask));
+		}
+
+		return loadedTaskList;
+	}
+
+	public static ArrayList<UserEvent> getLoadedEventList(Application app)
+	{
+		// Load from database
+		EventInteractor.UserEvent[] tempList = DataInteractor.loadEventData(app);
+		ArrayList<UserEvent> loadedEventList = new ArrayList<>();
+		for (EventInteractor.UserEvent tempEvent : tempList)
+		{
+			loadedEventList.add(new UserEvent(tempEvent));
+		}
+
+		return loadedEventList;
 	}
 }
