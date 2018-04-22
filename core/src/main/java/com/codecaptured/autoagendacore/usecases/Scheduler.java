@@ -950,28 +950,30 @@ public class Scheduler
 	public static void removeTask(UUID id)
 	{
 		
-		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
-		{
-			System.out.println();
+//		for ( Map.Entry<UUID, Task> entry : Schedule.getCurrentTasks().entrySet() )
+//		{
+//			System.out.println();
+//
+//			Task myTask = entry.getValue();
+//
+//			System.out.println("Title of task: " + myTask.getTitle());
+//
+//			UUID curID = myTask.getId();
+//
+//			System.out.println("Id of task: " + curID);
+//
+//			if( id == curID )
+//			{
+//				Schedule.getCurrentTasks().remove(curID);
+//
+//				System.out.println();
+//				System.out.println("Task: " + myTask.getTitle() + " removed");
+//				break;
+//			}
+//
+//		}
 
-			Task myTask = entry.getValue();
-
-			System.out.println("Title of task: " + myTask.getTitle());
-
-			UUID curID = myTask.getId();
-
-			System.out.println("Id of task: " + curID);
-
-			if( id == curID )
-			{
-				Schedule.getCurrentTasks().remove(curID);
-
-				System.out.println();
-				System.out.println("Task: " + myTask.getTitle() + " removed");
-				break;
-			}
-
-		}
+		Schedule.getCurrentTasks().remove(id);
 
 		reschedule();
 
@@ -1548,28 +1550,30 @@ public class Scheduler
 	public static void removeEvent(UUID id)
 	{
 		
-		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
-		{
-			System.out.println();
+//		for ( Map.Entry<UUID, Event> entry : Schedule.getCurrentEvents().entrySet() )
+//		{
+//			System.out.println();
+//
+//			Event myEvent = entry.getValue();
+//
+//			System.out.println("Title of event: " + myEvent.getTitle());
+//
+//			UUID curID = myEvent.getId();
+//
+//			System.out.println("Id of event: " + curID);
+//
+//			if( id == curID )
+//			{
+//				Schedule.getCurrentEvents().remove(curID);
+//
+//				System.out.println();
+//				System.out.println("Event: " + myEvent.getTitle() + " removed");
+//				break;
+//			}
+//
+//		}
 
-			Event myEvent = entry.getValue();
-
-			System.out.println("Title of event: " + myEvent.getTitle());
-
-			UUID curID = myEvent.getId();
-
-			System.out.println("Id of event: " + curID);
-
-			if( id == curID )
-			{
-				Schedule.getCurrentEvents().remove(curID);
-
-				System.out.println();
-				System.out.println("Event: " + myEvent.getTitle() + " removed");
-				break;
-			}
-
-		}
+		Schedule.getCurrentEvents().remove(id);
 
 		reschedule();
 

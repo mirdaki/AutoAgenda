@@ -33,6 +33,11 @@ public class DataInteractor
 	 */
 	public static TaskInteractor.UserTask[] loadTaskData(Application application)
 	{
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		TaskDao tDao = ((BasicSetUp) application).getDatabase().taskDao();
 		TaskInteractor.UserTask[] tasks = tDao.loadAllTasks();
 
@@ -54,6 +59,11 @@ public class DataInteractor
 	 */
 	public static EventInteractor.UserEvent[] loadEventData(Application application)
 	{
+		if (Schedule.getCurrentTasks() == null || Schedule.getCurrentEvents() == null)
+		{
+			new Schedule();
+		}
+
 		EventDao eDao = ((BasicSetUp) application).getDatabase().eventDao();
 		EventInteractor.UserEvent[] events = eDao.loadAllEvents();
 
@@ -79,8 +89,12 @@ public class DataInteractor
 		Task[] currentScheduledTasks = new Task[tDao.loadAllTasks().length];
 		currentScheduledTasks = Schedule.getCurrentTasks().values().toArray(currentScheduledTasks);
 
+		// Clear table
+		tDao.deleteAll();
+
 		for (Task task : currentScheduledTasks)
 		{
+			if (task == null) continue;
 			tDao.insertTasks(new com.codecaptured.autoagenda.database.room.entities.Task(task));
 		}
 
@@ -89,8 +103,12 @@ public class DataInteractor
 		Event[] currentScheduledEvents = new Event[eDao.loadAllEvents().length];
 		currentScheduledEvents = Schedule.getCurrentEvents().values().toArray(currentScheduledEvents);
 
+		// Clear table
+		eDao.deleteAll();
+
 		for (Event event : currentScheduledEvents)
 		{
+			if (event == null) continue;
 			eDao.insertEvents(new com.codecaptured.autoagenda.database.room.entities.Event(event));
 		}
 	}

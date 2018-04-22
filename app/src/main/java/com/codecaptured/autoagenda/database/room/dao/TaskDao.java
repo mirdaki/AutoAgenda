@@ -25,6 +25,9 @@ public interface TaskDao
 	@Delete
 	void deleteTasks(Task... tasks);
 
+	@Query("DELETE FROM Task")
+	public void deleteAll();
+
 	@Query("SELECT * FROM Task")
 	Task[] loadAllTasks();
 }

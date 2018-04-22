@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.codecaptured.autoagendacore.entities.TimeBlock;
 import com.codecaptured.autoagendacore.usecases.EventInteractor;
 import com.codecaptured.autoagendacore.usecases.TaskInteractor;
 
@@ -236,11 +237,13 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		ArrayList<UserTask> loadedTaskList = new ArrayList<>();
 		for (TaskInteractor.UserTask tempTask : tempList)
 		{
-			// TODO: I don't know what "thisTimeBlock" is supposed to be, so improvising for now
-			UserTask temp = new UserTask(tempTask);
-			temp.thisTimeBlock = temp.getTimeBlocks()[0];
-			temp.isEvent = false;
-			loadedTaskList.add(temp);
+			// thisTimeBlock is for the UI to display each task as an individual element
+			for(int i = 0; i < tempTask.getTimeBlocks().length; i++){
+				UserTask temp = new UserTask(tempTask);
+				temp.thisTimeBlock = temp.timeBlocks[i];
+				temp.isEvent = false;
+				loadedTaskList.add(temp);
+			}
 		}
 
 		return loadedTaskList;
@@ -256,6 +259,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 			UserTask temp = new UserTask(tempEvent.getTitle(), tempEvent.getDescription(), false,
 							tempEvent.getEventTime().getStartTime(), tempEvent.getEventTime().getNumberOfMinutes(),
 							tempEvent.getPriorityLevel(), tempEvent.getTags());
+			temp.thisTimeBlock = tempEvent.getEventTime();
 			temp.isEvent = true;
 			temp.setId(tempEvent.getId());
 			temp.eventID = tempEvent.getId();

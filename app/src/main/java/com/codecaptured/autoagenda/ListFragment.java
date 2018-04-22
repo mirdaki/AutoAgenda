@@ -74,7 +74,7 @@ public class ListFragment extends Fragment
 	 * Cal - what gets displayed on the calendar
 	 * Full - permanently keeps track of all of the tasks
 	 */
-	public static List<UserTask> finalTaskList, calTaskList, fullTaskList;
+	public static List<UserTask> finalTaskList, calTaskList;
 
 	public static int check = 0, check2 = 0;
 
@@ -124,7 +124,7 @@ public class ListFragment extends Fragment
 		// Task list
 		finalTaskList = MainActivity.loadStoredData(getActivity().getApplication());
 		calTaskList = new ArrayList<UserTask>();
-		fullTaskList = new ArrayList<UserTask>();
+		//fullTaskList = new ArrayList<UserTask>();
 
 		// Establish recycler view
 		mRecyclerView = (RecyclerView) RootView.findViewById(R.id.recycler_view);
@@ -168,43 +168,43 @@ public class ListFragment extends Fragment
 		tagList.add("Gym");
 		tagList.add("School");
 		tagList.add("Work");
-		tagSpinner = (Spinner) RootView.findViewById(R.id.tagSpinner);
-		ArrayAdapter<String> tagAdapter =
-						new ArrayAdapter<String>(RootView.getContext(), R.layout.support_simple_spinner_dropdown_item, tagList);
-		tagSpinner.setAdapter(tagAdapter);
-		tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-		{
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-			{
-				if(++check2 > 1)
-				{
-					sortListByTag(tagSpinner.getSelectedItem().toString());
-				}
-			} // to close the onItemSelected
-			public void onNothingSelected(AdapterView<?> parent)
-			{
+//		tagSpinner = (Spinner) RootView.findViewById(R.id.tagSpinner);
+//		ArrayAdapter<String> tagAdapter =
+//						new ArrayAdapter<String>(RootView.getContext(), R.layout.support_simple_spinner_dropdown_item, tagList);
+//		tagSpinner.setAdapter(tagAdapter);
+//		tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+//		{
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+//			{
+//				if(++check2 > 1)
+//				{
+//					sortListByTag(tagSpinner.getSelectedItem().toString());
+//				}
+//			} // to close the onItemSelected
+//			public void onNothingSelected(AdapterView<?> parent)
+//			{
+//
+//			}
+//		});
 
-			}
-		});
-
-		String[] temps = {"hi"};
-
-
-		Calendar time1 = Calendar.getInstance();
-		time1.add(Calendar.HOUR, 1);
-
-		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 5, 1, temps);
-		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 5);
-		TimeBlock[] timeBlock2 = {tblock2};
-		temp2.setTimeBlocks(timeBlock2);
-		temp2.thisTimeBlock = tblock2;
-		//finalTaskList.add(temp2);
-
-		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 99, 2, temps);
-		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 99);
-		TimeBlock[] timeBlock = {tblock};
-		temp.setTimeBlocks(timeBlock);
-		temp.thisTimeBlock = tblock;
+//		String[] temps = {"hi"};
+//
+//
+//		Calendar time1 = Calendar.getInstance();
+//		time1.add(Calendar.HOUR, 1);
+//
+//		UserTask temp2 = new UserTask("test2", "testdesc", false, time1.getTime(), 5, 1, temps);
+//		TimeBlock tblock2 = new TimeBlock(time1.getTime(), 5);
+//		TimeBlock[] timeBlock2 = {tblock2};
+//		temp2.setTimeBlocks(timeBlock2);
+//		temp2.thisTimeBlock = tblock2;
+//		//finalTaskList.add(temp2);
+//
+//		UserTask temp = new UserTask("test", "testdesc", false, Calendar.getInstance().getTime(), 99, 2, temps);
+//		TimeBlock tblock = new TimeBlock(Calendar.getInstance().getTime(), 99);
+//		TimeBlock[] timeBlock = {tblock};
+//		temp.setTimeBlocks(timeBlock);
+//		temp.thisTimeBlock = tblock;
 		//finalTaskList.add(temp);
 
 		// Setup cal task list
@@ -212,9 +212,9 @@ public class ListFragment extends Fragment
 		List<UserTask> newList = new ArrayList<>(finalTaskList);
 		calTaskList = newList;
 
-		// Setup full task list
-		List<UserTask> newList2 = new ArrayList<>(finalTaskList);
-		fullTaskList = newList2;
+//		// Setup full task list
+//		List<UserTask> newList2 = new ArrayList<>(finalTaskList);
+//		fullTaskList = newList2;
 
 		reloadRecyclerView();
 		return RootView;
@@ -344,8 +344,8 @@ public class ListFragment extends Fragment
 		// Get all tasks again
 		if(tagString.equals("All tags"))
 		{
-			List<UserTask> tempList2 = new ArrayList<>(fullTaskList);
-			finalTaskList = tempList2;
+			//List<UserTask> tempList2 = new ArrayList<>(fullTaskList);
+			//finalTaskList = tempList2;
 			reloadRecyclerView();
 			return;
 		}
@@ -367,9 +367,9 @@ public class ListFragment extends Fragment
 		//reload
 		mAdapter.notifyDataSetChanged();
 
-		//Refresh calendar page
-		List<UserTask> newList = new ArrayList<>(fullTaskList);
-		calTaskList = newList;
+//		//Refresh calendar page
+//		List<UserTask> newList = new ArrayList<>(fullTaskList);
+//		calTaskList = newList;
 		sortCalListByDate();
 		mTaskListenerCallback.needToRefresh();
 

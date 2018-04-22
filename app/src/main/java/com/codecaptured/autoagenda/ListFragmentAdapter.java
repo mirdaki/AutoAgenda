@@ -31,7 +31,6 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	public static List<UserTask> taskList;
 	public static FragmentManager mListFragmentAdapterManager;
 	public static UserTask mListFragmentAdapterUserTask;
-	public static int position;
 
 	public static View mListFragmentAdapterView;
 
@@ -46,8 +45,9 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 	}
 
 	@Override
-	public void onBindViewHolder(TaskViewHolder taskViewHolder, int i) {
-		taskViewHolder.mCardView.setTag(i);
+	public void onBindViewHolder(final TaskViewHolder taskViewHolder, int i) {
+		//taskViewHolder.mCardView.setTag(i);
+		taskViewHolder.position = i;
 		String priority;
 		String myFormat = "E, MMM dd 'at' hh:mm aa";
 		String myFormat2 = "MM/dd/yy";
@@ -102,7 +102,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 			public void onClick(View v)
 			{
-				deleteButtonClicked();
+				deleteButtonClicked(taskViewHolder.position);
 			}
 		});
 
@@ -116,7 +116,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 
 				public void onClick(View v)
 				{
-					completeButtonClicked();
+					completeButtonClicked(taskViewHolder.position);
 				}
 			});
 		}
@@ -143,6 +143,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		protected Button mDeleteButton;
 		protected Button mCompleteButton;
 		public CardView mCardView;
+		public int position = -1;
 
 		public TaskViewHolder(View v) {
 			super(v);
@@ -150,8 +151,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 			mListFragmentAdapterView = v;
 
 			int count = 0;
-			if(++count > 1)
-				position = (int) mCardView.getTag();
+			//if(++count > 1)
+				//position = (int) mCardView.getTag();
 
 			mListFragmentAdapterView.setOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View v) {
@@ -177,7 +178,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 		}
 	}
 
-	public void deleteButtonClicked(){
+	public void deleteButtonClicked(final int positionToDelete){
 		final AlertDialog.Builder builder;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			builder = new AlertDialog.Builder(ListFragment.RootView.getContext(), android.R.style.Theme_Material_Dialog_Alert);
@@ -188,11 +189,11 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								if(!mListFragmentAdapterUserTask.isEvent)
-									TaskInteractor.removeTask(mListFragmentAdapterUserTask);
+								if(!taskList.get(positionToDelete).isEvent)
+									TaskInteractor.removeTask(taskList.get(positionToDelete));
 								else
-									EventInteractor.removeEvent(mListFragmentAdapterUserTask.eventID);
-								taskList.remove(position);
+									EventInteractor.removeEvent(taskList.get(positionToDelete).eventID);
+								taskList.remove(positionToDelete);
 								ListFragment.reloadRecyclerView();
 							}
 						})
@@ -204,7 +205,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.show();
 	}
 
-	public void completeButtonClicked(){
+	public void completeButtonClicked(final int positionComplete){
 		final AlertDialog.Builder builder;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			builder = new AlertDialog.Builder(ListFragment.RootView.getContext(), android.R.style.Theme_Material_Dialog_Alert);
@@ -215,8 +216,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
 						.setMessage("Are you sure?")
 						.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								TaskInteractor.removeTask(mListFragmentAdapterUserTask);
-								taskList.remove(position);
+								TaskInteractor.removeTask(taskList.get(positionComplete));
+								taskList.remove(positionComplete);
 								ListFragment.reloadRecyclerView();
 							}
 						})

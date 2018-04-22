@@ -25,6 +25,9 @@ public interface EventDao
 	@Delete
 	void deleteEvents(Event... events);
 
+	@Query("DELETE FROM Event")
+	public void deleteAll();
+
 	@Query("SELECT * FROM Event")
 	Event[] loadAllEvents();
 }

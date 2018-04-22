@@ -48,7 +48,7 @@ public class Event implements EventInteractor.UserEvent
 		this.priorityLevel = priorityLevel;
 		this.tags = tags;
 
-		this.eventTime = new TimeBlock(eventTime.getStartTime(), eventTime.getNumberOfMinutes());
+		this.eventTime = new TimeBlock(dataEventTime.getStartTime(), dataEventTime.getNumberOfMinutes());
 	}
 
 	// Constructor
@@ -145,7 +145,7 @@ public class Event implements EventInteractor.UserEvent
 	public void setDataEventTime(DataTimeBlock dataTimeBlocks)
 	{
 		this.dataEventTime = dataTimeBlocks;
-		this.eventTime = new DataTimeBlock(dataTimeBlocks);
+		this.eventTime = new TimeBlock(dataTimeBlocks);
 	}
 
 	@Override

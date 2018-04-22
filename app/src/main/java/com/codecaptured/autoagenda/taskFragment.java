@@ -162,7 +162,7 @@ public class taskFragment extends DialogFragment
 		timeRequiredEditText = (android.widget.EditText) RootView.findViewById(R.id.timeRequiredEditText);
 		descriptionEditText = (android.widget.EditText) RootView.findViewById(R.id.descriptionEditText);
 		titleTextView = (TextView) RootView.findViewById(R.id.create_message);
-		tagEditText = (EditText) RootView.findViewById(R.id.tagEditText);
+		//tagEditText = (EditText) RootView.findViewById(R.id.tagEditText);
 
 		dateEditText.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -351,7 +351,7 @@ public class taskFragment extends DialogFragment
 		boolean status1 = false;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
-		String[] tempTags2  = {tagEditText.getText().toString()};
+		String[] tempTags2  = {};
 //		String[] tempTags2  = {"school", "gym"};
 		UserTask tempTask1 = null;
 		UserEvent tempEvent = null;
@@ -468,14 +468,14 @@ public class taskFragment extends DialogFragment
 		if (status1 == true)
 		{
 			System.out.println("Task has been added");
-			Toast toast1 = Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT);
+			Toast toast1 = Toast.makeText(getActivity(), "Created Successfully", Toast.LENGTH_SHORT);
 			toast1.show();
 			//Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
 		}
 		else
 		{
 			System.out.println("Task could not be added");
-			Toast toast1 = Toast.makeText(getActivity(), "Task cannot be added", Toast.LENGTH_SHORT);
+			Toast toast1 = Toast.makeText(getActivity(), "Not Created!", Toast.LENGTH_SHORT);
 			toast1.show();
 		}
 

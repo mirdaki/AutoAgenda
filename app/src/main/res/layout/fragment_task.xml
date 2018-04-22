@@ -137,13 +137,13 @@
         android:hint="Description (optional)"
         android:layout_below="@id/priorityTextView"/>
 
-    <EditText
-        android:id="@+id/tagEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="50dp"
-        android:hint="Tag"
-        android:layout_below="@id/descriptionEditText"/>
+    <!--<EditText-->
+        <!--android:id="@+id/tagEditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:maxHeight="50dp"-->
+        <!--android:hint="Tag"-->
+        <!--android:layout_below="@id/descriptionEditText"/>-->
 
 
     <Button
@@ -151,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:layout_below="@id/tagEditText"
+        android:layout_below="@id/descriptionEditText"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
         android:textColor="@color/theme_primary"/>
