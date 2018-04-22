@@ -120,9 +120,11 @@ public class TaskInteractor
 	public static Task userTaskToTask(UserTask userTask)
 	{
 		// Make the event
-		return new Task(userTask.getId(), userTask.getTitle(), userTask.getDescription(),
+		Task task =  new Task(userTask.getId(), userTask.getTitle(), userTask.getDescription(),
 						userTask.getCompleted(), userTask.getDueDate(), userTask.getTimeRequiredInMinutes(),
 						userTask.getPriorityLevel(), userTask.getTags());
+		task.setTaskTimes(userTask.getTimeBlocks());
+		return task;
 	}
 
 	/**
@@ -142,6 +144,7 @@ public class TaskInteractor
 		userTask.setTimeRequiredInMinutes(task.getTimeRequiredInMinutes());
 		userTask.setPriorityLevel(task.getPriorityLevel());
 		userTask.setTags(task.getTags());
+		userTask.setTimeBlocks(task.getTaskTimes());
 		return userTask;
 	}
 

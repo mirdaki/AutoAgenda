@@ -190,11 +190,7 @@ public class Task implements TaskInteractor.UserTask
 
 	public void setDataTimeBlocks(DataTimeBlock[] dataTimeBlocks)
 	{
-		this.dataTimeBlocks = new DataTimeBlock[dataTimeBlocks.length];
-		for (int i = 0; i < dataTimeBlocks.length; i++)
-		{
-			this.dataTimeBlocks[i] = new DataTimeBlock(dataTimeBlocks[i]);
-		}
+		this.dataTimeBlocks = dataTimeBlocks;
 
 		this.timeBlocks = new TimeBlock[dataTimeBlocks.length];
 		for (int i = 0; i < dataTimeBlocks.length; i++)
@@ -205,7 +201,7 @@ public class Task implements TaskInteractor.UserTask
 
 	public TimeBlock[] getTimeBlocks()
 	{
-		return dataTimeBlocks;
+		return this.timeBlocks;
 	}
 
 	public void setTimeBlocks(TimeBlock[] timeBlocks)

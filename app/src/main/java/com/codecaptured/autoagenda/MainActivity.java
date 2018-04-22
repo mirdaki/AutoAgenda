@@ -229,30 +229,47 @@ public class MainActivity extends android.support.v4.app.FragmentActivity implem
 		DataInteractor.saveData(getApplication());
 	}
 
-	public static ArrayList<UserTask> getLoadedTaskList(Application app)
+	private static ArrayList<UserTask> getLoadedTaskList(Application app)
 	{
 		// Load from database
 		TaskInteractor.UserTask[] tempList = DataInteractor.loadTaskData(app);
 		ArrayList<UserTask> loadedTaskList = new ArrayList<>();
 		for (TaskInteractor.UserTask tempTask : tempList)
 		{
-			loadedTaskList.add(new UserTask(tempTask));
+			// TODO: I don't know what "thisTimeBlock" is supposed to be, so improvising for now
+			UserTask temp = new UserTask(tempTask);
+			temp.thisTimeBlock = temp.getTimeBlocks()[0];
+			temp.isEvent = false;
+			loadedTaskList.add(temp);
 		}
 
 		return loadedTaskList;
 	}
 
-	public static ArrayList<UserEvent> getLoadedEventList(Application app)
+	private static ArrayList<UserTask> getLoadedEventList(Application app)
 	{
 		// Load from database
 		EventInteractor.UserEvent[] tempList = DataInteractor.loadEventData(app);
-		ArrayList<UserEvent> loadedEventList = new ArrayList<>();
+		ArrayList<UserTask> loadedEventList = new ArrayList<>();
 		for (EventInteractor.UserEvent tempEvent : tempList)
 		{
-			loadedEventList.add(new UserEvent(tempEvent));
+			UserTask temp = new UserTask(tempEvent.getTitle(), tempEvent.getDescription(), false,
+							tempEvent.getEventTime().getStartTime(), tempEvent.getEventTime().getNumberOfMinutes(),
+							tempEvent.getPriorityLevel(), tempEvent.getTags());
+			temp.isEvent = true;
+			temp.setId(tempEvent.getId());
+			temp.eventID = tempEvent.getId();
+			loadedEventList.add(temp);
 		}
 
 		return loadedEventList;
+	}
+
+	public static ArrayList<UserTask> loadStoredData(Application app)
+	{
+		ArrayList<UserTask> taskEvents = getLoadedTaskList(app);
+		taskEvents.addAll(getLoadedEventList(app));
+		return taskEvents;
 	}
 
 	public void needToRefresh()

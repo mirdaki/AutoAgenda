@@ -122,7 +122,7 @@ public class ListFragment extends Fragment
 		RootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		// Task list
-		finalTaskList = MainActivity.getLoadedTaskList(getActivity().getApplication());
+		finalTaskList = MainActivity.loadStoredData(getActivity().getApplication());
 		calTaskList = new ArrayList<UserTask>();
 		fullTaskList = new ArrayList<UserTask>();
 

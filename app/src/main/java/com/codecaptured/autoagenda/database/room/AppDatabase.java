@@ -18,7 +18,7 @@ import com.codecaptured.autoagenda.database.room.entities.Task;
  * Created by matthew on 3/28/18.
  */
 
-@Database(entities = {Task.class, Event.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, Event.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase
 {
