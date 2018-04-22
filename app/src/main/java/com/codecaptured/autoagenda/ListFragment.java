@@ -367,9 +367,9 @@ public class ListFragment extends Fragment
 		//reload
 		mAdapter.notifyDataSetChanged();
 
-//		//Refresh calendar page
-//		List<UserTask> newList = new ArrayList<>(fullTaskList);
-//		calTaskList = newList;
+		//Refresh calendar page
+		List<UserTask> newList = new ArrayList<>(finalTaskList);
+		calTaskList = newList;
 		sortCalListByDate();
 		mTaskListenerCallback.needToRefresh();
 

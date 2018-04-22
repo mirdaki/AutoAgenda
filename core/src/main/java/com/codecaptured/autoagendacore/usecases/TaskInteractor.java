@@ -70,7 +70,7 @@ public class TaskInteractor
 	 * @param originalTask The original task to be changed
 	 * @param newTask The new changed task
 	 */
-	public static void modifyTask(UserTask originalTask, UserTask newTask)
+	public static boolean modifyTask(UserTask originalTask, UserTask newTask)
 	{
 		// Make the IDs the same
 		newTask.setId(originalTask.getId());
@@ -100,6 +100,11 @@ public class TaskInteractor
 			// Updated user task
 			newTask.setTimeBlocks(task.getTaskTimes());
 		}
+
+		if(tb.length == 0)
+			return true;
+		else
+			return false;
 	}
 
 	/**

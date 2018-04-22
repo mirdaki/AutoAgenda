@@ -362,45 +362,53 @@ public class taskFragment extends DialogFragment
 			if(isModify){
 				if(!ut.isEvent){
 
-					// Remove all old timeblocks from final task list
-					for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
-						if(ListFragment.finalTaskList.get(i).getId() == ut.getId()){
-							ListFragment.finalTaskList.remove(i);
-						}
-					}
-
 					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-					TaskInteractor.modifyTask(ut, tempTask1);
+					status1 = TaskInteractor.modifyTask(ut, tempTask1);
 
-					// Add new timeblocks to UI in real time
-					for(int i = 0; i < tempTask1.timeBlocks.length; i++){
-						UserTask temp = tempTask1;
-						temp.thisTimeBlock = temp.timeBlocks[i];
-						ListFragment.finalTaskList.add(temp);
+
+					if(status1){
+
+						// Remove all old timeblocks from final task list
+						for(int i = 0; i < ListFragment.finalTaskList.size(); i++){
+							if(ListFragment.finalTaskList.get(i).getId() == ut.getId()){
+								ListFragment.finalTaskList.remove(i);
+							}
+						}
+						// Add new timeblocks to UI in real time
+						for(int i = 0; i < tempTask1.timeBlocks.length; i++)
+						{
+							UserTask temp = tempTask1;
+							temp.thisTimeBlock = temp.timeBlocks[i];
+							ListFragment.finalTaskList.add(temp);
+						}
 					}
 				}
 				else{ // it is an event
 
-					// Remove from list fragment; there is only one instance since its an event
-					for(int i = 0; i < ListFragment.finalTaskList.size(); i++)
-					{
-						if (ListFragment.finalTaskList.get(i).getId() == ut.getId())
-						{
-							ListFragment.finalTaskList.remove(i);
-							break;
-						}
-					}
-
 					TimeBlock tempTimeBlock = new TimeBlock(selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()));
 					tempEvent = new UserEvent(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), tempTimeBlock, prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-					EventInteractor.modifyEvent(ut.eventID, tempEvent);
+					status1 = EventInteractor.modifyEvent(ut.eventID, tempEvent);
 
-					// Add to List Fragment in form of task
-					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-					tempTask1.isEvent = true;
-					tempTask1.eventID = ut.getId();
-					tempTask1.thisTimeBlock = tempEvent.eventTime;
-					ListFragment.finalTaskList.add(tempTask1);
+
+					if(status1)
+					{
+
+						// Remove from list fragment; there is only one instance since its an event
+						for(int i = 0; i < ListFragment.finalTaskList.size(); i++)
+						{
+							if (ListFragment.finalTaskList.get(i).getId() == ut.getId())
+							{
+								ListFragment.finalTaskList.remove(i);
+								break;
+							}
+						}
+						// Add to List Fragment in form of task if did not fail
+						tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+						tempTask1.isEvent = true;
+						tempTask1.eventID = ut.getId();
+						tempTask1.thisTimeBlock = tempEvent.eventTime;
+						ListFragment.finalTaskList.add(tempTask1);
+					}
 
 				}
 
@@ -417,11 +425,15 @@ public class taskFragment extends DialogFragment
 				tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
 				status1 = TaskInteractor.addTask(tempTask1);
 
-				// Add to UI in real time
-				for(int i = 0; i < tempTask1.timeBlocks.length; i++){
-					UserTask temp = tempTask1;
-					temp.thisTimeBlock = temp.timeBlocks[i];
-					ListFragment.finalTaskList.add(temp);
+				// Add to UI in real time if did not fail
+				if(status1)
+				{
+					for (int i = 0; i < tempTask1.timeBlocks.length; i++)
+					{
+						UserTask temp = tempTask1;
+						temp.thisTimeBlock = temp.timeBlocks[i];
+						ListFragment.finalTaskList.add(temp);
+					}
 				}
 			}
 			else
@@ -429,15 +441,17 @@ public class taskFragment extends DialogFragment
 
 				TimeBlock tempTimeBlock = new TimeBlock(selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()));
 				tempEvent = new UserEvent(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), tempTimeBlock, prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-				EventInteractor.addEvent(tempEvent);
-				status1 = true;
+				status1 = EventInteractor.addEvent(tempEvent);
 
-				// Add to List Fragment in form of task
-				tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
-				tempTask1.isEvent = true;
-				tempTask1.eventID = tempEvent.getId();
-				tempTask1.thisTimeBlock = tempEvent.eventTime;
-				ListFragment.finalTaskList.add(tempTask1);
+				// Add to List Fragment in form of task if did not fail
+				if(status1)
+				{
+					tempTask1 = new UserTask(taskEditText.getText().toString(), "" + descriptionEditText.getText().toString(), false, selectedDate, Integer.parseInt(timeRequiredEditText.getText().toString()), prioritySpinner.getSelectedItemPosition() + 1, tempTags2);
+					tempTask1.isEvent = true;
+					tempTask1.eventID = tempEvent.getId();
+					tempTask1.thisTimeBlock = tempEvent.eventTime;
+					ListFragment.finalTaskList.add(tempTask1);
+				}
 			}
 
 

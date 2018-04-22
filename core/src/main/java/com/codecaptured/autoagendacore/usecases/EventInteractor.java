@@ -23,7 +23,7 @@ public class EventInteractor
 	 * Add a new event to the schedule. Will be scheduled if using the default date/time
 	 * @param newEvent The new event
 	 */
-	public static void addEvent(UserEvent newEvent)
+	public static boolean addEvent(UserEvent newEvent)
 	{
 
 		// Fix error if Schedule has not be instantiated
@@ -42,7 +42,7 @@ public class EventInteractor
 		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addEvent(event);
+		return Scheduler.addEvent(event);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class EventInteractor
 	 * @param originalID The id of the original event to be changed
 	 * @param newEvent The new changed event
 	 */
-	public static void modifyEvent(UUID originalID, UserEvent newEvent)
+	public static boolean modifyEvent(UUID originalID, UserEvent newEvent)
 	{
 		// Make the IDs the same
 		newEvent.setId(originalID);
@@ -105,7 +105,7 @@ public class EventInteractor
 		Event event = userEventToEvent(newEvent);
 
 		// Add to scheduler to decide where to put it in the schedule
-		Scheduler.addEvent(event);
+		return Scheduler.addEvent(event);
 	}
 
 	/**
