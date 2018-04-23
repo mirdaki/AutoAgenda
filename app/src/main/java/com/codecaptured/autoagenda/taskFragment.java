@@ -381,6 +381,13 @@ public class taskFragment extends DialogFragment
 							temp.thisTimeBlock = temp.timeBlocks[i];
 							ListFragment.finalTaskList.add(temp);
 						}
+						Toast toast1 = Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT);
+						toast1.show();
+					}
+					else
+					{
+						Toast toast1 = Toast.makeText(getActivity(), "Update Failed!", Toast.LENGTH_SHORT);
+						toast1.show();
 					}
 				}
 				else{ // it is an event
@@ -408,6 +415,14 @@ public class taskFragment extends DialogFragment
 						tempTask1.eventID = ut.getId();
 						tempTask1.thisTimeBlock = tempEvent.eventTime;
 						ListFragment.finalTaskList.add(tempTask1);
+
+						Toast toast1 = Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT);
+						toast1.show();
+					}
+					else
+					{
+						Toast toast1 = Toast.makeText(getActivity(), "Update Failed!", Toast.LENGTH_SHORT);
+						toast1.show();
 					}
 
 				}
@@ -484,7 +499,7 @@ public class taskFragment extends DialogFragment
 			System.out.println("Task has been added");
 			Toast toast1 = Toast.makeText(getActivity(), "Created Successfully", Toast.LENGTH_SHORT);
 			toast1.show();
-			//Notification.createNotification(tempTask1.getId().hashCode(),getContext(),123441, tempTask1.getTitle(), tempTask1.getDescription());
+			Notification.createNotification(tempTask1.getId().hashCode(),getContext(),System.currentTimeMillis() + 10000000000L, tempTask1.getTitle(), tempTask1.getDescription());
 		}
 		else
 		{
