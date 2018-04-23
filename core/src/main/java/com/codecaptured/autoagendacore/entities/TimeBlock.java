@@ -14,6 +14,7 @@ public class TimeBlock
 
 	private Date startTime;
 	private int numberOfMinutes;
+	private Date endTime;
 
 	/**
 	 * Create a time blocks that starts and lasts for specified times
@@ -25,6 +26,7 @@ public class TimeBlock
 	{
 		this.startTime = startTime;
 		this.numberOfMinutes = timeInMinutes;
+		this.endTime = getEndingTime();
 	}
 
 		// copy constructor
@@ -32,6 +34,7 @@ public class TimeBlock
 	{
 		this.startTime = tb.getStartTime();
 		this.numberOfMinutes = tb.getNumberOfMinutes();
+		this.endTime = getEndingTime();
 	}
 
 	// this method will allow assignment of a TimeBlock to another
@@ -39,6 +42,7 @@ public class TimeBlock
 	{
 		this.startTime = rhs.getStartTime();
 		this.numberOfMinutes = rhs.getNumberOfMinutes();
+		this.endTime = getEndingTime();
 	}
 
 	public void printout()
@@ -55,6 +59,7 @@ public class TimeBlock
 	public void setStartTime(Date startTime)
 	{
 		this.startTime = startTime;
+		this.endTime = getEndingTime();
 	}
 
 	public int getNumberOfMinutes()
@@ -65,6 +70,7 @@ public class TimeBlock
 	public void setNumberOfMinutes(int timeInMinutes)
 	{
 		this.numberOfMinutes = timeInMinutes;
+		this.endTime = getEndingTime();
 	}
 
 	public long getEpochStartTime()

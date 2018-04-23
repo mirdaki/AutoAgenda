@@ -1023,6 +1023,9 @@ public class Scheduler
 			if( recurrencetype  == RecurrenceType.NONE)
 			{
 				newEventDueDate = eventTime.getEndingTime();
+
+				// TODO: Attempt to schedule events properly
+				//newEventDueDate = eventTime.getStartTime();
 			}
 			
 			else
@@ -1338,6 +1341,15 @@ public class Scheduler
 					break;
 				}
 		}
+
+		// TODO: If start time is after the last hole or before the first
+//		if (foundSpot == false &&
+//						(startTime.after(holelist.getLast().getEndingTime()) ||
+//						endTime.before(holelist.getFirst().getStartTime())))
+//		{
+//			foundSpot = true;
+//		}
+
 		return foundSpot;
 	}
 
